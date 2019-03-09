@@ -36,6 +36,14 @@ public class EmployeeController {
 			@PathVariable("lastName") final String lastName) throws Exception {
 		return employeeService.register(employeeID, firstName, lastName, emailID, defaultEmployeePassword);
 	}
+	
+
+
+	@RequestMapping(value = "/deleteEmployee/{employeeID}", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public void deleteEmployee(@PathVariable("employeeID") final long employeeID) throws Exception {
+		 employeeService.deleteEmployee(employeeID);
+	}
 
 	@RequestMapping(value = "/completeEmployeeProfile/{employeeID}", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody

@@ -31,6 +31,9 @@ public class EmployeeService {
 		return employeeRepository.save(employee);
 	}
 
+	public void deleteEmployee(final long employeeID) {
+		employeeRepository.deleteById(employeeID);
+	}
 	public Employee completeProfile(final Employee employee, final String firstName, final String lastName,
 			final String emailID, final String foodPreference, final String mobile, final String cityTour,
 			final String photo, final String gender, final String shirtSize) {
