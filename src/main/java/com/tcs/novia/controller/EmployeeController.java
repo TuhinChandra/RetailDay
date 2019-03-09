@@ -29,7 +29,7 @@ public class EmployeeController {
 	@Value("${emp_default_password}")
 	private String defaultEmployeePassword;
 
-	@RequestMapping(value = "/createEmployee/{employeeID}/{emailID}/{firstName}/{lastName}", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/createEmployee/{employeeID}/{emailID}/{firstName}/{lastName}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public Employee createEmployee(@PathVariable("employeeID") final long employeeID,
 			@PathVariable("emailID") final String emailID, @PathVariable("firstName") final String firstName,
