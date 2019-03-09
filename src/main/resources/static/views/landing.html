@@ -10,7 +10,8 @@
     <!-- <link href="https://fonts.googleapis.com/css?family=Advent+Pro" rel="stylesheet"> -->
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
     <!-- <link href="css/main.css" rel="stylesheet" media="all"> -->
-
+    
+    
     <script>
       /* Set the width of the side navigation to 250px and the left margin of the page content to 250px and add a black background color to body */
       function openNav() {
@@ -40,7 +41,7 @@
             <div class="container">
               <div class="row">
                 <div class="card profile card col-sm-12 col-md-12 col-lg-12">
-                  <img class="user_photo" src="media/attendee.png" alt="Anup">
+                  <img class="user_photo" src="{{userDetails.photo}}" alt="Anup">
                   <h2 style="color: rgb(211, 213, 213);">{{userDetails.firstName}} {{userDetails.lastName}}</h2>
                   <h5 style="color: rgb(171, 171, 171);">Emp ID: {{userDetails.employeeID}}</h5>
                   <h6 style="color: rgb(171, 171, 171);">Email ID: {{userDetails.emailID}}</h6>
@@ -54,7 +55,9 @@
                             <!-- ng-model="qrcode" -->
                             <!-- style="height: 250px;" ></span> -->
                             <!-- <qr text="qrcodeString"></qr> -->
-                            <qrcode data="{{userDetails.employeeID}}#{{userDetails.registrationNo}}" version="2" error-correction-level="Q" size="200" color="#fff" background="#000"></qrcode>
+                            <img alt=""  src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{userDetails.employeeID}}||||{{userDetails.registrationNo}}">
+                            <!-- <qrcode data="{{userDetails.employeeID}}#{{userDetails.registrationNo}}" version="2" error-correction-level="Q" 
+                            size="200" color="#fff" background="#000"></qrcode> -->
                           </div>
                           </div>
                   </div>
@@ -78,7 +81,7 @@
         </div>
         <div class="col">
             <div class="user_profile float-right">
-                <img src="media/attendee.png" onclick="openNav()">
+                <img src="{{userDetails.photo}}" onclick="openNav()">
             </div>
         </div>
       </div>

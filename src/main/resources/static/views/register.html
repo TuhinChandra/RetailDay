@@ -77,7 +77,7 @@
                   <input type="tel" id="mobile_user" name="mnum" id="mnum" tabindex="3" class="form-control" placeholder="Email ID" value="" ng-model="userDetails.emailID">
                 </div>
                 <div class="col-md-12 mb-3">
-                  <input type="tel" id="mobile_user" name="mnum" id="mnum" tabindex="3" class="form-control" placeholder="Mobile number" value="">
+                  <input type="tel" id="mobile_user" name="mnum" id="mnum" tabindex="3" class="form-control" placeholder="Mobile number" value="" ng-model="userDetails.mobile">
                   <div class="invalid-feedback">
                   please enter 10 digit mobile number
                   </div>
@@ -90,7 +90,7 @@
                   <label style="padding: 0 .75rem;">Food Preference *</label>
                 </div>
                 <div class="col-md-12 mb-3">
-                  <select class="form-control" placeholder="" ng-model="foodPreference">
+                  <select class="form-control" placeholder="" ng-model="userDetails.foodPreference">
                     <option value="Veg">Veg</option>
                     <option value="Non_Veg">Non-Veg</option>
                   </select>
@@ -99,7 +99,7 @@
                   <label style="padding: 0 .75rem;">Shirt Size *</label>
                 </div>
                 <div class="col-md-12 mb-3">
-                  <select class="form-control" ng-model="shirtSize">
+                  <select class="form-control" ng-model="userDetails.shirtSize">
                   <option value="S">S</option>
                   <option value="M">M</option>
                   <option value="L">L</option>
@@ -125,7 +125,7 @@
                   <label style="padding: 0 .75rem;">City Tour Option *</label>
                 </div>
                 <div class="col-md-12 mb-3">
-                  <select class="form-control" ng-model="cityTour">
+                  <select class="form-control" ng-model="userDetails.cityTour">
                   <option value="TOUR1">Tour 1</option>
                   <option value="TOUR2">Tour 2</option>
                   <option value="NONE">Not Interested</option>

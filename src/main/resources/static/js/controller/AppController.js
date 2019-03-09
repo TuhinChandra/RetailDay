@@ -123,13 +123,13 @@ app.controller('RegisterController', function($scope, $http, $window, $rootScope
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 data: $.param({
                     firstName: $rootScope.userDetails.firstName,
-                    lastName: '',
+                    lastName: $rootScope.userDetails.lastName,
                     emailID: $rootScope.userDetails.emailID,
                     foodPreference: $rootScope.userDetails.foodPreference,
                     mobile: $rootScope.userDetails.mobile,
-                    projectName: $rootScope.userDetails.projectName,
                     photoFile: $scope.imageData,
                     gender: $rootScope.userDetails.gender,
+                    cityTour: $rootScope.userDetails.cityTour,
                     shirtSize: $rootScope.userDetails.shirtSize})
             }).then(function(response) {
                 console.log(response);
