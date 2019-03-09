@@ -1,0 +1,186 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Allerta+Stencil" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="css/main.css" rel="stylesheet" media="all">
+<script>
+  /* Set the width of the side navigation to 250px and the left margin of the page content to 250px and add a black background color to body */
+  function openNav() {
+      document.getElementById("mySidenav").style.width = "100%";
+  }
+
+  /* Set the width of the side navigation to 0 and the left margin of the page content to 0, and the background color of body to white */
+  function closeNav() {
+      document.getElementById("mySidenav").style.width = "0%";
+  }
+</script>
+</head>
+
+<body>
+<div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <div>
+      <div class="container">
+        <div class="row">
+          <div class="card profile card col-sm-12 col-md-12 col-lg-12">
+            <img class="user_photo" src="media/attendee.png" alt="Anup">
+            <h2 style="color: rgb(211, 213, 213);">{{userDetails.firstName}} {{userDetails.lastName}}</h2>
+            <h5 style="color: rgb(171, 171, 171);">Emp ID: {{userDetails.employeeID}}</h5>
+            <h6 style="color: rgb(171, 171, 171);">Email ID: {{userDetails.emailID}}</h6>
+            <div>
+                    <hr class="separator flight">
+                    <h4>EVENT PASS</h4>
+                  <div class="QR_wrapper">
+                    <div>
+                        <img src="media/qrcode.png" alt="" style="width:200px">
+                    </div>
+                    </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+<!-- Top Header End -->
+<div class="top_navbar">
+  <div class="main_header row">
+    <div class="col">
+        <div class="navbar navbar-light" style="color: #dddddd;">
+          <span style="margin-top: 8px;"><i class="fa fa-chevron-left fa-2x"></i></span>
+        </div>
+    </div>
+    <div class="col">
+        <div class="brand_logo">
+            <a href="landing.html"><img src="media/bib-white1.png" alt="TCS50 Brand Logo"> </a>
+        </div>
+    </div>
+    <div class="col">
+        <div class="user_profile float-right">
+            <img src="media/attendee.png" onclick="openNav()">
+        </div>
+    </div>
+  </div>
+</div>
+
+<!-- Navigation -->
+<nav class="bg-main-menu" style="padding-top:68px">
+  <div class="container main_header">
+    <div class="row">
+      <!-- Collapsible content -->
+      <div class="collapse navbar-collapse main_menu_item" id="navbarSupportedContent41">
+
+        <!-- Links -->
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="liveupdate.html">ABOUT US</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="help.html">LOG OUT</a>
+          </li>
+        </ul>
+        <!-- Links -->
+
+      </div>
+      <!-- Collapsible content -->
+    </div>
+  </div>
+</nav>
+<div class="container">
+<div class="row">
+ <div class="panel panel-login col-sm-12 col-md-12 col-lg-12 log_panel panel_update">
+                 <div class="form-group">
+            <p class="main_header_body">Update Your Flight Details</p>
+                <hr class="separator">
+          </div>
+     <div class="main_panel">
+     <button class="flight_btn col-sm-12 col-md-12 col-lg-12" data-toggle="collapse" data-target="#flight1" aria-expanded="true" aria-controls="collapseOne">
+          Inbound Flight Details
+        </button>
+    
+
+        <div id="flight1" class="collapse show">
+             <hr class="separator flight">
+          <form id="apprival_flight" method="post" role="form">
+          <div class="form-group">
+            <input type="text" name="fnum" id="fnum" tabindex="1" class="form-control" placeholder="Flight Number" value="">
+          </div>
+          <div class="form-group">
+            <input type="text" name="from" id="from" tabindex="1" class="form-control" placeholder="Airline" value="">
+          </div>
+          <div class="form-group">
+            <input type="datetime-local" name="time" id="time" tabindex="1" class="form-control" placeholder="Flight time" value="">
+          </div>
+          <div class="form-group">
+            <div class="row justify_center">
+              <div class="col-sm-4 col-md-4 col-lg-6">
+                <input type="submit" name="save-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="Update">
+              </div>
+            </div>
+          </div>
+
+        </form>
+            
+        </div>
+     
+     </div>
+        <div class="main_panel">
+                 <button class="flight_btn col-sm-12 col-md-12 col-lg-12" data-toggle="collapse" data-target="#flight2">Outbound Flight Details</button>
+     
+
+        <div id="flight2" class="collapse show">
+            <hr class="separator flight">
+          <form id="depart_flight" method="post" role="form">
+         <div class="form-group">
+            <input type="text" name="fnum" id="fnum" tabindex="1" class="form-control" placeholder="Flight Number" value="">
+          </div>
+          <div class="form-group">
+            <input type="text" name="from" id="from" tabindex="1" class="form-control" placeholder="Airline" value="">
+          </div>
+          <div class="form-group">
+            <input type="datetime-local" name="time" id="time" tabindex="1" class="form-control" placeholder="Flight time" value="">
+          </div>
+          <div class="form-group">
+            <div class="row justify_center">
+              <div class="col-sm-4 col-md-4 col-lg-6">
+                <input type="submit" name="save-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="Update">
+              </div>
+            </div>
+          </div>
+
+        </form>
+            
+        </div>
+     </div>
+     
+     
+     
+     <!------City Tour-------->
+     <div class="panel panel-login col-sm-12 col-md-12 col-lg-12 log_panel panel_update">
+                 <div class="form-group">
+            <p class="main_header_body">City Tour Information</p>
+                <hr class="separator">
+          </div>
+     <div class="main_panel">
+     <button class="flight_btn col-sm-12 col-md-12 col-lg-12" data-toggle="collapse" data-target="#city" aria-expanded="true" aria-controls="collapseOne">
+          Explore Kolkata
+        </button>
+    
+
+        <div id="city" class="collapse show">
+             <hr class="separator flight">
+------------------------------------------------------------------------------------------------------------------------------------------------
+            
+        </div>
+     
+     </div>
+
+
+</div>
+
+</div>
+</body>
+</html>

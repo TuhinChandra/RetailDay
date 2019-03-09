@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="lib/popper.min.js"></script>
+<link rel="stylesheet" href="lib/font-awesome.min.css">
+
+<script src="lib/bootstrap.min.js"></script>
+<link rel="stylesheet" href="lib/bootstrap.min.css">
+
+<link href="https://fonts.googleapis.com/css?family=Advent+Pro" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Allerta+Stencil" rel="stylesheet">
+
+<script src="lib/jquery.min.js"></script>
+<script src="lib/angular.min.js"></script>
+<script src="lib/angular-route.js"></script>
+
+<script src="lib/node_modules/qrcode-generator/qrcode.js"></script>
+<script src="lib/node_modules/qrcode-generator/qrcode_UTF8.js"></script>
+<script src="lib/node_modules/angular-qrcode/angular-qrcode.js"></script>
+
+<script src="js/routing.js"></script>
+<script src="js/controller/AppController.js"></script>
+<script src="js/util/Util.js"></script>
+
+<link href="css/main.css" rel="stylesheet" media="all">
+<script>
+
+$(document).ready(function(){
+    var win_height=  $( window ).height()
+    $(".viewport_mob").css("height", win_height);
+});
+</script>
+
+<body ng-app="myApp" class="viewport_mob">
+    <div ng-view id="main"></div>
+</body>
+</html>

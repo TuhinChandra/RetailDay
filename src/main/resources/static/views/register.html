@@ -1,0 +1,180 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"> -->
+<!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script> -->
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script> -->
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script> -->
+<!-- <link href="https://fonts.googleapis.com/css?family=Advent+Pro" rel="stylesheet"> -->
+<!-- <link href="https://fonts.googleapis.com/css?family=Allerta+Stencil" rel="stylesheet"> -->
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+<!-- <link href="css/main.css" rel="stylesheet" media="all"> -->
+</head>
+
+<body>
+  <div class="top_navbar">
+		<div class="main_header row">
+			<div class="col">
+					<div class="navbar navbar-light" style="color: #dddddd;">
+
+					</div>
+			</div>
+			<div class="col">
+					<div class="brand_logo">
+							<img src="media/bib-white1.png" alt="TCS50 Brand Logo">
+					</div>
+			</div>
+			<div class="col">
+					<div class="user_profile float-right">
+
+					</div>
+			</div>
+		</div>
+	</div>
+<div class="container register_mod" style="padding-top:68px">
+<div class="row">
+
+      <div class="col-sm-12 col-md-12 col-lg-12">
+    <div class="panel panel-login col-sm-12 col-md-12 col-lg-12 log_panel">
+      <div class="panel-heading">
+        <div class="row ">
+          <div class="log justify_center">
+            <!--<a href="#" class="heading" id="register-form-link">Register</a>-->
+                 <div class="small-12 medium-2 large-2 columns justify_center">
+                     <div class="circle">
+                       <img id="profilePic" class="profile-pic" src="media/attendee.png">
+                        <div class="p-image">
+                        <i class="fa fa-camera upload-button"></i>
+                        <input type="file" accept="image/*"/>
+                     </div>
+                     </div>
+
+                  </div>
+          </div>
+        </div>
+        <hr>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-lg-12">
+            <form class="bootstrap-form needs-validation" novalidate name="register">
+              <div class="form-row">
+                <div class="col-md-12 mb-3">
+                  <!-- <span id="fname" class="form-control">{{userDetails.firstName}} {{userDetails.lastName}}</span> -->
+                  <span style="display:flex;">
+                    <input type="tel" id="mobile_user" name="mnum" id="mnum" tabindex="3" style="width:50%;" class="form-control" placeholder="Name" value="" ng-model="userDetails.firstName">
+                    <input type="tel" id="mobile_user" name="mnum" id="mnum" tabindex="3" style="width:50%;" class="form-control" placeholder="Name" value="" ng-model="userDetails.lastName">
+                  </span>
+                  
+                </div>
+                <div class="col-md-12 mb-3">
+                  <!-- <span id="fname" class="form-control">{{userDetails.employeeID}}</span> -->
+                  <input type="tel" id="mobile_user" name="mnum" id="mnum" tabindex="3" class="form-control" placeholder="Employee ID" value="" ng-model="userDetails.employeeID">
+                </div>
+                <div class="col-md-12 mb-3">
+                  <!-- <span id="fname" class="form-control">{{userDetails.emailID}}</span> -->
+                  <input type="tel" id="mobile_user" name="mnum" id="mnum" tabindex="3" class="form-control" placeholder="Email ID" value="" ng-model="userDetails.emailID">
+                </div>
+                <div class="col-md-12 mb-3">
+                  <input type="tel" id="mobile_user" name="mnum" id="mnum" tabindex="3" class="form-control" placeholder="Mobile number" value="">
+                  <div class="invalid-feedback">
+                  please enter 10 digit mobile number
+                  </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                  <input type="checkbox"  class="mobile_consent" name="remember" id="checkConsent" >
+                  <label for="remember"> Consent to provide mobile number</label>
+                </div>
+                <div class="col-md-12 mb-3">
+                  <label style="padding: 0 .75rem;">Food Preference *</label>
+                </div>
+                <div class="col-md-12 mb-3">
+                  <select class="form-control" placeholder="" ng-model="foodPreference">
+                    <option value="Veg">Veg</option>
+                    <option value="Non_Veg">Non-Veg</option>
+                  </select>
+                </div>
+                <div class="col-md-12 mb-3">
+                  <label style="padding: 0 .75rem;">Shirt Size *</label>
+                </div>
+                <div class="col-md-12 mb-3">
+                  <select class="form-control" ng-model="shirtSize">
+                  <option value="S">S</option>
+                  <option value="M">M</option>
+                  <option value="L">L</option>
+                  <option value="XL">XL</option>
+                  <option value="XXL">XXL</option>
+                  </select>
+                </div>
+
+				<div class="col-md-12 mb-3">
+					<label style="padding: 0 .75rem;">Gender *</label>
+				</div>
+				<div class="col-md-12 mb-3">
+
+					<select class="form-control" ng-model="userDetails.gender">
+						<option value="male">Male</option>
+						<option value="female">Female</option>
+						<option value="other">Other</option>
+
+					</select>
+				</div>
+                
+                <div class="col-md-12 mb-3">
+                  <label style="padding: 0 .75rem;">City Tour Option *</label>
+                </div>
+                <div class="col-md-12 mb-3">
+                  <select class="form-control" ng-model="cityTour">
+                  <option value="TOUR1">Tour 1</option>
+                  <option value="TOUR2">Tour 2</option>
+                  <option value="NONE">Not Interested</option>
+                  </select>
+                </div>
+                <div class="col-md-12 mb-3">
+                  <!--<a id="login-submit" class="form-control btn btn-login" href="landing.html">Let Me In </a>-->
+                  <button id="login-submit" class="form-control  btn btn-outline-primary btn btn-login" type="submit" ng-click="doRegisterUsr()">Let Me In</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    </div>
+    <!-- Modal -->
+<div class="modal fade" id="modal_long" tabindex="-1" role="dialog" aria-labelledby="modal_longTitle" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal_longTitle">Privacy Statement on personal data</h5>
+
+      </div>
+      <div class="modal-body privacy">
+        <div id="text-block-11" class="mk-text-block   ">
+          <ul>
+            <li>Storing your Preferences and Settings – Settings that enable our website to operate correctly or that maintain your preferences over time may be stored on your device.</li>
+
+            <li>Security – We use cookies to detect fraud and abuse of our websites and services.</li>
+            <li>Social Media – Some of our websites include social media cookies, including those that enable users who are logged in to the social media service to share content via that service.</li>
+
+          </ul>
+
+
+
+          <div class="clearboth"></div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary agree" data-dismiss="modal">Agree</button>
+        <button type="button" class="btn btn-primary disagree" data-dismiss="modal">Disagree</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+</body>
+</html>
