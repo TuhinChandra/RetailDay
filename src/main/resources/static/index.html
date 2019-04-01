@@ -1,38 +1,561 @@
 <!DOCTYPE html>
-<html>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en">
 
-<script src="lib/popper.min.js"></script>
-<link rel="stylesheet" href="lib/font-awesome.min.css">
+<head>
 
-<script src="lib/bootstrap.min.js"></script>
-<link rel="stylesheet" href="lib/bootstrap.min.css">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="TCS Kingfisher Day Events">
+<meta name="author" content="">
 
-<link href="https://fonts.googleapis.com/css?family=Advent+Pro" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Allerta+Stencil" rel="stylesheet">
+<title>TCS Kingfisher Day</title>
 
-<script src="lib/jquery.min.js"></script>
-<script src="lib/angular.min.js"></script>
-<script src="lib/angular-route.js"></script>
+<!-- Bootstrap Core CSS -->
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-<script src="lib/node_modules/qrcode-generator/qrcode.js"></script>
-<script src="lib/node_modules/qrcode-generator/qrcode_UTF8.js"></script>
-<script src="lib/node_modules/angular-qrcode/angular-qrcode.js"></script>
+<!-- Font Awesome CSS -->
+<link href="css/font-awesome.min.css" rel="stylesheet">
 
-<script src="js/routing.js"></script>
-<script src="js/controller/AppController.js"></script>
-<script src="js/util/Util.js"></script>
+<!-- Custom CSS -->
+<link href="css/animate.css" rel="stylesheet">
 
-<link href="css/main.css" rel="stylesheet" media="all">
-<script>
+<!-- Custom CSS -->
+<link href="css/style.css" rel="stylesheet">
 
-$(document).ready(function(){
-    var win_height=  $( window ).height()
-    $(".viewport_mob").css("height", win_height);
-});
-</script>
+<!-- Custom Fonts -->
+<link href='http://fonts.googleapis.com/css?family=Lobster'
+	rel='stylesheet' type='text/css'>
+<link rel='stylesheet prefetch'
+	href='https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css'>
+<link rel="stylesheet" href="css/event-style.css">
 
-<body ng-app="myApp" class="viewport_mob">
-    <div ng-view id="main"></div>
+
+<!-- Template js -->
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="js/jquery.appear.js"></script>
+<script src="js/jquery.mustache.js"></script>
+<script src="js/jquery.validate.js"></script>
+<!-- <script src="js/contact_me.js"></script> -->
+<script src="js/jqBootstrapValidation.js"></script>
+<script src="js/modernizr.custom.js"></script>
+<script src="js/script.js"></script>
+<script src="js/custom.js"></script>
+<script src="js/sockjs.min.js"></script>
+<script src="js/stomp.min.js"></script>
+<script src="js/mobile-detect.js"></script>
+<script src="js/loadingoverlay.min.js"></script>
+<script src="js/jquery.canvasResize.js"></script>
+<script src="js/canvasResize.js"></script>
+<script src="js/jquery.exif.js"></script>
+
+<!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+</head>
+
+<body>
+
+	<!-- Start Logo Section -->
+	<section id="logo-section" class="text-center">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="logo text-center">
+						<h1>TCS Kingfisher Day</h1>
+					</div>
+					<div id="user_details"></div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End Logo Section -->
+
+
+	<!-- Start Main Body Section -->
+	<div class="mainbody-section text-center">
+		<div class="container">
+			<div class="row">
+
+				<div class="col-md-6">
+
+					<div class="menu-item blue" id="signIn">
+						<a href="#login-modal" data-toggle="modal" class="js-signin-start"> 
+							<i class="fa fa-sign-in"></i>
+							<p>Sign In</p>
+						</a>
+					</div>
+					
+					<div class="menu-item blue" id="editProfile">
+						
+					</div>
+					
+					<div class="menu-item green">
+						<a href="javascript:void(0)" data-toggle="modal" id="events" class="js-open-events">
+							<i class="fa fa-calendar"></i>
+							<p>Events</p>
+						</a>
+					</div>
+
+					<div class="menu-item light-red" id="quiz">
+						<a href="javascript:void(0)" data-toggle="modal"
+							class="js-open-quiz"> <i class="fa fa-question-circle"></i>
+							<p>Quiz</p>
+						</a>
+					</div>
+					<div class="menu-item color" id="contest">
+						<a href="javascript:void(0)" data-toggle="modal"> <i
+							class="fa fa-file-photo-o"></i>
+							<p>Photography & Banner Contest</p>
+						</a>
+					</div>
+					<div class="menu-item yellow">
+						<a href="#contact-modal" data-toggle="modal"> <i
+							class="fa fa-envelope-o"></i>
+							<p>Contact</p>
+						</a>
+					</div>
+					
+					<div class="menu-item blue">
+						<a href="http://tiny.cc/kfday" target="_blank">Help Apple and WIndows users (http://tiny.cc/kfday)</a><br/>
+						<img src="images/QR_Code_KFDay.png" class="prof-pic" height="180" width="180"><br/>
+						<a href="http://tiny.cc/kfdayapk" target="_blank">Download APK (http://tiny.cc/kfdayapk)</a>
+					</div>
+					
+					<div class="menu-item light-orange" id="logoff">
+
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- End Main Body Section -->
+
+
+	<!-- Start Login Section -->
+	<div class="section-modal modal fade" id="login-modal" tabindex="-1"
+		role="dialog" aria-hidden="true">
+		<div class="modal-content">
+			<div class="close-modal" data-dismiss="modal">
+				<div class="lr">
+					<div class="rl"></div>
+				</div>
+			</div>
+
+			<div class="container">
+				<div class="row">
+					<div class="section-title text-center">
+						<!-- Tab panes -->
+						<div class="tab-content">
+							<div id="home" class="container tab-pane active">
+								<br>
+								<h3>Signin</h3>
+								<form id="login-form" action="#" method="post" role="form"
+									autocomplete="off">
+									<div class="form-group">
+										<input type="number" name="email" id="login-email" tabindex="1"
+											class="form-control" placeholder="Employee ID" value="" required>
+									</div>
+									<div class="form-group">
+										<input type="password" name="password" id="login-password"
+											tabindex="2" class="form-control" placeholder="Password" value="" required>
+									</div>
+									<div class="form-group text-center">
+										<input type="checkbox" tabindex="3" class="" name="remember"
+											id="remember"> <label for="remember">
+											Remember Me</label>
+									</div>
+									<div class="form-group">
+										<div class="row">
+											<div class="col-sm-6 col-sm-offset-3">
+												<input type="submit" name="login-submit" id="login-submit"
+													tabindex="4" class="form-control btn btn-primary"
+													value="Log In">
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+							<div id="error-panel"></div>
+						</div>
+						<!-- Our Custom code ends -->
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+	<!-- End Login Section -->
+
+	
+	<!-- Start Edit Profile Section -->
+	<div class="section-modal modal fade" id="edit-profile-modal" tabindex="-1"
+		role="dialog" aria-hidden="true">
+		<div class="modal-content">
+			<div class="close-modal" data-dismiss="modal">
+				<div class="lr">
+					<div class="rl"></div>
+				</div>
+			</div>
+
+			<div class="container edit-profile-container">
+			
+			</div>
+
+		</div>
+	</div>
+	<!-- End Edit Profile Section -->
+	
+
+	<!-- Start Portfolio Section -->
+	<div class="section-modal modal fade" id="portfolio-modal"
+		tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-content">
+			<div class="close-modal" data-dismiss="modal">
+				<div class="lr">
+					<div class="rl"></div>
+				</div>
+			</div>
+
+			<div class="container">
+				<div class="row">
+					<div class="section-title text-center">
+						<h3>Photography & Banner Contest</h3>
+						<p>All photographs and banner contest enties</p>
+					</div>
+				</div>
+				
+				<div class="photo-contest-images-container">
+
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<!-- End Photography Contest Section -->
+
+
+	<!-- Start Events Section -->
+	<div class="section-modal modal fade" id="event-modal" tabindex="-1"
+		role="dialog" aria-hidden="true">
+	</div>
+	<!-- End Events Section -->
+
+	<!-- Start quiz Section -->
+	<div class="section-modal modal fade" id="quiz-modal" tabindex="-1"
+		role="dialog" aria-hidden="true">
+		<div class="modal-content">
+			<div class="close-modal" data-dismiss="modal">
+				<div class="lr">
+					<div class="rl"></div>
+				</div>
+			</div>
+
+			<div class="container">
+				<div class="row">
+					<div class="section-title text-center">
+						<h3>Quiz Contest</h3>
+						<p>Just play for fun!</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="container-fluid">
+							<div class="modal-dialog">
+								<div id="question-container" class="quiz-modal-content">
+									<!--quiz content will be populated here -->
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<!-- End quiz Section -->
+
+
+
+	<!-- Start Contact Section -->
+	<div class="section-modal modal fade contact" id="contact-modal"
+		tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-content">
+			<div class="close-modal" data-dismiss="modal">
+				<div class="lr">
+					<div class="rl"></div>
+				</div>
+			</div>
+
+			<div class="container">
+				<div class="row">
+					<div class="section-title text-center">
+						<h3>Contact With Us</h3>
+					</div>
+				</div>
+
+				<div class="row">				
+					<!--team-1-->
+					<div class="col-lg-3">
+						<div class="our-team-main">						
+							<div class="team-front">
+								<img src="https://s3.amazonaws.com/kfday/app_team/Sumangal.jpeg" class="img-fluid" />
+								<h3>Sumangal Mandal</h3>
+								<p>Web Designer</p>
+								<p>sumangal.mandal@tcs.com</p>
+							</div>						
+						</div>
+					</div>
+					<!--team-1-->
+				
+					<!--team-2-->
+					<div class="col-lg-3">
+						<div class="our-team-main">						
+							<div class="team-front">
+								<img src="https://s3.amazonaws.com/kfday/app_team/Tuhin.jpg" class="img-fluid" />
+								<h3>Tuhin Chandra</h3>
+								<p>Web Designer</p>
+								<p>tuhin.chandra@tcs.com</p>
+							</div>						
+						</div>
+					</div>
+
+					<!--team-2-->
+				
+					<!--team-3-->
+					<div class="col-lg-3">
+						<div class="our-team-main">						
+							<div class="team-front">
+								<img src="https://s3.amazonaws.com/kfday/app_team/Subhajit.jpeg" class="img-fluid" />
+								<h3>Subhajit Maji</h3>
+								<p>Web Designer</p>
+								<p>maji.subhajit@tcs.com</p>
+							</div>						
+						</div>
+					</div>
+
+					<!--team-3-->
+				
+					<!--team-4-->
+					<div class="col-lg-3">
+						<div class="our-team-main">						
+							<div class="team-front">
+								<img src="https://s3.amazonaws.com/kfday/app_team/Shasanko.jpeg" class="img-fluid" />
+								<h3>Shasanko Ghosh</h3>
+								<p>Web Designer</p>
+								<p>shasanko.ghosh@tcs.com</p>
+							</div>						
+						</div>
+					</div>
+					<!--team-4-->	
+				
+					<!--team-5-->
+					<div class="col-lg-3">
+						<div class="our-team-main">						
+							<div class="team-front">
+								<img src="https://s3.amazonaws.com/kfday/app_team/Subhrajit.jpeg" class="img-fluid" />
+								<h3>Subhrajit  Dutta</h3>
+								<p>Web Designer</p>
+								<p>subhrajit.dutta@tcs.com</p>
+							</div>						
+						</div>
+					</div>
+					<!--team-5-->				
+				</div>
+				<!--/.row -->
+			</div>
+		</div>
+	</div>
+	<!-- End Contact Section -->
+
+		<script id="ui-template-quiz" type="x-tmpl-mustache">
+			<div class="modal-header">
+				<span class="label label-warning" id="questionID">{{questionID}}</span>
+				<h4 class="question-statement">{{{questionText}}} </h4>
+			</div>
+			<div class="modal-body">
+				<div class="quiz" id="quiz" data-toggle="buttons">
+					<label class="element-animation1 btn btn-lg btn-info btn-block"><input type="radio" name="q_answer" value="{{optionA}}"/> {{optionA}}</label>
+					<label class="element-animation1 btn btn-lg btn-info btn-block"><input type="radio" name="q_answer" value="{{optionB}}"/> {{optionB}}</label>
+					<label class="element-animation1 btn btn-lg btn-info btn-block"><input type="radio" name="q_answer" value="{{optionC}}"/> {{optionC}}</label>
+					<label class="element-animation1 btn btn-lg btn-info btn-block"><input type="radio" name="q_answer" value="{{optionD}}"/> {{optionD}}</label>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary js-submit-answer">Lock your answer</button>
+			</div>
+		</script>
+
+		<script id="ui-template-quiz-inactive" type="x-tmpl-mustache">
+            <div class="modal-body">
+                <img alt="quiz not available" src="images/Quiz404.jpg" width="100%" height="100%"/>
+                <div class="alert alert-danger" role="alert">
+                    <strong>{{questionUnavailbleText}}</strong>
+                </div>
+            </div>
+        </script>
+        
+		<script id="ui-template-account-details" type="x-tmpl-mustache">
+			<div style="color:white">
+				<div> 
+					<strong> Welcome {{name}} </strong>
+					<p id="account_email">
+		            	{{emailID}}
+		            </p>
+				</div>
+            </div>
+
+		</script>
+        
+		<script id="ui-template-edit-my-profile" type="x-tmpl-mustache">
+			
+				<div class="row">
+					<div class="section-title text-center">
+
+						<!-- Tab panes -->
+						<div class="tab-content">
+							<div id="menu1" class="container tab-pane active">
+								<br>
+								<h3>My Profile</h3>
+								<form id="register-form" class='js-custom-form' action="javascript:void(0)"
+									method="post" role="form" autocomplete="off">
+									<div class="form-group">
+										<input type="number" name="email" id="reg-email" tabindex="1"
+											class="form-control" placeholder="Employee ID" value="{{emailID}}"
+											required disabled>
+									</div>
+									<div class="form-group">
+										<input type="text" name="name" id="reg-name" tabindex="2"
+											class="form-control" placeholder="Name" value="{{name}}" required disabled>
+									</div>
+									<div class="form-group">
+										<input type="password" name="password" id="reg-password"
+											tabindex="3" class="form-control" placeholder="Password" value="{{password}}"
+											required>
+									</div>
+									<div class="form-group">
+										<input type="password" name="confirm_password"
+											id="reg-confirm-password" tabindex="4" class="form-control"
+											placeholder="Confirm Password" value="{{password}}" required>
+									</div>
+
+									<div class="form-group">
+										<label>Change photo</label> <input type="file"
+											name="account-file" class="form-control" accept="image/*"
+											 />
+									</div>
+									<div class="form-group">
+										<div class="row">
+											<div class="col-sm-6 col-sm-offset-3 reg-btn">
+												<input type="submit" name="register-submit"
+													id="register-submit" tabindex="4"
+													class="form-control btn btn-primary" value="Update">
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+							<div id="error-panel-edit-profile"></div>
+						</div>
+						<!-- Our Custom code ends -->
+					</div>
+				</div>
+
+		</script>
+		
+		<script id="ui-template-sign-out-and-account-photo" type="x-tmpl-mustache">
+			<a href="javascript:void(0)">
+				<i class="fa fa-sign-out"></i>
+				<p>Signout</p>
+			</a>
+		</script>
+		
+		<script id="ui-template-edit-profile-menu" type="x-tmpl-mustache">
+			<img class="prof-pic" src="data:image/jpg;base64,{{photo}}" alt="user image" height="100" width="100">
+			<a href="javascript:void(0)" data-toggle="modal"> 
+				<i class="fa fa-edit"></i>
+				<p>Edit Profile</p>
+			</a>
+		</script>
+
+		<script id="ui-template-all-event" type="x-tmpl-mustache">
+		<div class="modal-content event-container">
+			<div class="close-modal" data-dismiss="modal">
+				<div class="lr">
+					<div class="rl"></div>
+				</div>
+			</div>
+
+			<div class="container">
+				<div class="row">
+					<div class="section-title text-center">
+						<h3>Today's Events</h3>
+						<p>We shall take you through the following events on TCS
+							Kingfisher Day</p>
+					</div>
+					<div class="col-md-20">
+						<div>
+							<div class='app_inner'>
+							{{#events}}
+								<input id='tab-{{eventID}}' name='buttons' type='radio'>
+								<label for='tab-{{eventID}}' class='js-event-tab-{{eventID}}'>
+									<div class='app_inner__tab'>
+										<div class="event-desc">
+											<h2>{{eventName}}</h2>											
+											<div class='tab_left'>
+												<div class='tab_left__image'>
+													<i class='{{photo}}'></i>
+												</div>
+											</div>
+											<div class="event-details">
+												<p><strong>{{details}}</strong></p>
+												<p><i class="icon ion-android-alarm-clock"></i>&nbsp;{{duration}}</p>
+											</div>
+											<div class="event-vote">
+
+											</div>
+										</div>
+									</div>
+								</label> 						  
+							{{/events}}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</script>
+	<script id="ui-template-vote-event" type="x-tmpl-mustache">
+		<a href="#" class="js-send-event-feedback" data-vote="LIKE" data-eventid="{{eventID}}"><i class="fa fa-heart"></i>{{likeCount}}</a>
+		<a href="#" class="js-send-event-feedback" data-vote="DISLIKE" data-eventid="{{eventID}}"><i class="fa fa-thumbs-up"></i>{{dislikeCount}}</a>
+	</script>
+	
+	<script id="ui-template-photo-contest-images" type="x-tmpl-mustache">
+		{{#images}}
+		<div class="col-md-4">
+			<div class="portfolio-item">
+				<img src="data:image/jpg;base64,{{content}}" class="img-responsive"
+					alt="...">
+				<div class="portfolio-details text-center">
+					<h4>Owner: {{owner}}</h4>
+					<h4>Image Name: {{imageName}}</h4>
+					<div class="event-vote">
+					<a href="#" class="js-send-photo-feedback" data-vote="LIKE" data-imageid="{{imageId}}"><i class="fa fa-heart"></i></a>
+					<a href="#" class="js-send-photo-feedback" data-vote="DISLIKE" data-imageid="{{imageId}}"><i class="fa fa-thumbs-up"></i></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		{{/images}}
+	</script>
 </body>
+
 </html>
