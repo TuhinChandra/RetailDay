@@ -1,0 +1,130 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Advent+Pro"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="css/main.css" rel="stylesheet" media="all">
+
+
+<style>
+.change_pwd  .form-group input.ng-valid {
+	border: 2px solid green !important;
+	background: url(media/ok.png) no-repeat right #fff;
+	background-size: 32px;
+}
+</style>
+
+</head>
+
+<body>
+	<div>
+		<div class="top_navbar">
+			<div class="main_header row">
+				<div class="col">
+					<div class="navbar navbar-light" style="color: #dddddd;">
+						<a href="#!login"><img src="media/icon/back.png"
+							style="width: 46px;"></a>
+					</div>
+				</div>
+				<div class="col">
+					<div class="brand_logo">
+						<img src="media/bib-white1.png"
+							alt="NOVIA 2019 Brand Logo">
+					</div>
+				</div>
+				<div class="col">
+					<div class="user_profile float-right"></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="container login_mod" style="padding-top: 68px">
+			<div class="row justify_center">
+				<div class="col-sm-12 col-md-12 col-lg-6">
+					<div
+						class="panel panel-login col-sm-12 col-md-12 col-lg-12 log_panel">
+						<div class="panel-heading">
+							<img src="media/password.png" alt="Lock"
+								style="width: 68px; height: 68px;" />
+							<div class="row">
+								<div class="log">
+									<a href="#" class="active" id="login-form-link">Change
+										Password</a>
+								</div>
+							</div>
+							<hr>
+						</div>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-lg-12">
+									<form name="newPasswordForm" role="form"
+										ng-submit="newPasswordForm.$valid && ok()" novalidate>
+										<div class="col-lg-12 justify_center"
+											style="margin-bottom: 5px;">
+											<span class="error">{{errorMsg}}</span>
+										</div>
+										<div class="form-group">
+											<input id="password" type="password" name="newPassword"
+												ng-model="passwordFirst" class="form-control"
+												ng-minlength="6" placeholder="New Password" required />
+											<div class="form-group">
+												<div class="row">
+													<div class="col-lg-12 error">
+														<span style="color: #004085; font-size: smaller;"
+															ng-show="newPasswordForm.newPassword.$dirty && newPasswordForm.newPassword.$invalid">
+															Please enter a new password, it must be at least 6
+															characters long. </span>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="form-group">
+											<input type="password" id="password" class="form-control"
+												placeholder="Confirm Password" type="password"
+												name="newPasswordConfirm" ng-model="passwordSecond"
+												ng-minlength="6" value-matches="password.new" required />
+											<div class="form-group">
+												<div class="row">
+													<div class="col-lg-12 error">
+														<span style="color: #004085; font-size: smaller;"
+															ng-show="(passwordFirst == passwordSecond ? false : true)">
+															Please enter the same password again to confirm. </span>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="row">
+												<div class="col-sm-12 col-md-12 col-lg-12">
+													<!--<a id="login-submit" class="form-control btn btn-login" href="register.html">Change Password</a>-->
+													<button
+														ng-disabled="(passwordFirst == passwordSecond ? false : true)"
+														id="login-submit" class="form-control btn btn-login"
+														type="submit" ng-click="doChangePwd()">Change
+														Password</button>
+												</div>
+											</div>
+										</div>
+										<hr class="info_sep">
+										<p class="info alert alert-primary">Password Policy: Min
+											length 6 characters and Alphanumeric</p>
+										<hr class="info_sep">
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

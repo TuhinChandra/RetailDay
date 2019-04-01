@@ -1,0 +1,174 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.css">
+<link href="https://fonts.googleapis.com/css?family=Allerta+Stencil"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<link href="../css/gallery-grid.css" rel="stylesheet" media="all">
+<link href="../css/main.css" rel="stylesheet" media="all">
+</head>
+
+<body style="height: 100%;">
+	<!-- Top Header Start -->
+	<div id="mySidenav" class="sidenav">
+		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+		<div>
+			<div class="container">
+				<div class="row">
+					<div class="card profile card col-sm-12 col-md-12 col-lg-12">
+						<img class="user_photo" src="../media/attendee.png" alt="Aniket">
+						<div style="color: #949494;">
+							<h2>Aniket Gupta</h2>
+						</div>
+						<div class="btn_panel">
+							<div class="btn-group">
+								<button class="group_btn">
+									<i class="fa fa-info fa-3x" aria-hidden="true"></i>
+								</button>
+								<button class="group_btn">
+									<i class="fa fa-question fa-3x" aria-hidden="true"></i>
+								</button>
+								<button class="group_btn">
+									<i class="fa fa-asterisk fa-3x" aria-hidden="true"></i>
+								</button>
+							</div>
+						</div>
+						<div class="main_panel">
+							<button
+								class="profile_btn profile_btn_acc col-sm-12 col-md-12 col-lg-12"
+								data-toggle="collapse" data-target="#event_pass">Event
+								Pass</button>
+							<div id="event_pass" class="collapse show" aria-expanded="true">
+								<div>
+									<img src="../media/qrcode.png" alt="" style="width: 200px">
+								</div>
+							</div>
+						</div>
+
+						<div class="main_panel">
+							<button
+								class="profile_btn profile_btn_acc col-sm-12 col-md-12 col-lg-12"
+								data-toggle="collapse" data-target="#flight"
+								aria-expanded="true" aria-controls="collapseOne">Flight
+								Details</button>
+							<div id="flight" class="collapse show">
+								<hr class="separator flight">
+								<p>Flight Number - MAXYZ-1234</p>
+								<p>Flight Time - 12-12-2019 - 11.00PM</p>
+								<p>From - Kolkata To - Mumbai</p>
+							</div>
+						</div>
+
+						<div class="main_panel">
+							<button
+								class="profile_btn profile_btn_acc col-sm-12 col-md-12 col-lg-12"
+								data-toggle="collapse" data-target="#accomodation">City
+								Tour</button>
+							<div id="accomodation" class="collapse show">
+								<hr class="separator flight">
+								<p>-------------------------------</p>
+								<p>-------------------------------</p>
+								<p>-------------------------------</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Top Header End -->
+	<div class="top_navbar">
+		<div class="main_header row">
+			<div class="col">
+				<div class="navbar navbar-light" style="color: #dddddd;">
+					<i class="fa fa-angle-left fa-3x"></i>
+				</div>
+			</div>
+			<div class="col">
+				<div class="brand_logo">
+					<a href="#!landing"><img src="../media/bib-white1.png"
+						alt="NOVIA 2019 Brand Logo"> </a>
+				</div>
+			</div>
+			<div class="col">
+				<div class="user_profile float-right">
+					<img src="../media/attendee.png" onclick="openNav()">
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container gallery-container" style="margin-top: 68px;">
+		<div class="tz-gallery">
+			<!-- Lightbox Start -->
+			<div class="row">
+				<div class="column">
+					<img src="../media/coast.jpg" style="width: 100%"
+						onclick="openModal();currentSlide(1)" class="hover-shadow cursor">
+				</div>
+				<div class="column">
+					<img src="../media/rails.jpg" style="width: 100%"
+						onclick="openModal();currentSlide(2)" class="hover-shadow cursor">
+				</div>
+				<div class="column">
+					<img src="../media/traffic.jpg" style="width: 100%"
+						onclick="openModal();currentSlide(3)" class="hover-shadow cursor">
+				</div>
+				<div class="column">
+					<img src="../media/rocks.jpg" style="width: 100%"
+						onclick="openModal();currentSlide(4)" class="hover-shadow cursor">
+				</div>
+			</div>
+
+			<div id="myModal" class="modal-lightbox">
+				<span class="close cursor" onclick="closeModal()">&times;</span>
+				<div class="modal-content-lightbox">
+					<div class="mySlides">
+						<div class="numbertext">1 / 4</div>
+						<img src="../media/coast.jpg" style="width: 100%">
+					</div>
+
+					<div class="mySlides">
+						<div class="numbertext">2 / 4</div>
+						<img src="../media/rails.jpg" style="width: 100%">
+					</div>
+
+					<div class="mySlides">
+						<div class="numbertext">3 / 4</div>
+						<img src="../media/traffic.jpg" style="width: 100%">
+					</div>
+
+					<div class="mySlides">
+						<div class="numbertext">4 / 4</div>
+						<img src="../media/rocks.jpg" style="width: 100%">
+					</div>
+
+					<a class="prev" onclick="plusSlides(-1)">&#10094;</a> <a
+						class="next" onclick="plusSlides(1)">&#10095;</a>
+
+					<div class="caption-container">
+						<p id="caption"></p>
+					</div>
+				</div>
+			</div>
+
+			<!-- Lightbox End -->
+		</div>
+	</div>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.js"></script>
+	<script>
+		baguetteBox.run('.tz-gallery');
+	</script>
+</body>
+</html>

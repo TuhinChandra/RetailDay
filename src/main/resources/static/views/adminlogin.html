@@ -1,0 +1,142 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Advent+Pro"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="css/main.css" rel="stylesheet" media="all">
+
+</head>
+
+<body>
+	<div class="top_navbar">
+		<div class="main_header row">
+			<div class="col">
+				<div class="navbar navbar-light" style="color: #dddddd;">
+					<a href="#!partcipation"><img src="media/icon/back.png"
+						style="width: 46px;"></a>
+				</div>
+			</div>
+			<div class="col">
+				<div class="brand_logo">
+					<span><img src="media/bib-white1.png"
+						alt="Novia Brand Logo"></span>
+				</div>
+			</div>
+			<div class="col">
+				<div class="user_profile float-right"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container login_mod" style="padding-top: 68px">
+		<div class="row justify_center">
+			<div class="col-sm-12 col-md-12 col-lg-6">
+				<div
+					class="panel panel-login col-sm-12 col-md-12 col-lg-12 log_panel">
+					<div class="panel-heading lock">
+						<img src="media/attendee.png" alt="Lock"
+							style="width: 68px; height: 68px; box-shadow: 0 1px 5px rgba(0, 0, 0, 0.9); border: 5px solid #fff; border-radius: 37px;" />
+						<div class="row">
+							<div class="log">
+								<a href="#" class="active" id="login-form-link">Admin Login</a>
+							</div>
+						</div>
+						<hr>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-lg-12">
+
+								<form name="loginForm" novalidate class="loginForm">
+
+									<div class="form-group">
+										<div class="row">
+											<div class="col-lg-12">
+												<input type="number" id="username" class="form-control"
+													placeholder="Username" name="username" ng-model="username"
+													required />
+
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="row">
+											<div class="col-lg-12 justify_center">
+												<span class="error"
+													ng-show="loginForm.username.$touched && loginForm.username.$invalid">Required.</span>
+
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="row">
+											<div class="col-lg-12">
+												<input type="password" id="password" class="form-control"
+													placeholder="password" name="password" minlength="6"
+													ng-model="password" required />
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="row">
+											<div class="col-lg-12 justify_center">
+												<span class="error"
+													ng-show="loginForm.password.$touched && loginForm.password.$invalid">Required</span>
+											</div>
+										</div>
+									</div>
+
+									<hr class="info_sep">
+
+									<div class="form-group">
+										<div class="row">
+											<div class="col-lg-12 justify_center">
+												<span class="error">{{loginMsg}}</span>
+
+											</div>
+										</div>
+									</div>
+
+									<p class="info alert alert-primary">
+										In case of any issue please write to <a
+											href="mailto:ravishankar.sharma@tcs.com" target="_top">ravishankar.sharma@tcs.com</a>
+										or <a href="mailto:tuhin.chandra@tcs.com" target="_top">tuhin.chandra@tcs.com</a>
+									</p>
+									<hr class="info_sep">
+									<div class="form-group">
+										<div class="row">
+											<div class="col-lg-12">
+												<button ng-disabled="loginForm.$invalid" id="login-submit"
+													class="form-control btn btn-login"
+													ng-click="doAuthenticate(username, password)" type="submit">Log
+													In</button>
+												<!--<a href="changePwd.html" id="login-submit" class="form-control btn btn-login" >Log In</a>-->
+											</div>
+
+										</div>
+									</div>
+
+								</form>
+
+
+
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+</body>
+</html>

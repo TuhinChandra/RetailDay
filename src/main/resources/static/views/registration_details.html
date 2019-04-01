@@ -1,0 +1,525 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+.register_detail a {
+	text-decoration: none;
+	font-weight: bold;
+	color: #004085;
+}
+
+.register_detail li {
+	border: 1px solid #dcdcdc;
+	border-bottom: 0;
+	padding: 20px 18px;
+}
+
+.flight_depart input.ng-touched, .flight_arrival input.ng-touched,
+	.flight_depart input.ng-dirty, .flight_arrival input.ng-touched {
+	border: 2px solid red !important;
+	background: url(media/error.png) no-repeat right #fff;
+	background-size: 32px;
+}
+
+.flight_depart input.ng-valid, .flight_arrival input.ng-valid {
+	border: 2px solid green !important;
+	background: url(media/ok.png) no-repeat right #fff;
+	background-size: 32px;
+}
+.registerme textarea.ng-empty {
+    border: 2px solid red !important;
+    background: url(../media/error.png) no-repeat right #fff;
+    background-size: 32px;
+}
+.registerme textarea.ng-not-empty {
+    border: 2px solid green !important;
+    background: url(../media/ok.png) no-repeat right #fff;
+    background-size: 32px;
+}
+</style>
+</head>
+
+<body>
+	<div class="top_navbar">
+		<div class="main_header row">
+			<div class="col">
+				<div class="navbar navbar-light" style="color: #dddddd;">
+					<a href="#!login"><img src="media/icon/logout.png"
+						style="width: 46px;"></a>
+				</div>
+			</div>
+			<div class="col">
+				<div class="brand_logo">
+					<img src="media/bib-white1.png" alt="NOVIA 2019 Brand Logo">
+				</div>
+			</div>
+			<div class="col">
+				<div class="user_profile float-right"></div>
+			</div>
+		</div>
+	</div>
+	<div class="container register_mod" style="padding-top: 68px">
+		<div class="row justify_center">
+
+			<div class="col-sm-12 col-md-12 col-lg-6">
+				<div
+					class="panel panel-login col-sm-12 col-md-12 col-lg-12 log_panel">
+					<div>
+						<div class="panel-heading">
+							<div class="row ">
+								<div class="log justify_center">
+								
+									<!-- start Isometrix -->
+									<!-- <div class="small-12 medium-2 large-2 columns justify_center" style="display:flex">
+										<img src="media/vedic_village.png"
+											style="width: 450px; height: 145px;">
+									</div> -->
+									<div class="small-12 medium-2 large-2 columns justify_center" style="display:flex">
+										<div class="circle" style="position: relative; float: right;">
+											<img id="profilePic" class="profile-pic"
+												ng-src="{{userDetails.photo}}">
+											<!-- start Isometrix -->
+											<div class="p-image" style="cursor:pointer">
+												<label for="file-upload" class="custom-file-upload">
+													<!-- <i class="fa fa-cloud-upload" style=" width: 128px;height: 128px;"></i> Custom Upload -->
+													<img src="media/icon/upload.png">
+												</label> <input id="file-upload" type="file" accept="image/*"
+													style="height: 72px; float: left; width: 89px; text-indent: -9999px; position: absolute; left: 70px; top: 0px;">
+											</div>
+											<!-- end -->
+										</div>
+									</div>
+								</div>
+							</div>
+							<hr>
+						</div>
+
+						<div class="row" style="margin-bottom: -26px;">
+							<div class="col-lg-12">
+								<div class="form-row" ng-show="flightUpdate">
+									<div class="col-md-6 mb-3 col"
+										style="cursor: pointer; font-size: small;">
+										<span ng-click="isregister()"
+											ng-class="(register?'tabbar_selected':'tabbar_deselected')">
+											REGISTRATION DETAILS</span>
+									</div>
+									<div class="col-md-6 mb-3 col"
+										style="cursor: pointer; font-size: small;">
+										<span ng-click="isflight()"
+											ng-class="(register?'tabbar_deselected':'tabbar_selected')">
+											FLIGHT DETAILS</span>
+									</div>
+								</div>
+
+								<div class="form-row" ng-hide="flightUpdate">
+									<div class="col-md-12 mb-3 col"
+										style="cursor: pointer; font-size: small;">
+										<span class="tabbar_selected"> REGISTRATION DETAILS</span>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="panel-body" ng-show="register"
+							style="margin-top: 7px; border-top: 4px solid #2d81c2;">
+							<div class="row" style="margin-top: 14px;">
+								<div class="col-lg-12">
+									<form class="bootstrap-form needs-validation registerme"
+										name="registerme">
+										<div class="form-row">
+											<div class="col-md-12 mb-3">
+												<!-- <span id="fname" class="form-control">{{userDetails.firstName}} {{userDetails.lastName}}</span> -->
+												<span style="display: flex;"> <span
+													class="form-control"
+													style="background-color: #e5ebf0; color: #215580;">{{userDetails.firstName}}&nbsp;{{userDetails.lastName}}</span>
+												</span>
+
+											</div>
+											<div class="col-md-12 mb-3">
+												<span class="form-control"
+													style="background-color: #e5ebf0; color: #215580;">{{userDetails.employeeID}}</span>
+											</div>
+											<div class="col-md-12 mb-3">
+												<span id="fname" class="form-control"
+													style="background-color: #e5ebf0; color: #215580;">{{userDetails.emailID}}</span>
+											</div>
+											<div class="col-md-12 mb-3">
+												<span id="fname" class="form-control"
+													style="background-color: #e5ebf0; color: #215580;">Mobile
+													: {{userDetails.mobile}}</span>
+											</div>
+											<!-- <div class="col-md-12 mb-3">
+											<span id="fname" class="form-control"
+												style="background-color: #e5ebf0; color: #215580;">Gender
+												: {{userDetails.gender}}</span>
+										</div> -->
+											<!-- <div class="col-md-12 mb-3">
+											<span id="fname" class="form-control"
+												style="background-color: #e5ebf0; color: #215580;">Food
+												Preference : {{userDetails.foodPreference}}</span>
+										</div>
+
+										<div class="col-md-12 mb-3">
+											<span id="fname" class="form-control"
+												style="background-color: #e5ebf0; color: #215580;">Gift
+												from Saregama : {{userDetails.gift}}</span>
+										</div> -->
+
+											<!-- <div class="col-md-12 mb-3">
+											<span id="fname" class="form-control"
+												style="background-color: #e5ebf0; color: #215580;">City
+												Tour Option : {{userDetails.cityTourSelected}}</span>
+										</div> -->
+											<div class="info alert alert-primary col-md-12">
+												<div class="col-md-12 mb-3">
+													<label class="reg_label" style="font-weight: bold">Food
+														Preference *</label>
+												</div>
+												<div class="col-md-12 mb-3 cust_col">
+													<div class="row " style="margin: 20px 0;">
+														<div class="col" style="padding: 0px;">
+															<input type="radio" name="foodPreference" id="nonveg"
+																class="input-hidden" ng-click="foodSelect('NON_VEG')"
+																ng-model="userDetails.foodPreference" value="NON_VEG" />
+															<label for="nonveg"><span
+																style="font-weight: bold; font-size: 12px; display: block;">Non-Veg</span>
+															</label>
+														</div>
+														<div class="col" style="padding: 0px;">
+															<input type="radio" name="foodPreference" id="veg"
+																class="input-hidden" ng-click="foodSelect('VEG')"
+																ng-model="userDetails.foodPreference" value="VEG" /> <label
+																for="veg"><span
+																style="font-weight: bold; font-size: 12px; display: block;">Veg</span>
+															</label>
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<div class="info alert alert-primary col-md-12">
+
+												<div class="col-md-12 mb-3">
+													<label class="reg_label" style="font-weight: bold">Select
+														the song category for your music box *</label>
+												</div>
+												<div class="col-md-12 mb-3">
+													<label class="reg_label"><a
+														href="https://www.saregama.com/carvaanmini?srgm_tracker=header"
+														target="_blank">Click here</a> to know more</label>
+												</div>
+												<div class="col-md-12 mb-3 music_box">
+													<div class="row" style="margin: 20px 0;">
+														<div class="col" style="padding: 0px;">
+															<input type="radio" name="music" id="bhakti"
+																ng-model="userDetails.gift" value="Bhakti"
+																class="input-hidden" ng-click="giftSelect('Bhakti')" />
+															<label for="bhakti"><span
+																style="font-weight: bold; font-size: 12px; display: block;">Bhakti</span>
+															</label>
+														</div>
+														<div class="col" style="padding: 0px;">
+															<input type="radio" name="music" id="gurbani"
+																ng-model="userDetails.gift" value="Gurbani"
+																class="input-hidden" ng-click="giftSelect('Gurbani')" />
+															<label for="gurbani"> <span
+																style="font-weight: bold; font-size: 12px; display: block;">Gurbani</span>
+															</label>
+														</div>
+
+													</div>
+													<div class="row" style="margin: 20px 0;">
+														<div class="col" style="padding: 0px;">
+															<input type="radio" name="music" id="hindi"
+																ng-model="userDetails.gift" value="Hindi"
+																class="input-hidden" ng-click="giftSelect('Hindi')" />
+															<label for="hindi"><span
+																style="font-weight: bold; font-size: 12px; display: block;">Hindi</span>
+															</label>
+
+														</div>
+														<div class="col" style="padding: 0px;">
+															<input type="radio" name="music" id="tamil"
+																ng-model="userDetails.gift" value="Tamil"
+																class="input-hidden" ng-click="giftSelect('Tamil')" />
+															<label for="tamil"><span
+																style="font-weight: bold; font-size: 12px; display: block;">Tamil</span>
+															</label>
+														</div>
+													</div>
+													<div class="row" style="margin: 20px 0;">
+
+														<div class="col" style="padding: 0px;">
+															<input type="radio" name="music" id="telugu"
+																ng-model="userDetails.gift" value="Telugu"
+																class="input-hidden" ng-click="giftSelect('Telugu')" />
+															<label for="telugu"><span
+																style="font-weight: bold; font-size: 12px; display: block;">Telugu</span>
+															</label>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="info alert alert-primary col-md-12">
+												<div class="col-md-12 mb-3">
+													<label class="reg_label" style="font-weight: bold">Accommodation
+														Required? *</label>
+												</div>
+												<div class="col-md-12 mb-3 cust_col">
+													<div class="row " style="margin: 20px 0;">
+														<div class="col" style="padding: 0px;">
+															<input type="radio" name="accomodation" id="nonveg"
+																ng-model="userDetails.accomodationNeeded" value="Yes"
+																class="input-hidden"
+																ng-click="accomodationSelect('Yes')" /> <label
+																for="nonveg"><span
+																style="font-weight: bold; font-size: 12px; display: block;">Yes</span>
+															</label>
+														</div>
+														<div class="col" style="padding: 0px;">
+															<input type="radio" name="accomodation" id="veg"
+																ng-model="userDetails.accomodationNeeded" value="No"
+																class="input-hidden" ng-click="accomodationSelect('No')" />
+															<label for="veg"><span
+																style="font-weight: bold; font-size: 12px; display: block;">No</span>
+															</label>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="info alert alert-primary col-md-12">
+												<div class="col-md-12 mb-3 cust_col">
+													<div class="row " style="margin: 20px 0;">
+														<input type="checkbox" ng-model="chkselct" style="    margin-right: 5px;"><label class="reg_label" style="font-weight: bold;line-height: 12px;">Do you need Local Transport?</label>
+													</div>
+												</div>
+													<div class="col-md-12 mb-3 cust_col" ng-show='chkselct'>
+													<textarea class="form-control" name="address_local" ng-model="address_local" placeholder="Pickup Address" ng-required="chkselct"/> </textarea>
+													</div>
+													<div class="col-md-12 mb-3 justify_center"
+														ng-show="registerme.address_local.$invalid">
+														<span class="error">Please enter your pickup address</span>
+													</div>
+	
+											</div>
+											<div class="col-lg-12" style="text-align: center;"
+												style="margin-bottom: 5px;">
+												<span class="" style="color: green; font-weight: bold;">{{successMsg}}</span>
+											</div>
+											<div class="col-md-12 mb-3">
+												<!--<a id="login-submit" class="form-control btn btn-login" href="landing.html">Let Me In </a>-->
+												<button ng-disabled="registerme.$invalid" id="login-submit"
+													class="form-control  btn btn-outline-primary btn btn-login"
+													type="submit" ng-click="updateProfile()">Save
+													Changes</button>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="panel-body" ng-show="flight"
+						style="margin-top: 7px; border-top: 4px solid #2d81c2;">
+
+
+
+						<div class="row justify_center">
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div
+									class="panel panel-login col-sm-12 col-md-12 col-lg-12 log_panel">
+									<div class="panel-heading"></div>
+									<div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 mb-3">
+												<label
+													style="padding: 0 .75rem; font-family: 'Allerta Stencil', sans-serif;">Arrival
+													To Kolkata</label>
+												<hr class="info_sep">
+											</div>
+
+											<div class="col-md-12 mb-3">
+												<form class="bootstrap-form needs-validation flight_arrival"
+													id="flight_arrival" name="flight_arrival">
+													<div class="col-md-12 mb-3">
+														<input type="text" id="inbound_airline_name"
+															name="inbound_airline_name" class="form-control"
+															placeholder="Airline Name" value=""
+															ng-model="inbound_airline_name" required />
+													</div>
+													<div class="col-md-12 mb-3 text-center"
+														ng-show="flight_arrival.inbound_airline_name.$dirty && flight_arrival.inbound_airline_name.$invalid || flight_arrival.inbound_airline_name.$touched && flight_arrival.inbound_airline_name.$invalid">
+														<span class="error">Please enter airline name</span>
+													</div>
+													<div class="col-md-12 mb-3">
+														<input type="text" id="flight_arrival_no"
+															name="flight_arrival_no" class="form-control"
+															placeholder="Flight Number" value=""
+															ng-model="flight_arrival_no" required />
+													</div>
+													<div class="col-md-12 mb-3 text-center"
+														ng-show="flight_arrival.flight_arrival_no.$dirty && flight_arrival.flight_arrival_no.$invalid || flight_arrival.flight_arrival_no.$touched && flight_arrival.flight_arrival_no.$invalid">
+														<span class="error">Please enter Flight number</span>
+													</div>
+													<div class="col-md-12 mb-3">
+														<input type="text" id="flight_arrival_to"
+															name="flight_arrival_to" class="form-control"
+															placeholder="From" value="" ng-model="flight_arrival_to"
+															required />
+													</div>
+													<div class="col-md-12 mb-3 text-center"
+														ng-show="flight_arrival.flight_arrival_to.$dirty && flight_arrival.flight_arrival_to.$invalid || flight_arrival.flight_arrival_to.$touched && flight_arrival.flight_arrival_to.$invalid">
+														<span class="error">Please enter destination</span>
+													</div>
+													<div class="col-md-12 mb-3">
+														<input class="form-control" placeholder="To: Kolkata"
+															disabled />
+													</div>
+													<div class="col-md-12 mb-3">
+														<input type="text" id="arrival_date" name="arrival_date"
+															class="form-control"
+															placeholder="Arrival date (dd/mm/yyyy)" value=""
+															ng-model="arrival_date" required
+															ng-pattern="/^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/" />
+													</div>
+													<div class="col-md-12 mb-3 text-center"
+														ng-show="flight_arrival.arrival_date.$dirty && flight_arrival.arrival_date.$invalid || flight_arrival.arrival_date.$touched && flight_arrival.arrival_date.$invalid">
+														<span class="error">Please enter arrival
+															date(dd/mm/yyyy). E.g: 01/04/2019</span>
+													</div>
+													<div class="col-md-12 mb-3">
+														<input type="text" id="arrival_time" name="arrival_time"
+															class="form-control"
+															placeholder="Arrival time HH:MM 24 hour format" value=""
+															ng-model="arrival_time" required
+															ng-pattern="/^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/" />
+													</div>
+													<div class="col-md-12 mb-3 text-center"
+														ng-show="flight_depart.arrival_time.$dirty && flight_depart.arrival_time.$invalid || flight_depart.arrival_time.$touched && flight_depart.arrival_time.$invalid">
+														<span class="error">Please enter arrival time in
+															HH:MM 24 hour format(E.g: 07:00)</span>
+													</div>
+													<div class="col-md-12 mb-3">
+														<div class="col-md-12 mb-3">
+															<button ng-disabled="flight_arrival.$invalid"
+																id="createuser-submit"
+																class="form-control btn btn-outline-primary btn"
+																ng-click="doflight_arrival()" type="submit">Update</button>
+														</div>
+													</div>
+												</form>
+
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+
+						<div class="row justify_center">
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div
+									class="panel panel-login col-sm-12 col-md-12 col-lg-12 log_panel">
+									<div class="panel-heading"></div>
+									<div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 mb-3">
+												<label
+													style="padding: 0 .75rem; font-family: 'Allerta Stencil', sans-serif;">Departure
+													From Kolkata</label>
+												<hr class="info_sep">
+											</div>
+
+											<div class="col-md-12 mb-3">
+												<form class="bootstrap-form needs-validation flight_depart"
+													id="flight_depart" name="flight_depart">
+													<div class="col-md-12 mb-3">
+														<input type="text" id="outbound_airline_name"
+															name="outbound_airline_name" class="form-control"
+															placeholder="Airline Name" value=""
+															ng-model="outbound_airline_name" required />
+													</div>
+													<div class="col-md-12 mb-3 text-center"
+														ng-show="flight_depart.outbound_airline_name.$dirty && flight_depart.outbound_airline_name.$invalid || flight_depart.outbound_airline_name.$touched && flight_depart.outbound_airline_name.$invalid">
+														<span class="error">Please enter the airline name</span>
+													</div>
+													<div class="col-md-12 mb-3">
+														<input type="text" id="flight_depart_no"
+															name="flight_depart_no" class="form-control"
+															placeholder="Flight Number" value=""
+															ng-model="flight_depart_no" required />
+													</div>
+													<div class="col-md-12 mb-3 text-center"
+														ng-show="flight_depart.flight_depart_no.$dirty && flight_depart.flight_depart_no.$invalid || flight_depart.flight_depart_no.$touched && flight_depart.flight_depart_no.$invalid">
+														<span class="error">Please enter Flight number</span>
+													</div>
+													<div class="col-md-12 mb-3">
+														<input class="form-control" placeholder="From: Kolkata"
+															disabled />
+													</div>
+													<div class="col-md-12 mb-3">
+														<input type="text" id="flight_depart_to"
+															name="flight_depart_to" class="form-control"
+															placeholder="To" value="" ng-model="flight_depart_to"
+															required />
+													</div>
+													<div class="col-md-12 mb-3 text-center"
+														ng-show="flight_depart.flight_depart_to.$dirty && flight_depart.flight_depart_to.$invalid || flight_depart.flight_depart_to.$touched && flight_depart.flight_depart_to.$invalid">
+														<span class="error">Please enter the destination</span>
+													</div>
+													<div class="col-md-12 mb-3">
+														<input type="text" id="depart_date" name="depart_date"
+															class="form-control"
+															placeholder="Departure date dd/mm/yyyy" value=""
+															ng-model="depart_date" required
+															ng-pattern="/^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/" />
+													</div>
+													<div class="col-md-12 mb-3 text-center"
+														ng-show="flight_depart.depart_date.$dirty && flight_depart.depart_date.$invalid || flight_depart.depart_date.$touched && flight_depart.depart_date.$invalid">
+														<span class="error">Please enter departure
+															date(dd/mm/yyyy). E.g: 01/04/2019</span>
+													</div>
+													<div class="col-md-12 mb-3">
+														<input type="text" id="depart_time" name="depart_time"
+															class="form-control"
+															placeholder="Departure time HH:MM 24 hour format"
+															value="" ng-model="depart_time" required
+															ng-pattern="/^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/" />
+													</div>
+													<div class="col-md-12 mb-3 text-center"
+														ng-show="flight_depart.depart_time.$dirty && flight_depart.depart_time.$invalid || flight_depart.depart_time.$touched && flight_depart.depart_time.$invalid">
+														<span class="error">Please enter departure time
+															HH:MM in 24 hour format(E.g: 07:00)</span>
+													</div>
+													<div class="col-md-12 mb-3">
+														<div class="col-md-12 mb-3">
+															<button ng-disabled="flight_depart.$invalid"
+																id="createuser-submit"
+																class="form-control btn btn-outline-primary btn"
+																ng-click="doflight_depart()" type="submit">Update</button>
+														</div>
+													</div>
+												</form>
+
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+
+
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

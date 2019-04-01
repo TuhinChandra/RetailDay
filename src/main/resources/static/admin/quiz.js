@@ -4,16 +4,16 @@ angular
 				'kfController',
 				function($scope, $http) {
 
-					var URL = '';
+					var URL = '../';
 
 					$scope.showStartQuiz = true;
 					$scope.showQuestion = false;
 					$scope.showResultButton = false;
 					$scope.result = false;
-					$scope.question = 1;
+					$scope.question = 0;
 					$scope.startQuiz = function() {
 						$scope.question++;
-						if ($scope.question > 6) {
+						if ($scope.question > 5) {
 							$scope.promise = $http
 									.get(URL + '/clearCurrentQuestion/')
 									.then(

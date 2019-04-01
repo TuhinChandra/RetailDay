@@ -1,0 +1,159 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Advent+Pro"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="css/main.css" rel="stylesheet" media="all">
+</head>
+
+<body>
+	<div class="top_navbar">
+		<div class="main_header row">
+			<div class="col">
+				<div class="navbar navbar-light" style="color: #dddddd;">
+					<a href="#!"><img src="media/icon/back.png"
+						style="width: 46px;"></a>
+				</div>
+			</div>
+			<div class="col">
+				<div class="brand_logo">
+					<img src="media/bib-white1.png" alt="NOVIA 2019 Brand Logo">
+				</div>
+			</div>
+			<div class="col">
+				<div class="user_profile float-right"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container login_mod" style="padding-top: 68px">
+		<div class="row justify_center">
+			<div class="col-sm-12 col-md-12 col-lg-6">
+				<div
+					class="panel panel-login col-sm-12 col-md-12 col-lg-12 log_panel">
+					<div class="panel-heading lock">
+						<img src="media/Lock.png" alt="Lock"
+							style="width: 68px; height: 68px; box-shadow: 0 1px 5px rgba(0, 0, 0, 0.9); border: 5px solid #fff; border-radius: 37px;" />
+						<div class="row">
+							<div class="log">
+								<span class="active" id="login-form-link">Login</span>
+							</div>
+						</div>
+						<hr>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-lg-12">
+								<form name="loginForm" class="loginForm">
+
+									<div class="col-lg-12 justify_center"
+										style="margin-bottom: 5px;">
+										<span class="error">{{errorMsg}}</span>
+									</div>
+									<div class="form-group">
+										<div class="row">
+											<div class="col-lg-12">
+												<input type="number" id="username" class="form-control"
+													placeholder="Username" name="username"
+													ng-model="usrNameVal" required />
+											</div>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<div class="row">
+											<div class="col-lg-12 justify_center">
+												<span class="error"
+													ng-show="loginForm.username.$touched && loginForm.username.$invalid">Please
+													enter username</span>
+
+											</div>
+										</div>
+									</div>
+									<hr class="info_sep">
+									<p class="info alert alert-primary">
+										In case of any issue please write to <a
+											href="mailto:ravishankar.sharma@tcs.com" target="_top">ravishankar.sharma@tcs.com</a>
+										or <a href="mailto:tuhin.chandra@tcs.com" target="_top">tuhin.chandra@tcs.com</a>
+									</p>
+									<hr class="info_sep">
+									<div class="form-group">
+										<div class="row">
+											<div class="col-lg-12">
+												<button ng-disabled="loginForm.$invalid" id="login-submit"
+													class="form-control btn btn-login"
+													ng-click="doParticipate(usrNameVal)" type="submit">Proceed</button>
+											</div>
+
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="row">
+											<div class="col-lg-12">
+												<div class="text-center">
+													<a href="#!adminlogin" target="_top">Admin Login</a>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- <div class="form-group">
+										<div class="row">
+											<div class="col-lg-12">
+												<div class="text-center">
+													<a href="#!volunteerLogin" target="_top">Volunteer Login</a>
+												</div>
+											</div>
+										</div>
+									</div> -->
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<!-- Modal Confirm -->
+		<div class="modal fade" id="modal_confirm" tabindex="-1" role="dialog"
+			aria-labelledby="modal_longTitle" aria-hidden="true">
+			<div class="modal-dialog modal-lg modal-dialog-centered"
+				role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="modal_longTitle">Confirm
+							Participation</h5>
+						<!-- start Isometrix -->
+						<img id='modal_close' src='media/close.png'
+							style='width: 24px; height: 24px;' />
+						<!-- end -->
+					</div>
+					<div class="modal-body privacy">
+						<div id="text-block-11" class="mk-text-block   ">
+							<p>Are you confirming your participation in Novia 2019?</p>
+							<div class="clearboth"></div>
+						</div>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary agree"
+							data-dismiss="modal" id="modal_confirm_yes">Yes</button>
+						<button type="button" class="btn btn-primary disagree"
+							data-dismiss="modal" id="modal_confirm_no">No</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+</body>
+</html>

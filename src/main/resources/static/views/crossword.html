@@ -1,0 +1,136 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Advent+Pro"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="css/main.css" rel="stylesheet" media="all">
+<script>
+	/* Set the width of the side navigation to 250px and the left margin of the page content to 250px and add a black background color to body */
+	function openNav() {
+		document.getElementById("mySidenav").style.width = "100%";
+	}
+
+	/* Set the width of the side navigation to 0 and the left margin of the page content to 0, and the background color of body to white */
+	function closeNav() {
+		document.getElementById("mySidenav").style.width = "0%";
+	}
+</script>
+</head>
+
+<body>
+	<div id="mySidenav" class="sidenav">
+		<div class="mbr-overlay"
+			style="opacity: 0.9; background-color: rgb(51, 44, 44);"></div>
+		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+		<div>
+			<div class="container">
+				<div class="row">
+					<div class="card profile card col-sm-12 col-md-12 col-lg-12">
+						`
+						<div class="circle">
+							<img id="user_photo" class="user_photo"
+								ng-src="{{userDetails.photo}}">
+							<div class="p-image">
+								<label for="file-upload" class="custom-file-upload"> <i
+									class="fa fa-cloud-upload" style="width: 128px; height: 128px;"></i>
+									Custom Upload
+								</label> <input id="file-upload" type="file" accept="image/*" />
+							</div>
+						</div>
+
+
+						<h2 style="color: rgb(211, 213, 213);">{{userDetails.firstName}}
+							{{userDetails.lastName}}</h2>
+						<h5 style="color: rgb(171, 171, 171);">Emp ID:
+							{{userDetails.employeeID}}</h5>
+						<h6 style="color: rgb(171, 171, 171);">Email ID:
+							{{userDetails.emailID}}</h6>
+						<div>
+							<hr class="separator flight">
+							<h4 style="color: #f3f3f3; font-size: large;">EVENT PASS</h4>
+							<div class="QR_wrapper">
+								<div>
+									<!-- <span kendo-qrcode -->
+									<!-- k-error-correction="'M'" -->
+									<!-- ng-model="qrcode" -->
+									<!-- style="height: 250px;" ></span> -->
+									<!-- <qr text="qrcodeString"></qr> -->
+									<qrcode
+										data="{{userDetails.employeeID}}#{{userDetails.registrationNo}}"
+										version="2" error-correction-level="Q" size="200" color="#fff"
+										background="#000"></qrcode>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Top Header End -->
+	<div class="top_navbar">
+		<div class="main_header row">
+			<div class="col">
+				<div class="navbar navbar-light" style="color: #dddddd;">
+					<button class="navbar-toggler toggler-example purple darken-3"
+						type="button" data-toggle="collapse"
+						data-target="#navbarSupportedContent41"
+						aria-controls="navbarSupportedContent41" aria-expanded="false"
+						aria-label="Toggle navigation">
+						<span><i class="fa fa-bars" style="font-size: 36px"></i></span>
+					</button>
+				</div>
+			</div>
+			<div class="col">
+				<div class="brand_logo">
+					<a href="#!landing"><img src="media/bib-white1.png"
+						alt="NOVIA 2019 Brand Logo"> </a>
+				</div>
+			</div>
+			<div class="col">
+				<div class="user_profile float-right">
+					<!-- <img id="user_profile" src="media/attendee.png" onclick="openNav()"> -->
+					<img id="user_profile" ng-src="{{userDetails.photo}}"
+						onclick="openNav()">
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Navigation -->
+	<nav class="bg-main-menu" style="padding-top: 68px">
+		<div class="container main_header">
+			<div class="row">
+				<!-- Collapsible content -->
+				<div class="collapse navbar-collapse main_menu_item"
+					id="navbarSupportedContent41">
+
+					<!-- Links -->
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item"><a class="nav-link"
+							href="liveupdate.html">ABOUT US</a></li>
+						<li class="nav-item"><a class="nav-link" href="help.html">LOG
+								OUT</a></li>
+					</ul>
+					<!-- Links -->
+
+				</div>
+				<!-- Collapsible content -->
+			</div>
+		</div>
+	</nav>
+	<div class="container">
+
+		<h6>Comming Soon</h6>
+
+	</div>
+</body>
+</html>

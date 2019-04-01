@@ -1,0 +1,79 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+<!--<script src="js/angular.js"></script>-->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Advent+Pro"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="css/main.css" rel="stylesheet" media="all">
+
+</head>
+
+<body>
+	<div class="top_navbar">
+		<div class="main_header row">
+			<div class="col">
+				<div class="navbar navbar-light" style="color: #dddddd;">
+					<a href="#!login"><img src="media/icon/logout.png"
+						style="width: 46px;"></a>
+				</div>
+			</div>
+			<div class="col">
+				<div class="brand_logo">
+					<img src="media/bib-white1.png"
+						alt="NOVIA 2019 Brand Logo">
+				</div>
+			</div>
+			<div class="col">
+				<div class="user_profile float-right"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container login_mod" style="padding-top: 68px">
+		<div class="row">
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<div
+					class="panel panel-login col-sm-12 col-md-12 col-lg-12 log_panel">
+					<div class="panel-heading">
+						<img src="media/ok.png" alt="Lock"
+							style="width: 68px; height: 68px; border-radius: 37px;" />
+						<div class="row">
+							<div class="log">
+								<span class="active" id="login-form-link">Thank you
+									{{userDetails.firstName}} for your confirmation and
+									registration in Novia 2019.</span>
+							</div>
+							 <!-- start Isometrix -->
+							<div style="width: 100%; display: flex;justify-content:center;padding: 10px;">
+								<button id="backtoRegisterDetails">OK</button>
+								</div>
+								<!-- end -->
+							</div>
+							<hr>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-lg-12" style="text-align: center;">
+								<!-- <p>Please note that your QR code is ready in the <a href="#!landing">profile</a> section.</p>
+                <p>You are now requested to fill up <a href="#!gifts">Gift</a> details.</p> -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+</body>
+</html>

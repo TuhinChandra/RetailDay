@@ -1,0 +1,159 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.css">
+<link href="https://fonts.googleapis.com/css?family=Allerta+Stencil"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<link href="../css/gallery-grid.css" rel="stylesheet" media="all">
+<link href="../css/main.css" rel="stylesheet" media="all">
+</head>
+
+<body style="height: 100%;">
+	<div id="mySidenav" class="sidenav">
+		<div class="mbr-overlay"
+			style="opacity: 0.9; background-color: rgb(51, 44, 44);"></div>
+		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+		<div>
+			<div class="container">
+				<div class="row">
+					<div class="card profile card col-sm-12 col-md-12 col-lg-12">
+						`
+						<div class="circle">
+							<img id="user_photo" class="user_photo"
+								ng-src="{{userDetails.photo}}">
+							<div class="p-image">
+								<label for="file-upload" class="custom-file-upload"> <i
+									class="fa fa-cloud-upload" style="width: 128px; height: 128px;"></i>
+									Custom Upload
+								</label> <input id="file-upload" type="file" accept="image/*" />
+							</div>
+						</div>
+
+
+						<h2 style="color: rgb(211, 213, 213);">{{userDetails.firstName}}
+							{{userDetails.lastName}}</h2>
+						<h5 style="color: rgb(171, 171, 171);">Emp ID:
+							{{userDetails.employeeID}}</h5>
+						<h6 style="color: rgb(171, 171, 171);">Email ID:
+							{{userDetails.emailID}}</h6>
+						<div>
+							<hr class="separator flight">
+							<h4 style="color: #f3f3f3; font-size: large;">EVENT PASS</h4>
+							<div class="QR_wrapper">
+								<div>
+									<!-- <span kendo-qrcode -->
+									<!-- k-error-correction="'M'" -->
+									<!-- ng-model="qrcode" -->
+									<!-- style="height: 250px;" ></span> -->
+									<!-- <qr text="qrcodeString"></qr> -->
+									<qrcode
+										data="{{userDetails.employeeID}}#{{userDetails.registrationNo}}"
+										version="2" error-correction-level="Q" size="200" color="#fff"
+										background="#000"></qrcode>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Top Header End -->
+	<div class="top_navbar">
+		<div class="main_header row">
+			<div class="col">
+				<div class="navbar navbar-light" style="color: #dddddd;">
+					<button class="navbar-toggler toggler-example purple darken-3"
+						type="button" data-toggle="collapse"
+						data-target="#navbarSupportedContent41"
+						aria-controls="navbarSupportedContent41" aria-expanded="false"
+						aria-label="Toggle navigation">
+						<span><i class="fa fa-bars" style="font-size: 36px"></i></span>
+					</button>
+				</div>
+			</div>
+			<div class="col">
+				<div class="brand_logo">
+					<a href="#!landing"><img src="media/bib-white1.png"
+						alt="NOVIA 2019 Brand Logo"> </a>
+				</div>
+			</div>
+			<div class="col">
+				<div class="user_profile float-right">
+					<!-- <img id="user_profile" src="media/attendee.png" onclick="openNav()"> -->
+					<img id="user_profile" ng-src="{{userDetails.photo}}"
+						onclick="openNav()">
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container gallery-container" style="margin-top: 68px;">
+		<div class="panel panel-login col-sm-12 col-md-12 col-lg-12 log_panel">
+			<div class="col-sm-12 col-md-6 col-lg-6">
+				<div class="card card-blog">
+					<div class="card-image">
+						<a href="#!gallery_kolkata"> <img class="img"
+							src="../media/park.jpg">
+							<div class="card-caption">Kolkata</div>
+						</a>
+						<div class="ripple-cont"></div>
+					</div>
+					<div class="table">
+						<h6 class="category text-info">About Kolkata</h6>
+						<p class="card-description">Lorem ipsum dolor sit amet,
+							consectetur adipis cingelit. Etiam lacinia elit et placerat
+							finibus. Praesent justo metus, pharetra ..</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-6 col-lg-6">
+				<div class="card card-blog">
+					<div class="card-image">
+						<a href="#!gallery_vedic_village"> <img class="img"
+							src="../media/bridge.jpg">
+							<div class="card-caption">Vedic Village</div>
+						</a>
+						<div class="ripple-cont"></div>
+					</div>
+					<div class="table">
+						<h6 class="category text-info">About Vedic Village</h6>
+						<p class="card-description">Lorem ipsum dolor sit amet,
+							consectetur adipis cingelit. Etiam lacinia elit et placerat
+							finibus. Praesent justo metus, pharetra ..</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-sm-12 col-md-6 col-lg-6">
+				<div class="card card-blog">
+					<div class="card-image">
+						<a href="#!gallery_event"> <img class="img"
+							src="../media/photo-1484741498723-d771b72fca7b.jpg">
+							<div class="card-caption">Live Photos</div>
+						</a>
+						<div class="ripple-cont"></div>
+					</div>
+					<div class="table">
+						<h6 class="category text-info">Live Photos</h6>
+						<p class="card-description">Lorem ipsum dolor sit amet,
+							consectetur adipis cingelit. Etiam lacinia elit et placerat
+							finibus. Praesent justo metus, pharetra ..</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>
