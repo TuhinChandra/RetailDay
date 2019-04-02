@@ -287,24 +287,30 @@
 													</div>
 												</div>
 											</div>
-											<div class="info alert alert-primary col-md-12">
-												<div class="col-md-12 mb-3 cust_col">
-													<div class="row " style="margin: 20px 0;">
-														<input type="checkbox" ng-model="chkselct" style="    margin-right: 5px;"><label class="reg_label" style="font-weight: bold;line-height: 12px;">Do you need Local Transport?</label>
+											<div class="col-md-12" ng-switch="userDetails.accomodationNeeded">
+												<div class="info alert alert-primary col-md-12" ng-switch-when="No">
+													<div class="col-md-12 mb-3 cust_col">
+														<div class="row " style="margin: 20px 0;">
+															<input type="checkbox" ng-model="chkselct" ng-checked="userDetails.localTransportNeeded"  ng-click="toggleSelection($event)"
+															style="margin-right: 5px;"><label class="reg_label" style="font-weight: bold;line-height: 12px;">Do you need Local Transport?</label>
+														</div>
 													</div>
+														<div class="col-md-12 mb-3 cust_col" ng-show='chkselct'>
+														<textarea class="form-control" name="address_local" ng-model="$parent.address_local" placeholder="Pickup Address" ng-required="chkselct"/> </textarea>
+														</div>
+														<div class="col-md-12 mb-3 justify_center"
+															ng-show="registerme.address_local.$invalid">
+															<span class="error">Please enter your pickup address</span>
+														</div>
+		
 												</div>
-													<div class="col-md-12 mb-3 cust_col" ng-show='chkselct'>
-													<textarea class="form-control" name="address_local" ng-model="address_local" placeholder="Pickup Address" ng-required="chkselct"/> </textarea>
-													</div>
-													<div class="col-md-12 mb-3 justify_center"
-														ng-show="registerme.address_local.$invalid">
-														<span class="error">Please enter your pickup address</span>
-													</div>
-	
 											</div>
 											<div class="col-lg-12" style="text-align: center;"
 												style="margin-bottom: 5px;">
-												<span class="" style="color: green; font-weight: bold;">{{successMsg}}</span>
+												
+												 <div class="toast" data-autohide="true" data-delay="5000" style="max-width: 100%;border: none;box-shadow: none;color: green; font-weight: bold;">
+													   <span>{{successMsg}}</span>
+													  </div>
 											</div>
 											<div class="col-md-12 mb-3">
 												<!--<a id="login-submit" class="form-control btn btn-login" href="landing.html">Let Me In </a>-->

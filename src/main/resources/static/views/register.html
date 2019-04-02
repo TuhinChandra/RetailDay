@@ -235,28 +235,29 @@ input[type=radio]:checked+label>img {
 											<div class="col-md-12 mb-3 cust_col">
 												<div class="row " style="margin: 20px 0;">
 													<div class="col" style="padding:0px;">
-														<input type="radio" name="accomodation" id="nonveg" checked
-															class="input-hidden" ng-click="accomodationSelect('Yes')" /> <label for="nonveg"><span
+														<input type="radio" name="accomodation" id="nonveg" required
+															class="input-hidden" ng-click="accomodationSelect('Yes')" ng-model="acm" value="Yes"/> <label for="nonveg"><span
 															style="font-weight: bold; font-size: 12px;display: block;">Yes</span>
 														</label>
 													</div>
 													<div class="col" style="padding:0px;">
-														<input type="radio" name="accomodation" id="veg"
-															class="input-hidden" ng-click="accomodationSelect('No')"  /> <label for="veg"><span
+														<input type="radio" name="accomodation" id="veg" required
+															class="input-hidden" ng-click="accomodationSelect('No')"  ng-model="acm" value="No"/> <label for="veg"><span
 															style="font-weight: bold; font-size: 12px;display: block;">No</span>
 														</label>
 													</div>
 												</div>
 											</div>
 										</div>
-										<div class="info alert alert-primary col-md-12">
-											<div class="col-md-12 mb-3 cust_col">
+										<div class="col-md-12" ng-switch="acm">
+											<div class="info alert alert-primary col-md-12" ng-switch-when="No">
+											<div class="col-md-12 mb-3 cust_col" >
 												<div class="row " style="margin: 20px 0;">
-													<input type="checkbox" ng-model="chkselct" style="    margin-right: 5px;"><label class="reg_label" style="font-weight: bold;line-height: 12px;">Do you need Local Transport?</label>
+													<input type="checkbox" ng-model="chkselct"  ng-click="toggleSelection($event)" style="margin-right: 5px;"><label class="reg_label" style="font-weight: bold;line-height: 12px;">Do you need Local Transport?</label>
 												</div>
 											</div>
 												<div class="col-md-12 mb-3 cust_col" ng-show='chkselct'>
-												<textarea class="form-control" name="address_local" ng-model="address_local" placeholder="Pickup Address" ng-required="chkselct"/> </textarea>
+												<textarea class="form-control" name="address_local" ng-model="$parent.address_local" placeholder="Pickup Address" ng-required="chkselct"/> </textarea>
 												</div>
 												<div class="col-md-12 mb-3 justify_center"
 													ng-show="registerme.address_local.$invalid">
@@ -264,6 +265,8 @@ input[type=radio]:checked+label>img {
 												</div>
 
 										</div>
+										</div>
+										
 										<div class="col-md-12 mb-3 cust_col">
 											<div class="row">
 												<div class="col">

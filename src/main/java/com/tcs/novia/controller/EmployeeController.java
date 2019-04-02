@@ -52,7 +52,7 @@ public class EmployeeController {
 
 		Employee employee = employeeService.findByEmployeeID(employeeID);
 		if (null != employee) {
-			employee = employeeService.getEmployee(employeeID, password);
+			employee = employeeService.getEmployeestatus(employeeID, password);
 			if (null == employee) {
 				employee = createInvalidEmployee();
 			}

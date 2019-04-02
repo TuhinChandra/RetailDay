@@ -34,6 +34,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
 	List<Employee> findByConfirmParticipationAndLogisticsEmailSentIsNull(String confirmParticipation);
 
+	int countByConfirmParticipationIsNullOrConfirmParticipationAndRoleIsNull(String confirmParticipation);
+
 	@Query(nativeQuery = true, value = "select t2.emp_id from employee t1, email_tracker t2  where t1.emp_id = t2.emp_id and "
 			+ "email_type=?1 and delivered=true and t2.date_time_stamp <= CURRENT_DATE-1 "
 			+ "group by t2.emp_id, email_type having count(email_type) = ?2 and count(email_type) < ?3 ")

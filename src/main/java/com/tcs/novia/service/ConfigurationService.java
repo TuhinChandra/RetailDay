@@ -2,6 +2,7 @@ package com.tcs.novia.service;
 
 import java.util.Optional;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +37,15 @@ public class ConfigurationService {
 		} else {
 			return null;
 		}
+	}
+
+	public int getMaximumDelegateCount() {
+		final Configuration config = getConfiguration(Constants.CONFIG_MAX_DELEGATE_COUNT);
+		return null != config ? Integer.parseInt(config.getConfigValue()) : 0;
+	}
+	public boolean shouldSendReminderEmailFor(String emailContext) {
+		final Configuration config = getConfiguration(Constants.CONFIG_MAX_DELEGATE_COUNT);
+		return null != config ? BooleanUtils.toBoolean(config.getConfigValue()) : false;
 	}
 
 }

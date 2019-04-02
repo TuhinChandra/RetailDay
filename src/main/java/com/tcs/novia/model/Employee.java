@@ -101,6 +101,10 @@ public class Employee {
 	@Column(name = "CHECK_IN_TIME", nullable = true)
 	private LocalDateTime checkInTime;
 
+	// start Isometrix
+	@Column(name = "LOGIN_RETRIES_COUNT", nullable = true)
+	private Long countOfInvalidLoginAttempt;
+	// end
 	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<FlightInfo> flightInfos;
 	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -336,7 +340,7 @@ public class Employee {
 		return BooleanUtils.toBoolean(logisticsEmailSent);
 	}
 
-	public void setLogisticsEmailSent(Boolean logisticsEmailSent) {
+	public void setLogisticsEmailSent(final Boolean logisticsEmailSent) {
 		this.logisticsEmailSent = logisticsEmailSent;
 	}
 
@@ -387,6 +391,17 @@ public class Employee {
 
 	public void setActivityTrackers(final Set<ActivityTracker> activityTrackers) {
 		this.activityTrackers = activityTrackers;
+	}
+
+	public long getCountOfInvalidLoginAttempt() {
+		if (null == countOfInvalidLoginAttempt) {
+			return 0;
+		}
+		return countOfInvalidLoginAttempt;
+	}
+
+	public void setCountOfInvalidLoginAttempt(final long countOfInvalidLoginAttempt) {
+		this.countOfInvalidLoginAttempt = countOfInvalidLoginAttempt;
 	}
 
 	@Override

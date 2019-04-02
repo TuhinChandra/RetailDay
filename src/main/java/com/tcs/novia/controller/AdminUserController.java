@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.tcs.novia.exception.CustomException;
 import com.tcs.novia.model.Employee;
 import com.tcs.novia.service.EmployeeService;
 import com.tcs.novia.util.CsvUtils;
@@ -26,7 +27,7 @@ import com.tcs.novia.util.WriteDataToCSV;
 public class AdminUserController {
 
 	@Autowired
-	protected EmployeeService employeeService;
+	private EmployeeService employeeService;
 
 	@Value("${emp_default_password}")
 	protected String defaultEmployeePassword;
@@ -56,9 +57,15 @@ public class AdminUserController {
 
 	@RequestMapping(value = "/upload", method = RequestMethod.POST, produces = "application/json", consumes = "multipart/form-data")
 	@ResponseBody
-	public List<Employee> uploadUsers(@RequestParam("file") final MultipartFile file) throws IOException {
+	public List<Employee> uploadUsers(@RequestParam("file") final MultipartFile file)
+			throws IOException, CustomException {
+
+		employeeService.preValidationBeforeUpload();
 
 		final List<Employee> employees = CsvUtils.read(Employee.class, file.getInputStream());
+
+		employeeService.postValidationBeforeUpload(employees);
+
 		List<Employee> employeesUploaded = null;
 		List<String> employeeEmailIDs = null;
 		if (null != employees && !employees.isEmpty()) {
@@ -87,5 +94,11 @@ public class AdminUserController {
 	@ResponseBody
 	public List<Employee> updateUploadUserDate() {
 		return employeeService.updateUploadUserDate();
+	}
+
+	@RequestMapping(value = "/getCountOfExpectedDelegates", method = RequestMethod.GET)
+	@ResponseBody
+	public int getCountOfExpectedDelegates() {
+		return employeeService.getCountOfExpectedDelegates();
 	}
 }

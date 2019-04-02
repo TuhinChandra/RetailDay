@@ -24,7 +24,8 @@ public class WriteDataToCSV {
 				"Return Airline Name", "Return Flight No", "NEXT_LOCATION", "Return Flight Date", "Return Flight Time",
 				"CREATED_DATE_TIME", "INVITATION_EMAIL_SENT", "PARTICIPATION_DATE_TIME", "PARTICIPATION_EMAIL_SENT",
 				"CONFIRM_PARTICIPATION_REMINDER_EMAIL_SENT", "COMPLETE_REGISTRATION_REMINDER_EMAIL_SENT",
-				"UPDATE_FLIGHT_REMINDER_EMAIL_SENT", "REGISTRATION_COMPLETED_DATE_TIME", "RESET_PASSWORD_EMAIL_SENT" };
+				"UPDATE_FLIGHT_REMINDER_EMAIL_SENT", "REGISTRATION_COMPLETED_DATE_TIME", "RESET_PASSWORD_EMAIL_SENT",
+				"IS_LOGISTIC_EMAIL_SENT" };
 		try (CSVWriter csvWriter = new CSVWriter(writer, CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER,
 				CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);) {
 			csvWriter.writeNext(CSV_HEADER);
@@ -111,7 +112,8 @@ public class WriteDataToCSV {
 						String.valueOf(registrationEmailSent), String.valueOf(employee.getParticipationDateTime()),
 						String.valueOf(participationEmailSent), String.valueOf(confirmParticipationReminderSent),
 						String.valueOf(completeRegistrationReminderSent), String.valueOf(flightUpdateReminderSent),
-						String.valueOf(employee.getRegistrationDateTime()), String.valueOf(resetPasswordEmailSent)
+						String.valueOf(employee.getRegistrationDateTime()), String.valueOf(resetPasswordEmailSent),
+						String.valueOf(employee.isLogisticsEmailSent())
 
 				};
 

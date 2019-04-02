@@ -1,5 +1,6 @@
 package com.tcs.novia.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,12 @@ public class ConfigurationController {
 			configurationRepository.save(configuration);
 		}
 		return configuration;
+	}
+
+	@RequestMapping(value = "/fetchAllConfiguration", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public List<Configuration> fetchAllConfiguration() {
+		return configurationRepository.findAll();
 	}
 
 }

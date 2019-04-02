@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tcs.novia.constant.Constants;
+import com.tcs.novia.exception.CustomException;
 import com.tcs.novia.model.Employee;
 import com.tcs.novia.model.enums.CityTour;
 import com.tcs.novia.model.enums.FoodPreference;
@@ -93,7 +94,7 @@ public class EmployeeService {
 
 	public Employee rejectParticipation(final Employee employee) {
 
-		employee.setConfirmParticipation("REJECTED");
+		employee.setConfirmParticipation(Constants.CONFIRM_PARTICIPATION_REJECTED);
 		employee.setParticipationDateTime(LocalDateTime.now());
 		employee.setStatus(UserState.INVALID);
 		employeeRepository.save(employee);
@@ -166,17 +167,32 @@ public class EmployeeService {
 		if (!StringUtils.isEmpty(gift)) {
 			employee.setGift(gift);
 		}
+
 		if (!StringUtils.isEmpty(accomodationNeeded)) {
-			employee.setAccomodationNeeded(accomodationNeeded);
+			if (Constants.INPUT_BLANK_VALUE.equalsIgnoreCase(accomodationNeeded)) {
+				employee.setAccomodationNeeded(null);
+			} else {
+				employee.setAccomodationNeeded(accomodationNeeded);
+			}
 		}
 		if (!StringUtils.isEmpty(confirmParticipation)) {
-			employee.setConfirmParticipation(confirmParticipation);
+			if (Constants.INPUT_BLANK_VALUE.equalsIgnoreCase(confirmParticipation)) {
+				employee.setConfirmParticipation(null);
+				employee.setStatus(UserState.CHANGE_DEFAULT_PASSWORD);
+				employee.setParticipationDateTime(null);
+			} else {
+				employee.setConfirmParticipation(confirmParticipation);
+			}
 		}
 		if (!StringUtils.isEmpty(flightUpdateNeeded)) {
 			employee.setFlightUpdateNeeded(Boolean.parseBoolean(flightUpdateNeeded));
 		}
 		if (!StringUtils.isEmpty(role)) {
-			employee.setRole(role);
+			if (Constants.INPUT_BLANK_VALUE.equalsIgnoreCase(role)) {
+				employee.setRole(null);
+			} else {
+				employee.setRole(role);
+			}
 		}
 
 		if (Constants.NO_PICKUP.equalsIgnoreCase(pickupAddress)) {
@@ -185,6 +201,7 @@ public class EmployeeService {
 		} else if (!StringUtils.isEmpty(pickupAddress)) {
 			employee.setPickupAddress(pickupAddress);
 			employee.setLocalTransportNeeded(true);
+			employee.setAccomodationNeeded(Constants.ACCOMODATION_NEEDED_NO);
 		}
 
 		return employeeRepository.save(employee);
@@ -209,6 +226,19 @@ public class EmployeeService {
 		return employee;
 	}
 
+	public Employee getEmployeestatus(final long employeeID, final String password) {
+		final Employee employee = findByEmployeeID(employeeID);
+		if (null != employee) {
+			if (!passwordCrypto.validate(password, employee.getPassword())) {
+				final long count = employee.getCountOfInvalidLoginAttempt();
+				employee.setCountOfInvalidLoginAttempt(count + 1);
+				employeeRepository.save(employee);
+				employee.setStatus(UserState.INVALID);
+			}
+		}
+		return employee;
+	}
+
 	public Employee addFlightInfo(final Employee employee) {
 		return employeeRepository.save(employee);
 	}
@@ -221,12 +251,14 @@ public class EmployeeService {
 		} else if (employee.getStatus() == UserState.CHANGE_DEFAULT_PASSWORD) {// First time changing password
 			employee.setStatus(UserState.INCOMPLETE);
 		}
+		employee.setCountOfInvalidLoginAttempt(0);
 		return employeeRepository.save(employee);
 	}
 
 	public Employee resetPassword(final Employee employee, final String newPassword) {
 		employee.setPassword(passwordCrypto.encrypt(newPassword));
 		employee.setStatus(UserState.CHANGE_DEFAULT_PASSWORD);
+		employee.setCountOfInvalidLoginAttempt(0);
 		final Employee emp = employeeRepository.save(employee);
 		if (configurationService.shouldSendEmail()) {
 			emailService.sendForgotPasswordEmail(emp, newPassword);
@@ -234,6 +266,17 @@ public class EmployeeService {
 		return emp;
 	}
 
+	public List<Employee> findEmployeesEligibleForSubsequentReminders(final Long employeeIDToMatch, String emailContext, int reminderCount, int escalationCount) {
+
+		LOGGER.info("findEmployeesEligibleForSubsequentReminders:: method parameters:: employeeIDToMatch::{}, emailContext::{}, reminderCount::{}, escalationCount::{}", 
+				employeeIDToMatch, emailContext, reminderCount, escalationCount);
+		
+		final List<BigInteger> employeeIDs = employeeRepository.findEmployeesEligibleForSubsequentReminders(
+				emailContext, reminderCount, escalationCount);
+		LOGGER.info("findEmployeesEligibleForSubsequentReminders:: result:: employeeIDs::{}", employeeIDs);
+		return getEmployeesByID(employeeIDs, employeeIDToMatch);
+	}
+	
 	public List<Employee> fetchNotConfirmedParticipants(final Long employeeID) {
 
 		final List<BigInteger> employeeIDs = employeeRepository.findEmployeesYetToConfirmParticipation(
@@ -301,6 +344,40 @@ public class EmployeeService {
 	public List<Employee> saveBulkEmployees(final List<Employee> employees) {
 
 		return employeeRepository.saveAll(employees);
+	}
+
+	public int getCountOfExpectedDelegates() {
+		return employeeRepository.countByConfirmParticipationIsNullOrConfirmParticipationAndRoleIsNull(
+				Constants.CONFIRM_PARTICIPATION_YES);
+	}
+
+	public void preValidationBeforeUpload() throws CustomException {
+		final int maxDelegateCount = configurationService.getMaximumDelegateCount();
+		final int existingDelegateCount = getCountOfExpectedDelegates();
+
+		if (maxDelegateCount == 0) {
+			throw new CustomException("Please configure MAX delegate count into system");
+		} else if (existingDelegateCount > maxDelegateCount) {
+			throw new CustomException("There is no provision to upload any more users as capacity is full");
+		}
+	}
+
+	public void postValidationBeforeUpload(final List<Employee> employees) throws CustomException {
+		final int maxDelegateCount = configurationService.getMaximumDelegateCount();
+		final int existingDelegateCount = getCountOfExpectedDelegates();
+
+		if (null != employees && !employees.isEmpty()) {
+
+			final int noOfUsersCanBeProvisioned = maxDelegateCount - existingDelegateCount;
+
+			if (noOfUsersCanBeProvisioned < employees.size()) {
+				throw new CustomException("Only " + noOfUsersCanBeProvisioned
+						+ " more users can be added. No. of users you are trying to upload:" + employees.size());
+			}
+
+		} else {
+			throw new CustomException("There is no users in the CSV");
+		}
 	}
 
 }

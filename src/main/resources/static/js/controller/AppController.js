@@ -98,8 +98,38 @@ app.controller('LoginController', function($scope, $http, $window, $rootScope) {
     			}else if(response.data.status == "COMPLETE"){
     				$window.location.href = "#!registrationdetails";
     			}else if(response.data.status == "INVALID"){
-    				$scope.errorMsg = "Invalid username and password.";
+    				
+    				// start Isometrix
+    				if(response.data.countOfInvalidLoginAttempt == 1){
+    					$scope.errorMsg="Incorrect password!!";
+    				}
+    				else if(response.data.countOfInvalidLoginAttempt == 2){
+    					$scope.errorMsg="Incorrect password. Your account will be locked in next unsuccessful attempt !!";
+    				}else if(response.data.countOfInvalidLoginAttempt >=3){
+    					//$scope.errorMsg="Your account has been locked !!";
+        
+    	    			var url = "resetPassword/" + $scope.usrNameVal;
+    	    			$http({
+    	    				method: 'POST',
+    	    				url: url,
+    	    				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    	    			}).then(function(response) {
+    	    				console.log(response);
+    	    				$scope.errorMsg = "";
+    	    				if(response.data.status == "INVALID"){
+    	    					$scope.errorMsg = "Please enter a valid username";
+    	    				}else{
+    	    					$scope.resetMsg="Your account has been locked !!.Temparory password has been sent to your mail";
+    	    				}
+    	    			});
+    	    		
+    					
+    					}
+    				// $scope.errorMsg = "Invalid username and password.";
+    				
+    				//end 
     			}
+    			
     		});
     	};
     	
@@ -217,9 +247,12 @@ app.controller('RegisterController', function($scope, $http, $window, $rootScope
         $scope.accomodationSelect = function(strVal){
         	$scope.accomodation = strVal
         }
+        $scope.toggleSelection = function toggleSelection(event) {
+        	$scope.chkselct = event.target.checked;
+          };
+          
         
-        $scope.doRegisterUsr = function() {
-			
+        $scope.doRegisterUsr = function() {    	
 			if($scope.chkselct){
 				var address = $scope.address_local;
 			}else{
@@ -376,14 +409,22 @@ app.controller('UpdateProfileController', function($scope, $http, $window, $root
         		
         	}
         }
+        $scope.toggleSelection = function toggleSelection(event) {
+        	$scope.chkselct = event.target.checked;
+          };
         
         $scope.updateProfile = function() {
             console.log("Image Data " + $scope.imageData);
+            if($scope.accomodation =="Yes"){
+            	var address = "NO_PICKUP";
+            }else if($scope.accomodation =="No"){
             if($scope.chkselct){
 				var address = $scope.address_local;
 			}else{
 				var address = "NO_PICKUP";
 			}
+            }
+            
             var url = "completeEmployeeProfile/" + $rootScope.userDetails.employeeID;
             $http({
                 method: 'POST',
@@ -402,6 +443,9 @@ app.controller('UpdateProfileController', function($scope, $http, $window, $root
                 	$rootScope.userDetails = response.data;
                 	$scope.successMsg = "Your details updated successfully.";
 //                    $window.location.href = "#!registrationdetails";
+                	$(document).ready(function(){
+                		  $('.toast').toast('show');
+                		});
                 	if(!$scope.chkselct){
                 		$scope.address_local="";
                 	}
@@ -695,8 +739,14 @@ if($rootScope.isLoaded){
                 url: url,
                 headers: {'Content-Type': undefined},
                 data: $scope.fileData
-            }).then(function(response) {
+            }).then(
+        		function(response) {
+        			$scope.errorMsg="";
             	$scope.successMsg ="User details uploaded successfully";
+        	    },
+        	    function(errorResponse) {
+        	    	$scope.successMsg ="";
+        	    	$scope.errorMsg = errorResponse.data.message;
             });
         };
 	
