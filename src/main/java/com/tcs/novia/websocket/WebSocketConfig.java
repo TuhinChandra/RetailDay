@@ -10,9 +10,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		registry.addEndpoint("/quizWS").setAllowedOrigins("*");;
-		registry.addEndpoint("/eventWS").setAllowedOrigins("*");;
-		registry.addEndpoint("/eventMobileWS").setAllowedOrigins("*");;
+		registry.addEndpoint("/quizWS").setHandshakeHandler(new CustomHandshakeHandler()).withSockJS();
+		registry.addEndpoint("/eventWS").setHandshakeHandler(new CustomHandshakeHandler()).withSockJS();
+		registry.addEndpoint("/eventMobileWS").setHandshakeHandler(new CustomHandshakeHandler()).withSockJS();
 	}
 
 	@Override
