@@ -61,6 +61,12 @@ public class PhotographyContestController {
 		return photoContestImageService.getAllImages();
 	}
 
+	@RequestMapping(value = "/getImages/{owner}", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public List<PhotographyContestImage> getImagesByOwner(@PathVariable("owner") final String owner) {
+		return photographyContestImageRepository.findByOwnerOrderByImageId(owner);
+	}
+	
 	@RequestMapping(value = "/savePhotoContestResponse/{employeeID}/{photoId}/{vote}/{comment}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public void savePhotoContestResponse(@PathVariable("employeeID") final String employeeID,
