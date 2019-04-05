@@ -8,13 +8,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.tcs.novia.exception.CustomException;
@@ -41,6 +44,26 @@ public class AdminUserController {
 			@RequestParam(value = "role", required = false) final String role) throws Exception {
 		return employeeService.register(employeeID, firstName, lastName, shortName, gender, emailID,
 				defaultEmployeePassword, role);
+	}
+	
+	@RequestMapping(value = "/createEmployeeFromJSON", method = RequestMethod.POST, produces = "application/json")
+	@ResponseStatus(HttpStatus.CREATED)
+	@ResponseBody
+	public Employee createEmployeeFromJSON(@RequestBody Employee employee) throws Exception {
+		return employeeService.saveEmployeeData(employee);
+	}
+	
+	@RequestMapping(value = "/createEmployeesFromJSON", method = RequestMethod.POST, produces = "application/json")
+	@ResponseStatus(HttpStatus.CREATED)
+	@ResponseBody
+	public List<Employee> createEmployeesFromJSON(@RequestBody List<Employee> employees) throws Exception {
+		return employeeService.saveBulkEmployees(employees);
+	}
+
+	@RequestMapping(value = "/getAllEmployee", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public List<Employee> getAllEmployee() throws Exception {
+		return employeeService.getAllEmployee();
 	}
 
 	@RequestMapping(value = "/deleteEmployee/{employeeID}", method = RequestMethod.GET, produces = "application/json")

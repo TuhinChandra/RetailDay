@@ -15,7 +15,7 @@ public class PhotographyContestImage {
 	private String owner;
 	@Column(name = "image_name", nullable = true)
 	private String imageName;
-	@Column(name = "content", nullable = false)
+	@Column(name = "content", nullable = false, length = 10485760)
 	private String content;
 
 	public PhotographyContestImage() {

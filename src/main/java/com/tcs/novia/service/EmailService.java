@@ -78,7 +78,7 @@ public class EmailService {
 			employees = employeeService.fetchNotConfirmedParticipants(employeeID);
 			if (null != employees && !employees.isEmpty()) {
 				for (final Employee emp : employees) {
-					sendReminderEmail(emp,Constants.TEMPLATE_CONFIRM_PARTICIPATION_REMINDER_EMAIL,
+					sendReminderEmail(emp, Constants.TEMPLATE_CONFIRM_PARTICIPATION_REMINDER_EMAIL,
 							Constants.TEMPLATE_CONFIRM_PARTICIPATION_REMINDER_EMAIL, false);
 				}
 			}
@@ -86,14 +86,14 @@ public class EmailService {
 		LOGGER.trace("Exit from sendReminderToConfirmParticipation with parameter::{}", employees);
 		return employees;
 	}
-	
-	public List<Employee> sendSubsequentReminderEmails(final Long employeeID, String emailContext, String emailTemplate, int reminderCount, 
-			int escalationCount, boolean shouldEscalate) {
+
+	public List<Employee> sendSubsequentReminderEmails(final Long employeeID, final String emailContext,
+			final String emailTemplate, final int reminderCount, final boolean shouldEscalate) {
 		LOGGER.trace("Entered into sendSubsequentReminderEmails with parameter::{}", employeeID);
 		List<Employee> employees = null;
 		if (configurationService.shouldSendEmail()) {
-			employees = employeeService.findEmployeesEligibleForSubsequentReminders(employeeID,
-					emailContext, reminderCount, escalationCount);
+			employees = employeeService.findEmployeesEligibleForSubsequentReminders(employeeID, emailContext,
+					reminderCount);
 			if (null != employees && !employees.isEmpty()) {
 				for (final Employee emp : employees) {
 					sendReminderEmail(emp, emailTemplate, emailContext, shouldEscalate);
@@ -146,9 +146,10 @@ public class EmailService {
 	public void sendConfirmationForParticipationEmail(final Employee emp) {
 
 		try {
-			sendEmailWithTemplate(emp, Constants.TEMPLATE_CONFIRMED_PARTICIPATION_EMAIL, Constants.TEMPLATE_CONFIRMED_PARTICIPATION_EMAIL, false);
+			sendEmailWithTemplate(emp, Constants.TEMPLATE_CONFIRMED_PARTICIPATION_EMAIL,
+					Constants.TEMPLATE_CONFIRMED_PARTICIPATION_EMAIL, false);
 		} catch (UnsupportedEncodingException | MessagingException e) {
-			handleExceptionScenario(emp, e, Constants.TEMPLATE_CONFIRMED_PARTICIPATION_EMAIL);
+			handleExceptionScenario(emp, e, Constants.TEMPLATE_CONFIRMED_PARTICIPATION_EMAIL, Constants.TEMPLATE_CONFIRMED_PARTICIPATION_EMAIL);
 		} catch (final CustomException e) {
 			LOGGER.error("Could not send email due to an error:: {}", e.getMessage());
 		}
@@ -170,7 +171,7 @@ public class EmailService {
 			try {
 				sendEmailWithBody(emp, emailTemplate, email, Constants.TEMPLATE_FORGOT_PASSWORD_EMAIL);
 			} catch (UnsupportedEncodingException | MessagingException e) {
-				handleExceptionScenario(emp, e, Constants.TEMPLATE_FORGOT_PASSWORD_EMAIL);
+				handleExceptionScenario(emp, e, Constants.TEMPLATE_FORGOT_PASSWORD_EMAIL, Constants.TEMPLATE_FORGOT_PASSWORD_EMAIL);
 			} catch (final CustomException e) {
 				LOGGER.error("Could not send email due to an error:: {}", e.getMessage());
 			}
@@ -179,16 +180,17 @@ public class EmailService {
 			LOGGER.warn("No Email Template found. Unable to send email for ::{}",
 					Constants.TEMPLATE_FORGOT_PASSWORD_EMAIL);
 			logEmailTracker(emp, "NO_EMAIL_TEMPLATE", false,
-					"No Email Template found for " + Constants.TEMPLATE_FORGOT_PASSWORD_EMAIL);
+					"No Email Template found for " + Constants.TEMPLATE_FORGOT_PASSWORD_EMAIL, "NO_EMAIL_TEMPLATE");
 		}
 	}
 
 	@Async
 	public void sendRejectedParticipationEmail(final Employee emp) {
 		try {
-			sendEmailWithTemplate(emp, Constants.TEMPLATE_REJECTED_PARTICIPATION_EMAIL, Constants.TEMPLATE_REJECTED_PARTICIPATION_EMAIL, true);
+			sendEmailWithTemplate(emp, Constants.TEMPLATE_REJECTED_PARTICIPATION_EMAIL,
+					Constants.TEMPLATE_REJECTED_PARTICIPATION_EMAIL, true);
 		} catch (UnsupportedEncodingException | MessagingException e) {
-			handleExceptionScenario(emp, e, Constants.TEMPLATE_REJECTED_PARTICIPATION_EMAIL);
+			handleExceptionScenario(emp, e, Constants.TEMPLATE_REJECTED_PARTICIPATION_EMAIL, Constants.TEMPLATE_REJECTED_PARTICIPATION_EMAIL);
 		} catch (final CustomException e) {
 			LOGGER.error("Could not send email due to an error:: {}", e.getMessage());
 		}
@@ -199,40 +201,33 @@ public class EmailService {
 		try {
 			sendEmailWithTemplate(emp, Constants.TEMPLATE_REGISTRATION_EMAIL, Constants.TEMPLATE_REGISTRATION_EMAIL);
 		} catch (UnsupportedEncodingException | MessagingException e) {
-			handleExceptionScenario(emp, e, Constants.TEMPLATE_REGISTRATION_EMAIL);
+			handleExceptionScenario(emp, e, Constants.TEMPLATE_REGISTRATION_EMAIL, Constants.TEMPLATE_REGISTRATION_EMAIL);
 		} catch (final CustomException e) {
 			LOGGER.error("Could not send email due to an error:: {}", e.getMessage());
 		}
 	}
 
-	private void handleExceptionScenario(final Employee emp, final Exception e, final String emailContext) {
-		LOGGER.error("Could not send email for : {} due to an error:: {}", emp.getEmployeeID(), e.getMessage());
-		logEmailTracker(emp, emailContext, false, e.getMessage());
+	private void handleExceptionScenario(final Employee emp, final Exception e, final String emailContext,
+			String templateName) {
+		LOGGER.error("Could not send {} with templateName {} to : {} due to an error:: {}", emailContext, templateName,
+				emp.getEmployeeID(), e.getMessage());
+		logEmailTracker(emp, emailContext, false, e.getMessage(), templateName);
 	}
 
-	private String getEmailTo(final Employee emp, final EmailTemplate emailTemplate, boolean skipEmployee) {
-
-		final String toList = emailTemplate.getEmailTo();
-		String emailTo = null;
-		if (skipEmployee) {
-			emailTo = toList;
-		} else {
-			if (StringUtils.isNotBlank(toList)) {
-				emailTo = emailTo + "," + toList;
-			} else {
-				emailTo = emp.getEmailID();
-			}
-		}
-		return emailTo;
-
+	private String getEmailTo(final Employee emp, final EmailTemplate emailTemplate) {
+		return StringUtils.isNotBlank(emailTemplate.getEmailTo()) ? emailTemplate.getEmailTo() : emp.getEmailID();
 	}
 
-	public void sendReminderEmail(final Employee emp, String templateName, String emailContext, boolean shouldEscalate) {
+	private String getEmailCc(final Employee emp, final EmailTemplate emailTemplate, final boolean skipEmployee) {
+		return skipEmployee ? emp.getEmailID() : emailTemplate.getEmailCC();
+	}
+
+	public void sendReminderEmail(final Employee emp, final String templateName, final String emailContext,
+			final boolean shouldEscalate) {
 		try {
-			sendEmailWithTemplate(emp, templateName,
-					emailContext, shouldEscalate);
+			sendEmailWithTemplate(emp, templateName, emailContext, shouldEscalate);
 		} catch (UnsupportedEncodingException | MessagingException e) {
-			handleExceptionScenario(emp, e, emailContext);
+			handleExceptionScenario(emp, e, emailContext, templateName);
 		} catch (final CustomException e) {
 			LOGGER.error("Could not send email due to an error:: {}", e.getMessage());
 		}
@@ -243,7 +238,7 @@ public class EmailService {
 			sendEmailWithTemplate(emp, Constants.TEMPLATE_REGISTRATION_REMINDER_EMAIL,
 					Constants.TEMPLATE_REGISTRATION_REMINDER_EMAIL);
 		} catch (UnsupportedEncodingException | MessagingException e) {
-			handleExceptionScenario(emp, e, Constants.TEMPLATE_REGISTRATION_REMINDER_EMAIL);
+			handleExceptionScenario(emp, e, Constants.TEMPLATE_REGISTRATION_REMINDER_EMAIL, Constants.TEMPLATE_REGISTRATION_REMINDER_EMAIL);
 		} catch (final CustomException e) {
 			LOGGER.error("Could not send email due to an error:: {}", e.getMessage());
 		}
@@ -254,7 +249,7 @@ public class EmailService {
 			sendEmailWithTemplate(emp, Constants.TEMPLATE_FLIGHT_UPDATE_REMINDER_EMAIL,
 					Constants.TEMPLATE_FLIGHT_UPDATE_REMINDER_EMAIL);
 		} catch (UnsupportedEncodingException | MessagingException e) {
-			handleExceptionScenario(emp, e, Constants.TEMPLATE_FLIGHT_UPDATE_REMINDER_EMAIL);
+			handleExceptionScenario(emp, e, Constants.TEMPLATE_FLIGHT_UPDATE_REMINDER_EMAIL, Constants.TEMPLATE_FLIGHT_UPDATE_REMINDER_EMAIL);
 		} catch (final CustomException e) {
 			LOGGER.error("Could not send email due to an error:: {}", e.getMessage());
 		}
@@ -278,6 +273,23 @@ public class EmailService {
 		return employees;
 	}
 
+	public List<Employee> sendGiftAmendmentEmail(final Long employeeID) {
+		LOGGER.debug("Entered into sendLogisticEmail with parameter::{}", employeeID);
+		List<Employee> employees = null;
+		if (configurationService.shouldSendEmail()) {
+			employees = employeeRepository.findByRegistrationNoGreaterThanAndGiftAmendmentEmailSentIsNull(0);
+			if (null != employees && !employees.isEmpty()) {
+				for (final Employee emp : employees) {
+					if (null == employeeID || emp.getEmployeeID() == employeeID) {
+						sendGiftAmendmentEmail(emp);
+					}
+				}
+			}
+		}
+		LOGGER.trace("Exit from sendLogisticEmail with parameter::{}", employees);
+		return employees;
+	}
+
 	private void sendLogisticEmail(final Employee emp) {
 		try {
 			sendEmailWithTemplate(emp, Constants.TEMPLATE_LOGISTIC_EMAIL, Constants.TEMPLATE_LOGISTIC_EMAIL);
@@ -286,7 +298,23 @@ public class EmailService {
 			employeeRepository.save(emp);
 
 		} catch (UnsupportedEncodingException | MessagingException e) {
-			handleExceptionScenario(emp, e, Constants.TEMPLATE_LOGISTIC_EMAIL);
+			handleExceptionScenario(emp, e, Constants.TEMPLATE_LOGISTIC_EMAIL, Constants.TEMPLATE_LOGISTIC_EMAIL);
+		} catch (final CustomException e) {
+			LOGGER.error("Could not send email due to an error:: {}", e.getMessage());
+		}
+
+	}
+
+	private void sendGiftAmendmentEmail(final Employee emp) {
+		try {
+			sendEmailWithTemplate(emp, Constants.TEMPLATE_GIFT_AMENDMENT_EMAIL,
+					Constants.TEMPLATE_GIFT_AMENDMENT_EMAIL);
+
+			emp.setGiftAmendmentEmailSent(true);
+			employeeRepository.save(emp);
+
+		} catch (UnsupportedEncodingException | MessagingException e) {
+			handleExceptionScenario(emp, e, Constants.TEMPLATE_GIFT_AMENDMENT_EMAIL, Constants.TEMPLATE_GIFT_AMENDMENT_EMAIL);
 		} catch (final CustomException e) {
 			LOGGER.error("Could not send email due to an error:: {}", e.getMessage());
 		}
@@ -299,27 +327,27 @@ public class EmailService {
 		sendEmailWithTemplate(emp, templateName, emailContext, false);
 
 	}
-	
-	public void sendEmailWithTemplate(final Employee emp, final String templateName, final String emailContext, boolean shouldEscalate)
-			throws UnsupportedEncodingException, MessagingException, CustomException {
-		
+
+	public void sendEmailWithTemplate(final Employee emp, final String templateName, final String emailContext,
+			final boolean shouldEscalate) throws UnsupportedEncodingException, MessagingException, CustomException {
+
 		final EmailTemplate emailTemplate = getEmailTemplateByName(templateName);
 		if (null != emailTemplate) {
 			final String name = StringUtils.isNotBlank(emp.getShortName()) ? emp.getShortName() : emp.getFirstName();
-			
+
 			final String bodyContent = MessageFormat.format(emailTemplate.getBodyContent(), name, appLoginUrl,
-					String.valueOf(emp.getEmployeeID()), defaultEmployeePassword, appPointOfContact);
-			
+					String.valueOf(emp.getEmployeeID()), defaultEmployeePassword, appPointOfContact, emp.getGift());
+
 			final Email email = fetchEmailInfo(emp, emailTemplate, bodyContent, shouldEscalate);
-			
+
 			sendEmailWithBody(emp, emailTemplate, email, emailContext);
 		} else {
 			LOGGER.warn("No Email Template found. Unable to send email for ::{}", templateName);
 			logEmailTracker(emp, "NO_EMAIL_TEMPLATE", false,
-					"No Email Template found for templateName::" + templateName + " and emailContext::" + emailContext);
+					"No Email Template found for templateName::" + templateName + " and emailContext::" + emailContext, templateName);
 			throw new CustomException("No Email Template found. Unable to send email for ::" + templateName);
 		}
-		
+
 	}
 
 	private Email fetchEmailInfo(final Employee emp, final EmailTemplate emailTemplate, final String bodyContent) {
@@ -327,14 +355,14 @@ public class EmailService {
 	}
 
 	private Email fetchEmailInfo(final Employee emp, final EmailTemplate emailTemplate, final String bodyContent,
-			boolean shouldEscalate) {
+			final boolean shouldEscalate) {
 
 		final String alias = StringUtils.isNotBlank(emailTemplate.getEmailFromAlias())
 				? emailTemplate.getEmailFromAlias()
 				: emailTemplate.getEmailFrom();
 
-		final Email email = new Email(emailTemplate.getEmailFrom(), alias, getEmailTo(emp, emailTemplate, shouldEscalate),
-				emailTemplate.getEmailCC(), emailTemplate.getSubject(), bodyContent);
+		final Email email = new Email(emailTemplate.getEmailFrom(), alias, getEmailTo(emp, emailTemplate),
+				getEmailCc(emp, emailTemplate, shouldEscalate), emailTemplate.getSubject(), bodyContent);
 		return email;
 	}
 
@@ -346,7 +374,7 @@ public class EmailService {
 			final String failureReason = "Could not send email to : " + emailTemplate.getEmailTo() + " because he is::"
 					+ emp.getRole();
 			LOGGER.error("failureReason::{}", failureReason);
-			logEmailTracker(emp, emailTemplate.getTemplateName(), false, failureReason);
+			logEmailTracker(emp, emailTemplate.getTemplateName(), false, failureReason, emailTemplate.getTemplateName());
 
 			throw new CustomException("App does not send email for role::" + emp.getRole());
 		} else {
@@ -364,7 +392,7 @@ public class EmailService {
 			email.setHtml(true);
 
 			send(email, emp);
-			logEmailTracker(emp, emailContext, true, null);
+			logEmailTracker(emp, emailContext, true, null, emailTemplate.getTemplateName());
 
 			try {
 				Thread.sleep(200);
@@ -406,8 +434,8 @@ public class EmailService {
 	}
 
 	private void logEmailTracker(final Employee emp, final String emailContext, final boolean success,
-			final String failureReason) {
-		final EmailTracker emailTracker = new EmailTracker(emailContext, success, failureReason, LocalDateTime.now(),
+			final String failureReason, String emailTemplateName) {
+		final EmailTracker emailTracker = new EmailTracker(emailContext, emailTemplateName, success, failureReason, LocalDateTime.now(),
 				emp);
 		final Set<EmailTracker> emailTrackers = emp.getEmailTrackers();
 		if (null == emailTrackers) {
@@ -416,6 +444,8 @@ public class EmailService {
 		emp.getEmailTrackers().add(emailTracker);
 
 		saveReminderDateTime(emp, emailContext);
+
+		LOGGER.info("logEmailTracker::emp.getEmailTrackers() {}", emp.getEmailTrackers());
 
 		employeeRepository.save(emp);
 	}

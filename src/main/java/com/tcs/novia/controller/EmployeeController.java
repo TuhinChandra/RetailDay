@@ -191,7 +191,7 @@ public class EmployeeController {
 				}
 				employee.getFlightInfos().add(flightInfoToAddOrUpdate);
 			}
-			employee = employeeService.addFlightInfo(employee);
+			employee = employeeService.saveEmployeeData(employee);
 		} else {
 			employee = createInvalidEmployee();
 		}

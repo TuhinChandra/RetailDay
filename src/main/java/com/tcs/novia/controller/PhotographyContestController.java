@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.tcs.novia.model.PhotographyContestImage;
+import com.tcs.novia.repository.PhotographyContestImageRepository;
 import com.tcs.novia.service.PhotoContestImageService;
 import com.tcs.novia.service.PhotoContestResponseService;
 import com.tcs.novia.util.ImageProcessor;
@@ -26,6 +27,8 @@ public class PhotographyContestController {
 	PhotoContestResponseService photoContestResponseService;
 	@Autowired
 	ImageProcessor imageProcessor;
+	@Autowired
+	private PhotographyContestImageRepository photographyContestImageRepository;
 
 	@RequestMapping(value = "/uploadPhoto/{owner}/{imageName}", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
@@ -44,6 +47,12 @@ public class PhotographyContestController {
 			throw new Exception("Oops!! Looks like there is a technical issue. Try with different image.");
 		}
 		return photoContestImageService.uploadPhoto(new Random().nextInt(Integer.MAX_VALUE), owner, imageName, photo);
+	}
+	
+	@RequestMapping(value = "/deletePhoto/{photoID}", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public void getAllEvents(@PathVariable("photoID") final int photoID) {
+		photographyContestImageRepository.deleteById(photoID);
 	}
 
 	@RequestMapping(value = "/getAllImages", method = RequestMethod.GET, produces = "application/json")

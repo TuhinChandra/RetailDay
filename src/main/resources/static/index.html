@@ -6,6 +6,9 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="lib/angular.min.js"></script>
 <script src="lib/angular-route.js"></script>
+<script src="lib/jquery.mustache.js"></script>
+<script src="lib/sockjs.min.js"></script>
+<script src="lib/stomp.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <link rel="stylesheet"
@@ -80,6 +83,28 @@
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary agree"
 						data-dismiss="modal" id="modal_ok">Ok</button>
+				</div>
+			</div>
+		</div>
+	</div>
+		<!-- Modal Success data update-->
+	<div class="modal fade" id="modal_data_update" data-backdrop="static" data-keyboard="false">
+		<div class="modal-dialog modal-lg modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Success</h5>
+
+				</div>
+				<div class="modal-body privacy">
+					<div class="mk-text-block   ">
+						<p>Details has been updated successfully</p>
+						<div class="clearboth"></div>
+					</div>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary agree"
+						data-dismiss="modal" id="data_save_ok">Ok</button>
 				</div>
 			</div>
 		</div>

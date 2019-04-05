@@ -57,6 +57,10 @@ public class EmployeeService {
 		return emp;
 	}
 
+	public List<Employee> getAllEmployee() {
+		return employeeRepository.findAll();
+	}
+
 	public void deleteEmployee(final long employeeID) {
 		employeeRepository.deleteById(employeeID);
 	}
@@ -239,7 +243,7 @@ public class EmployeeService {
 		return employee;
 	}
 
-	public Employee addFlightInfo(final Employee employee) {
+	public Employee saveEmployeeData(final Employee employee) {
 		return employeeRepository.save(employee);
 	}
 
@@ -266,35 +270,37 @@ public class EmployeeService {
 		return emp;
 	}
 
-	public List<Employee> findEmployeesEligibleForSubsequentReminders(final Long employeeIDToMatch, String emailContext, int reminderCount, int escalationCount) {
+	public List<Employee> findEmployeesEligibleForSubsequentReminders(final Long employeeIDToMatch,
+			final String emailContext, final int reminderCount) {
 
-		LOGGER.info("findEmployeesEligibleForSubsequentReminders:: method parameters:: employeeIDToMatch::{}, emailContext::{}, reminderCount::{}, escalationCount::{}", 
-				employeeIDToMatch, emailContext, reminderCount, escalationCount);
-		
-		final List<BigInteger> employeeIDs = employeeRepository.findEmployeesEligibleForSubsequentReminders(
-				emailContext, reminderCount, escalationCount);
+		LOGGER.info(
+				"findEmployeesEligibleForSubsequentReminders:: method parameters:: employeeIDToMatch::{}, emailContext::{}, reminderCount::{}",
+				employeeIDToMatch, emailContext, reminderCount);
+
+		final List<BigInteger> employeeIDs = employeeRepository
+				.findEmployeesEligibleForSubsequentReminders(emailContext, reminderCount);
 		LOGGER.info("findEmployeesEligibleForSubsequentReminders:: result:: employeeIDs::{}", employeeIDs);
 		return getEmployeesByID(employeeIDs, employeeIDToMatch);
 	}
-	
+
 	public List<Employee> fetchNotConfirmedParticipants(final Long employeeID) {
 
 		final List<BigInteger> employeeIDs = employeeRepository.findEmployeesYetToConfirmParticipation(
-				configurationService.getInterval(Constants.INTERVAL_DAY_CONFIRM_PARTICIPATION_REMINDER));
+				configurationService.getInterval(Constants.CONFIG_INTERVAL_DAY_CONFIRM_PARTICIPATION_REMINDER));
 		LOGGER.info("fetchNotConfirmedParticipants:: result:: employeeIDs::{}", employeeIDs);
 		return getEmployeesByID(employeeIDs, employeeID);
 	}
 
 	public List<Employee> fetchIncompleteProfiles(final Long employeeID) {
 		final List<BigInteger> employeeIDs = employeeRepository.findEmployeesYetToCompleteRegistration(
-				configurationService.getInterval(Constants.INTERVAL_DAY_COMPLETE_REGISTRATION_REMINDER));
+				configurationService.getInterval(Constants.CONFIG_INTERVAL_DAY_COMPLETE_REGISTRATION_REMINDER));
 		LOGGER.info("fetchIncompleteProfiles:: result:: employeeIDs::{}", employeeIDs);
 		return getEmployeesByID(employeeIDs, employeeID);
 	}
 
 	public List<Employee> findEmployeesNotProvidedFlightDetails(final Long employeeID) {
 		final List<BigInteger> employeeIDs = employeeRepository.findEmployeesYetToFillFlightInfo(
-				configurationService.getInterval(Constants.INTERVAL_DAY_FLIGHT_REMINDER));
+				configurationService.getInterval(Constants.CONFIG_INTERVAL_DAY_FLIGHT_REMINDER));
 		LOGGER.info("findEmployeesNotProvidedFlightDetails:: result:: employeeIDs::{}", employeeIDs);
 		return getEmployeesByID(employeeIDs, employeeID);
 	}

@@ -442,9 +442,14 @@ app.controller('UpdateProfileController', function($scope, $http, $window, $root
 				if(response.data.status == "COMPLETE"){
                 	$rootScope.userDetails = response.data;
                 	$scope.successMsg = "Your details updated successfully.";
-//                    $window.location.href = "#!registrationdetails";
+                   // $window.location.href = "#!registrationdetails";
+                	
                 	$(document).ready(function(){
-                		  $('.toast').toast('show');
+                		  //$('.toast').toast('show');
+                		  $('#modal_data_update').modal('show');
+                		  $('#data_save_ok').click(function(){
+                		  	$window.location.href = "#!registrationdetails";
+                		  });
                 		});
                 	if(!$scope.chkselct){
                 		$scope.address_local="";
@@ -690,11 +695,91 @@ app.controller('ProfileController', function($scope, $window, $rootScope) {
 });
 
 app.controller('QuizController', function($scope, $window, $rootScope) {
-    if($rootScope.isLoaded){
-        console.log("QuizController" + $rootScope.userDetails);
-    }else{
-        $window.location.href = "#!partcipation";
-    }
+	var stompClient = null;
+	var socket = null;
+	var employeeID = null;
+	 $(document).ready(function() {
+		 
+		 var currentURL = new URL(window.location);
+		 employeeID = url_query("employeeId");
+		 socket = new SockJS('quizWS');
+		 stompClient = Stomp.over(socket);
+		 stompClient.connect({}, onConnected, onError);
+		 
+		 
+		 function onConnected() {
+				stompClient.subscribe('/user/topic/getCurrentQuestion', onMessageReceivedQuiz);
+				stompClient.subscribe('/topic/broadcastCurrentQuestion', onMessageReceivedQuiz);
+				var d = new Date();
+				var n = d.getTime();
+				stompClient.send("/app/getCurrentQuestion", {},
+						'{"currentMili":' + n + '}');
+			}
+			
+			function onError(e) {
+				console.log("error:" + e);
+				if (stompClient !== null) {
+			        stompClient.disconnect();
+			        console.log("Disconnected");
+			    }
+			}
+			
+			
+			function onMessageReceivedQuiz(payload) {
+				var data=JSON.parse(payload.body);
+				
+				var template,
+				contentHtml;
+				
+				if(data.current) {
+					template = $('#ui-template-quiz').html();                    
+				}else{
+					template = $('#ui-template-quiz-inactive').html();
+				}
+				contentHtml = Mustache.to_html(template, data);
+				$('#question-container').html(contentHtml);
+			}
+			
+			function url_query( query ) {
+			    query = query.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+			    var expr = "[\\?&]"+query+"=([^&#]*)";
+			    var regex = new RegExp( expr );
+			    var results = regex.exec( window.location.href );
+			    if ( results !== null ) {
+			        return results[1];
+			    } else {
+			        return false;
+			    }
+			}
+			$(document).on("click", '.js-submit-answer', function(e) { 
+				e.preventDefault();
+				
+				var radioValueOfAnsweredQuestion = $("input[name='q_answer']:checked").val();
+		        var questionID=$('#questionID').text().trim();
+		        var emailId=$('#account_email').text().trim();
+
+				var url='saveResponse/'+questionID+'/'+employeeID+'/'+radioValueOfAnsweredQuestion;
+				console.log(url);
+
+				$.ajax({
+					url: url,
+					processData: false,
+					contentType: false,
+					type: 'get',
+					success: function (res) {
+						console.log(res);
+						$('.js-submit-answer').addClass('disabled');
+					},
+					error: function(error) {
+						console.log(error);
+					}
+				})
+				
+			});
+ 	});
+	 
+	 
+	 
 });
 
 app.controller('WelcomeController', function() {

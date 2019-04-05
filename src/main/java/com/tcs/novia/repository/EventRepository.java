@@ -8,9 +8,11 @@ import com.tcs.novia.model.Event;
 import com.tcs.novia.model.enums.EventState;
 
 @Repository
-public interface EventRepository extends JpaRepository<Event, String> {
+public interface EventRepository extends JpaRepository<Event, Integer> {
 
 	List<Event> findAllByOrderByEventID();
+	
+	List<Event> findByEventDateOrderByEventID(String eventDate);
 
 	List<Event> findByState(EventState state);
 

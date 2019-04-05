@@ -18,10 +18,17 @@ public class EventService {
 	public List<Event> getAllEvents() {
 		return eventRepository.findAllByOrderByEventID();
 	}
-
-	public List<Event> getCurrentEvent() {
-		return eventRepository.findByState(EventState.RUNNING);
+	public List<Event> getEventsByDate(String eventDate) {
+		return eventRepository.findByEventDateOrderByEventID(eventDate);
 	}
+
+	public Event getEvent(int eventID) {
+		return eventRepository.findByEventID(eventID);
+	}
+	/*
+	 * public List<Event> getCurrentEvent() { return
+	 * eventRepository.findByState(EventState.RUNNING); }
+	 */
 
 	public void changeEventState(int eventID, String state) {
 		Event activeEvent = eventRepository.findByEventID(eventID);

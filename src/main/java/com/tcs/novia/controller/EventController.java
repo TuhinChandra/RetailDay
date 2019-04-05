@@ -1,110 +1,95 @@
 package com.tcs.novia.controller;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.tcs.novia.model.Employee;
 import com.tcs.novia.model.Event;
 import com.tcs.novia.model.VoteCount;
+import com.tcs.novia.model.enums.EventState;
+import com.tcs.novia.repository.EventRepository;
+import com.tcs.novia.service.EmployeeService;
 import com.tcs.novia.service.EventResponseService;
 import com.tcs.novia.service.EventService;
+import com.tcs.novia.util.ImageProcessor;
 
 @Controller
 public class EventController {
 	@Autowired
-	EventService eventService;
-
+	private EventService eventService;
 	@Autowired
-	EventResponseService eventResponseService;
-
+	private EmployeeService employeeService;
 	@Autowired
-	private SimpMessageSendingOperations messagingTemplate;
+	private EventResponseService eventResponseService;
+	@Autowired
+	private EventRepository eventRepository;
+	@Autowired
+	protected ImageProcessor imageProcessor;
 
+	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+	
+	@RequestMapping(value = "/createEvent", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public Event createEvent(
+			@RequestParam(value = "eventName", required = true) final String eventName,
+			@RequestParam(value = "eventDate", required = true) final String eventDate,
+			@RequestParam(value = "details", required = true) final String details,
+			@RequestParam(value = "startTime", required = false) final String startTime,
+			@RequestParam(value = "finishTime", required = false) final String finishTime,
+			@RequestParam(value = "duration", required = false) final String duration,
+			@RequestParam(value = "photoFile", required = false) final MultipartFile photoFile) {
+		
+		String photo = null;
+		if (null != photoFile && !photoFile.isEmpty()) {
+			try {
+				final byte[] bytes = photoFile.getBytes();
+				photo = imageProcessor.resizeImage(bytes);
+			} catch (final Exception e) {
+				LOGGER.error("Error uploading photo::{}",e);
+			}
+		}
+		
+		return eventRepository.save(new Event(eventName, eventDate, details, startTime, finishTime, photo,duration, EventState.SCHEDULED));
+	}
+
+	@RequestMapping(value = "/deleteEvent/{eventID}", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public void getAllEvents(@PathVariable("eventID") final int eventID) {
+		eventRepository.deleteById(eventID);
+	}
 	@RequestMapping(value = "/getAllEvents", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public List<Event> getAllEvents() {
 		return eventService.getAllEvents();
 	}
 
-	@RequestMapping(value = "/getCurrentEvent", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/getEventsByDate", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
-	public Event getCurrentEvent() {
-		if (!eventService.getCurrentEvent().isEmpty()) {
-			return eventService.getCurrentEvent().get(0);
-		}
-		return null;
+	public List<Event> getEventsByDate(@RequestParam(value = "eventDate", required = true) final String eventDate) {
+		return eventService.getEventsByDate(eventDate);
 	}
 
-	@RequestMapping(value = "/changeEventState/{eventID}/{state}", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/saveEventResponseWithComment/{employeeID}/{eventID}/{vote}", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
-	public void changeEventState(@PathVariable("eventID") final int eventID,
-			@PathVariable("state") final String state) {
-		eventService.changeEventState(eventID, state);
-		messagingTemplate.convertAndSend("/topic/broadcastLatestComments",
-				eventResponseService.getLatestResponses(eventID));
-		if (eventService.getCurrentEvent() != null) {
-			messagingTemplate.convertAndSend("/topic/broadcastCurrentEvent", eventService.getCurrentEvent());
-		} else {
-			messagingTemplate.convertAndSend("/topic/broadcastCurrentEvent", "");
-		}
-	}
-
-	@RequestMapping(value = "/closeAllEvents", method = RequestMethod.GET, produces = "application/json")
-	@ResponseBody
-	public void closeAllEvents() {
-		eventService.closeAllEvents();
-		messagingTemplate.convertAndSend("/topic/broadcastCurrentEvent", "");
-	}
-
-	@RequestMapping(value = "/saveEventResponse/{employeeID}/{eventID}/{vote}", method = RequestMethod.GET, produces = "application/json")
-	@ResponseBody
-	public void saveEventResponse(@PathVariable("employeeID") final String employeeID,
-			@PathVariable("eventID") final int eventID, @PathVariable("vote") final String vote) {
-		if (!eventService.getCurrentEvent().isEmpty()
-				&& eventService.getCurrentEvent().get(0).getEventID() == eventID) {
-			eventResponseService.save(Long.parseLong(employeeID), eventID, vote);
-			messagingTemplate.convertAndSend("/topic/broadcastLatestComments",
-					eventResponseService.getLatestResponses(eventID));
-		}
-	}
-
-	@RequestMapping(value = "/saveEventResponseWithComment/{employeeID}/{eventID}/{vote}/{comment}", method = RequestMethod.GET, produces = "application/json")
-	@ResponseBody
-	public void saveEventResponseWithComment(@PathVariable("employeeID") final String employeeID,
+	public void saveEventResponseWithComment(@PathVariable("employeeID") final long employeeID,
 			@PathVariable("eventID") final int eventID, @PathVariable("vote") final String vote,
-			@PathVariable("comment") final String comment) {
-		final List<Event> allRunningEvents = eventService.getCurrentEvent();
-		if (null != allRunningEvents && !allRunningEvents.isEmpty()) {
+			@RequestParam(value = "comment", required = false) final String comment) {
 
-			for (final Event event : allRunningEvents) {
-				if (event.getEventID() == eventID) {
-					eventResponseService.saveWithComment(Long.parseLong(employeeID), eventID, vote, comment);
-					break;
-				}
-			}
-
-			messagingTemplate.convertAndSend("/topic/broadcastLatestComments",
-					eventResponseService.getLatestResponses(eventID));
-		}
-	}
-
-	@MessageMapping("/getEventStatus")
-	public void sendMessage(final Principal principal, @SuppressWarnings("rawtypes") final Map message) {
-		if (eventService.getCurrentEvent() != null) {
-			messagingTemplate.convertAndSendToUser(principal.getName(), "/topic/getCurrentEvent",
-					eventService.getCurrentEvent());
-		} else {
-			messagingTemplate.convertAndSendToUser(principal.getName(), "/topic/getCurrentEvent", "");
+		final Employee emp=employeeService.findByEmployeeID(employeeID);
+		final Event event = eventService.getEvent(eventID);
+		if (null != event && null!=emp) {
+			eventResponseService.saveWithComment(employeeID, eventID, vote, comment);
 		}
 	}
 

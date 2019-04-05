@@ -43,8 +43,9 @@ public class ConfigurationService {
 		final Configuration config = getConfiguration(Constants.CONFIG_MAX_DELEGATE_COUNT);
 		return null != config ? Integer.parseInt(config.getConfigValue()) : 0;
 	}
-	public boolean shouldSendReminderEmailFor(String emailContext) {
-		final Configuration config = getConfiguration(Constants.CONFIG_MAX_DELEGATE_COUNT);
+
+	public boolean shouldSendReminderEmailFor(final String emailContext) {
+		final Configuration config = getConfiguration(emailContext);
 		return null != config ? BooleanUtils.toBoolean(config.getConfigValue()) : false;
 	}
 

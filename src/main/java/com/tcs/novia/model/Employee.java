@@ -98,6 +98,8 @@ public class Employee {
 	private Boolean checkedIn;
 	@Column(name = "IS_LOGISTIC_EMAIL_SENT", nullable = true)
 	private Boolean logisticsEmailSent;
+	@Column(name = "IS_GIFT_AMENDMENT_EMAIL_SENT", nullable = true)
+	private Boolean giftAmendmentEmailSent;
 	@Column(name = "CHECK_IN_TIME", nullable = true)
 	private LocalDateTime checkInTime;
 
@@ -342,6 +344,14 @@ public class Employee {
 
 	public void setLogisticsEmailSent(final Boolean logisticsEmailSent) {
 		this.logisticsEmailSent = logisticsEmailSent;
+	}
+
+	public Boolean getGiftAmendmentEmailSent() {
+		return giftAmendmentEmailSent;
+	}
+
+	public void setGiftAmendmentEmailSent(Boolean giftAmendmentEmailSent) {
+		this.giftAmendmentEmailSent = giftAmendmentEmailSent;
 	}
 
 	public LocalDateTime getParticipationReminderLastSentDateTime() {

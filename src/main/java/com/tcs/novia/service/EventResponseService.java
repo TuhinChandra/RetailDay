@@ -47,8 +47,8 @@ public class EventResponseService {
 	}
 
 	public VoteCount getVoteCountForAnEvent(final int eventID, final String eventName) {
-		Integer likeCount = eventResponseRepository.getVoteCountForAnEvent(eventID, Vote.LIKE);
-		Integer dislikeCount = eventResponseRepository.getVoteCountForAnEvent(eventID, Vote.DISLIKE);
+		Integer likeCount = eventResponseRepository.getVoteCountForAnEvent(eventID, Vote.FIVE);
+		Integer dislikeCount = eventResponseRepository.getVoteCountForAnEvent(eventID, Vote.ONE);
 
 		likeCount = null != likeCount ? likeCount : 0;
 		dislikeCount = null != dislikeCount ? dislikeCount : 0;

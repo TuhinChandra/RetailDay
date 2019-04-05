@@ -21,7 +21,9 @@ public class EmailTracker {
 	@GeneratedValue
 	private int id;
 	@Column(name = "EMAIL_TYPE", nullable = false)
-	private String emailType;
+	private String emailContext;
+	@Column(name = "EMAIL_TEMPLATE_NAME", nullable = true)
+	private String emailTemplateName;
 	@Column(name = "DELIVERED", nullable = false)
 	private boolean delivered;
 	@Column(name = "FAILURE_REASON", nullable = true, length = 10485760)
@@ -38,22 +40,39 @@ public class EmailTracker {
 		super();
 	}
 
-	public EmailTracker(String emailType, boolean delivered, String failureReason, LocalDateTime dateTimeStamp,
-			Employee employee) {
+	public EmailTracker(String emailContext, String emailTemplateName, boolean delivered, String failureReason,
+			LocalDateTime dateTimeStamp, Employee employee) {
 		super();
-		this.emailType = emailType;
+		this.emailContext = emailContext;
+		this.emailTemplateName = emailTemplateName;
 		this.delivered = delivered;
 		this.failureReason = failureReason;
 		this.dateTimeStamp = dateTimeStamp;
 		this.employee = employee;
 	}
 
-	public String getEmailType() {
-		return emailType;
+	public int getId() {
+		return id;
 	}
 
-	public void setEmailType(String emailType) {
-		this.emailType = emailType;
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getEmailContext() {
+		return emailContext;
+	}
+
+	public void setEmailContext(String emailContext) {
+		this.emailContext = emailContext;
+	}
+
+	public String getEmailTemplateName() {
+		return emailTemplateName;
+	}
+
+	public void setEmailTemplateName(String emailTemplateName) {
+		this.emailTemplateName = emailTemplateName;
 	}
 
 	public boolean isDelivered() {
@@ -88,8 +107,11 @@ public class EmailTracker {
 		this.employee = employee;
 	}
 
-	public int getId() {
-		return id;
+	@Override
+	public String toString() {
+		return "EmailTracker [id=" + id + ", emailContext=" + emailContext + ", emailTemplateName=" + emailTemplateName
+				+ ", delivered=" + delivered + ", failureReason=" + failureReason + ", dateTimeStamp=" + dateTimeStamp
+				+ ", employee=" + employee.getEmployeeID() + "]";
 	}
 
 }

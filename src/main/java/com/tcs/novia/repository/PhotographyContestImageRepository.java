@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.tcs.novia.model.PhotographyContestImage;
 
 @Repository
-public interface PhotographyContestImageRepository extends JpaRepository<PhotographyContestImage, String> {
+public interface PhotographyContestImageRepository extends JpaRepository<PhotographyContestImage, Integer> {
 
 }

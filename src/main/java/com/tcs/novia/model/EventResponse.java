@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
@@ -23,6 +25,7 @@ public class EventResponse {
 	@Column(name = "EMP_ID", nullable = false)
 	private long employeeID;
 	@Column(name = "VOTE", nullable = false)
+	@Enumerated(EnumType.STRING)
 	private Vote vote;
 	@Column(name = "COMMENT", nullable = true)
 	private String comment;

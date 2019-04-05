@@ -23,9 +23,23 @@ public class WriteDataToCSV {
 				"Arrival Flight No", "PREVIOUS_LOCATION", "Arrival Flight Date", "Arrival Flight Time",
 				"Return Airline Name", "Return Flight No", "NEXT_LOCATION", "Return Flight Date", "Return Flight Time",
 				"CREATED_DATE_TIME", "INVITATION_EMAIL_SENT", "PARTICIPATION_DATE_TIME", "PARTICIPATION_EMAIL_SENT",
-				"CONFIRM_PARTICIPATION_REMINDER_EMAIL_SENT", "COMPLETE_REGISTRATION_REMINDER_EMAIL_SENT",
-				"UPDATE_FLIGHT_REMINDER_EMAIL_SENT", "REGISTRATION_COMPLETED_DATE_TIME", "RESET_PASSWORD_EMAIL_SENT",
-				"IS_LOGISTIC_EMAIL_SENT" };
+				
+				"CONFIRM_PARTICIPATION_FIRST_REMINDER_EMAIL_SENT", 
+				"COMPLETE_REGISTRATION_FIRST_REMINDER_EMAIL_SENT",
+				"UPDATE_FLIGHT_FIRST_REMINDER_EMAIL_SENT", 
+				
+				"CONFIRM_PARTICIPATION_SECOND_REMINDER_EMAIL_SENT", 
+				"COMPLETE_REGISTRATION_SECOND_REMINDER_EMAIL_SENT",
+				"UPDATE_FLIGHT_REMINDER_EMAIL_SENT", 
+				
+				"CONFIRM_PARTICIPATION_THIRD_REMINDER_EMAIL_SENT", 
+				"COMPLETE_REGISTRATION_THIRD_REMINDER_EMAIL_SENT",
+				"UPDATE_FLIGHT_REMINDER_THIRD_EMAIL_SENT", 
+				
+				
+				
+				"REGISTRATION_COMPLETED_DATE_TIME", "RESET_PASSWORD_EMAIL_SENT",
+				"IS_LOGISTIC_EMAIL_SENT","GIFT_AMENDMENT_EMAIL_SENT" };
 		try (CSVWriter csvWriter = new CSVWriter(writer, CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER,
 				CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);) {
 			csvWriter.writeNext(CSV_HEADER);
@@ -66,10 +80,19 @@ public class WriteDataToCSV {
 				Boolean confirmParticipationReminderSent = null;
 				Boolean completeRegistrationReminderSent = null;
 				Boolean flightUpdateReminderSent = null;
+				
+				Boolean confirmParticipationSecondReminderSent = null;
+				Boolean completeRegistrationSecondReminderSent = null;
+				Boolean flightUpdateSecondReminderSent = null;
+				
+				Boolean confirmParticipationEscalationSent = null;
+				Boolean completeRegistrationEscalationSent = null;
+				Boolean flightUpdateEscalationSent = null;
+				
 				final Set<EmailTracker> emailTrackers = employee.getEmailTrackers();
 				if (null != emailTrackers && !emailTrackers.isEmpty()) {
 					for (final EmailTracker emailTracker : emailTrackers) {
-						final String emailType = emailTracker.getEmailType();
+						final String emailType = null!=emailTracker.getEmailTemplateName()?emailTracker.getEmailTemplateName():emailTracker.getEmailContext();
 						if (Constants.TEMPLATE_REGISTRATION_EMAIL.equalsIgnoreCase(emailType)
 								&& (null == registrationEmailSent || !registrationEmailSent)) {
 							registrationEmailSent = emailTracker.isDelivered();
@@ -89,6 +112,24 @@ public class WriteDataToCSV {
 						} else if (Constants.TEMPLATE_FLIGHT_UPDATE_REMINDER_EMAIL.equalsIgnoreCase(emailType)
 								&& (null == flightUpdateReminderSent || !flightUpdateReminderSent)) {
 							flightUpdateReminderSent = emailTracker.isDelivered();
+						} else if (Constants.TEMPLATE_SECOND_CONFIRM_PARTICIPATION_REMINDER_EMAIL.equalsIgnoreCase(emailType)
+								&& (null == confirmParticipationSecondReminderSent || !confirmParticipationSecondReminderSent)) {
+							confirmParticipationSecondReminderSent = emailTracker.isDelivered();
+						} else if (Constants.TEMPLATE_ESCALATION_CONFIRM_PARTICIPATION_REMINDER_EMAIL.equalsIgnoreCase(emailType)
+								&& (null == confirmParticipationEscalationSent || !confirmParticipationEscalationSent)) {
+							confirmParticipationEscalationSent = emailTracker.isDelivered();
+						} else if (Constants.TEMPLATE_SECOND_REGISTRATION_REMINDER_EMAIL.equalsIgnoreCase(emailType)
+								&& (null == completeRegistrationSecondReminderSent || !completeRegistrationSecondReminderSent)) {
+							completeRegistrationSecondReminderSent = emailTracker.isDelivered();
+						} else if (Constants.TEMPLATE_ESCALATION_REGISTRATION_REMINDER_EMAIL.equalsIgnoreCase(emailType)
+								&& (null == completeRegistrationEscalationSent || !completeRegistrationEscalationSent)) {
+							completeRegistrationEscalationSent = emailTracker.isDelivered();
+						} else if (Constants.TEMPLATE_SECOND_FLIGHT_UPDATE_REMINDER_EMAIL.equalsIgnoreCase(emailType)
+								&& (null == flightUpdateSecondReminderSent || !flightUpdateSecondReminderSent)) {
+							flightUpdateSecondReminderSent = emailTracker.isDelivered();
+						} else if (Constants.TEMPLATE_ESCALATION_FLIGHT_UPDATE_REMINDER_EMAIL.equalsIgnoreCase(emailType)
+								&& (null == flightUpdateEscalationSent || !flightUpdateEscalationSent)) {
+							flightUpdateEscalationSent = emailTracker.isDelivered();
 						}
 					}
 				}
@@ -110,10 +151,25 @@ public class WriteDataToCSV {
 						arrivalflighttime, returnflightname, returnflightno, nextLocation, returnflightdate,
 						returnflighttime, String.valueOf(employee.getCreatedDateTime()),
 						String.valueOf(registrationEmailSent), String.valueOf(employee.getParticipationDateTime()),
-						String.valueOf(participationEmailSent), String.valueOf(confirmParticipationReminderSent),
-						String.valueOf(completeRegistrationReminderSent), String.valueOf(flightUpdateReminderSent),
-						String.valueOf(employee.getRegistrationDateTime()), String.valueOf(resetPasswordEmailSent),
-						String.valueOf(employee.isLogisticsEmailSent())
+						String.valueOf(participationEmailSent), 
+						String.valueOf(confirmParticipationReminderSent),
+						String.valueOf(completeRegistrationReminderSent), 
+						String.valueOf(flightUpdateReminderSent),
+						
+						String.valueOf(confirmParticipationSecondReminderSent),
+						String.valueOf(completeRegistrationSecondReminderSent), 
+						String.valueOf(flightUpdateSecondReminderSent),
+						
+						String.valueOf(confirmParticipationEscalationSent),
+						String.valueOf(completeRegistrationEscalationSent), 
+						String.valueOf(flightUpdateEscalationSent),
+						
+						String.valueOf(employee.getRegistrationDateTime()), 
+						String.valueOf(resetPasswordEmailSent),
+						String.valueOf(employee.isLogisticsEmailSent()),
+						String.valueOf(employee.getGiftAmendmentEmailSent()
+						
+						)
 
 				};
 

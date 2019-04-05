@@ -1,3 +1,4 @@
+
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -188,13 +189,13 @@ input[type=radio]:checked+label>img {
 											<div class="col-md-12 mb-3 music_box">
 												<div class="row" style="margin: 20px 0;">
 													<div class="col" style="padding:0px;">
-														<input type="radio" name="music" id="bhakti" checked
-															class="input-hidden" ng-click="giftSelect('Bhakti')" /> <label for="bhakti"><span
+														<input type="radio" name="music" id="bhakti" ng-required="novia_music"
+															class="input-hidden" ng-click="giftSelect('Bhakti')" ng-model="novia_music" value="Bhakti"/> <label for="bhakti"><span
 															style="font-weight: bold; font-size: 12px;display: block;">Bhakti</span>
 														</label>
 													</div>
 													<div class="col" style="padding:0px;">
-														<input type="radio" name="music" id="gurbani"
+														<input type="radio" name="music" id="gurbani" ng-required="novia_music" ng-model="novia_music" value="Gurbani"
 															class="input-hidden" ng-click="giftSelect('Gurbani')" /> <label for="gurbani">
 															<span
 															style="font-weight: bold; font-size: 12px;display: block;">Gurbani</span>
@@ -204,14 +205,14 @@ input[type=radio]:checked+label>img {
 												</div>
 												<div class="row" style="margin: 20px 0;">
 												<div class="col" style="padding:0px;">
-														<input type="radio" name="music" id="hindi"
+														<input type="radio" name="music" id="hindi" ng-required="novia_music" ng-model="novia_music" value="Hindi"
 															class="input-hidden" ng-click="giftSelect('Hindi')" /> <label for="hindi"><span
 															style="font-weight: bold; font-size: 12px;display: block;">Hindi</span>
 														</label>
 
 													</div>
 													<div class="col" style="padding:0px;">
-														<input type="radio" name="music" id="tamil"
+														<input type="radio" name="music" id="tamil" ng-required="novia_music" ng-model="novia_music" value="Tamil"
 															class="input-hidden" ng-click="giftSelect('Tamil')" /> <label for="tamil"><span
 															style="font-weight: bold; font-size: 12px;display: block;">Tamil</span>
 														</label>
@@ -220,7 +221,7 @@ input[type=radio]:checked+label>img {
 												<div class="row" style="margin: 20px 0;">
 													
 													<div class="col" style="padding:0px;">
-														<input type="radio" name="music" id="telugu"
+														<input type="radio" name="music" id="telugu" ng-required="novia_music" ng-model="novia_music" value="Telugu"
 															class="input-hidden"  ng-click="giftSelect('Telugu')" /> <label for="telugu"><span
 															style="font-weight: bold; font-size: 12px;display: block;">Telugu</span>
 														</label>
