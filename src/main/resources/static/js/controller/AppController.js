@@ -705,6 +705,7 @@ app.controller('QuizController', function($scope, $window, $rootScope) {
 		 socket = new SockJS('quizWS');
 		 stompClient = Stomp.over(socket);
 		 stompClient.connect({}, onConnected, onError);
+		 	
 		 
 		 
 		 function onConnected() {
@@ -732,12 +733,14 @@ app.controller('QuizController', function($scope, $window, $rootScope) {
 				contentHtml;
 				
 				if(data.current) {
-					template = $('#ui-template-quiz').html();                    
+					var template = $('#ui-template-quiz').html();                    
 				}else{
-					template = $('#ui-template-quiz-inactive').html();
+					var template = $('#ui-template-quiz-inactive').html();
 				}
 				contentHtml = Mustache.to_html(template, data);
 				$('#question-container').html(contentHtml);
+				Mustache.parse(template);
+				
 			}
 			
 			function url_query( query ) {
@@ -751,6 +754,16 @@ app.controller('QuizController', function($scope, $window, $rootScope) {
 			        return false;
 			    }
 			}
+			  
+
+			$(document).on("click", '.btn-quiz', function(e) {
+				if ($(".js-submit-answer").hasClass("disabled")) {
+					$('.js-submit-answer').attr("disabled", true);
+				}else{	
+					$('.js-submit-answer').attr("disabled", false);
+				}
+			});
+			 
 			$(document).on("click", '.js-submit-answer', function(e) { 
 				e.preventDefault();
 				
@@ -760,6 +773,7 @@ app.controller('QuizController', function($scope, $window, $rootScope) {
 
 				var url='saveResponse/'+questionID+'/'+employeeID+'/'+radioValueOfAnsweredQuestion;
 				console.log(url);
+				 $('.js-submit-answer').attr("disabled", true);
 
 				$.ajax({
 					url: url,
@@ -769,6 +783,7 @@ app.controller('QuizController', function($scope, $window, $rootScope) {
 					success: function (res) {
 						console.log(res);
 						$('.js-submit-answer').addClass('disabled');
+						$('.js-submit-answer').attr("disabled", true);
 					},
 					error: function(error) {
 						console.log(error);

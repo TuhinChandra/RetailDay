@@ -12,27 +12,42 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link href="css/main.css" rel="stylesheet" media="all">
+<style>
+
+.quiz_block .btn-info:not(:disabled):not(.disabled).active, 
+.quiz_block .btn-info:not(:disabled):not(.disabled):active, 
+.quiz_block .show>.btn-info.dropdown-toggle {
+    color: #fff;
+    background-color: #592b4f;
+    border-color: #592b4f;
+}
+.quiz_block .btn{font-size:medium;}
+.question-statement{color:#592b4f;font-family:'Allerta Stencil', sans-serif;}
+.answer_quiz,
+.hidden{visibility:hidden;}
+</style>
 </head>
 
 <body>
 
 	<div class="container login_mod" style="padding-top: 68px">
-		<div class="row justify_center"><div id="question-container" class="panel panel-login col-sm-12 col-md-12 col-lg-12 log_panel">
-  		<script id="ui-template-quiz" type="x-tmpl-mustache">
+		<div class="row justify_center"><div  class="panel panel-login col-sm-12 col-md-12 col-lg-12 log_panel">
+  	<div id="question-container"></div>
+  		<script id="ui-template-quiz" type="x-tmpl-mustache" >
     <div>
-      <span id="questionID">{{questionID}}</span>
-      <h4 class="question-statement">{{{questionText}}} </h4>
+      
+      <h4 class="question-statement"><span id="questionID" class="hidden">{{questionID}}</span>{{{questionText}}} </h4>
     </div>
-    <div class="modal-body">
+    <div class="modal-body quiz_block">
       <div class="quiz" id="quiz" data-toggle="buttons">
-        <label class="element-animation1 btn btn-lg btn-info btn-block"><input type="radio" name="q_answer" value="{{optionA}}"/> {{optionA}}</label>
-        <label class="element-animation1 btn btn-lg btn-info btn-block"><input type="radio" name="q_answer" value="{{optionB}}"/> {{optionB}}</label>
-        <label class="element-animation1 btn btn-lg btn-info btn-block"><input type="radio" name="q_answer" value="{{optionC}}"/> {{optionC}}</label>
-        <label class="element-animation1 btn btn-lg btn-info btn-block"><input type="radio" name="q_answer" value="{{optionD}}"/> {{optionD}}</label>
+        <label class="element-animation1 btn btn-lg btn-info btn-block btn-quiz"><input class="answer_quiz" type="radio" name="q_answer" value="{{optionA}}"/> {{optionA}}</label>
+        <label class="element-animation1 btn btn-lg btn-info btn-block btn-quiz"><input class="answer_quiz" type="radio" name="q_answer" value="{{optionB}}"/> {{optionB}}</label>
+        <label class="element-animation1 btn btn-lg btn-info btn-block btn-quiz"><input class="answer_quiz" type="radio" name="q_answer" value="{{optionC}}"/> {{optionC}}</label>
+        <label class="element-animation1 btn btn-lg btn-info btn-block btn-quiz"><input class="answer_quiz" type="radio" name="q_answer" value="{{optionD}}"/> {{optionD}}</label>
       </div>
     </div>
     <div>
-      <button type="button" class="js-submit-answer">Lock your answer</button>
+      <button type="button" class="btn submit_quiz js-submit-answer" style="background: #f4623a;color:#fff;" disabled="true">Lock your answer</button>
     </div>
   		</script>
 
