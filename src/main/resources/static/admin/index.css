@@ -50,8 +50,7 @@
 	-webkit-box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 0.43);
 	-moz-box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 0.43);
 	box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 0.43);
-	background-color: rgb(15, 66, 170) !important;
-	height: 10%;
+	background-color: #592b4f !important;
 }
 
 .header_text {
@@ -111,15 +110,29 @@
 	font-size: x-large;
 }
 
-.question_text {
+.question_text,
+.question_heading {
 	font-size: large;
+	    color: #592b4f;
+    font-family: 'Allerta Stencil', sans-serif;
+    padding:0;
 }
-
+.photos > img{
+	width:100px;height:100px;
+	border-radius: 20px;
+	box-shadow:0px 11px 27px rgba(0, 0, 0, 0.3);
+}
 .option_text {
-	-webkit-box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 0.43);
-	-moz-box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 0.43);
-	box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 0.43);
-	border-radius: 10px;
+    background: rgba(255,255,255,0.7);
+    border-radius: 5px;
+    -webkit-transition: background 0.3s;
+    transition: background 0.3s;
+    font-family: 'Allerta Stencil', sans-serif;
+    margin: 5px 0;
+    box-shadow: none;
+    color: #6b456a;
+    border: 1px solid #6b456a;
+    background: #f7e1f2;
 }
 
 .option_active {
@@ -345,8 +358,9 @@
 
 .column {
     float: left;
-    width: 33.33%;
+    width: 100%;
     padding: 5px;
+    text-align: center;
 }
 
 /* Clearfix (clear floats) */

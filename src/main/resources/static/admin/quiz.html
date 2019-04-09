@@ -9,6 +9,8 @@
 	href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
 	integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
 	crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Advent+Pro"
+	rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="index.css">
 <link rel="stylesheet" type="text/css" href="cg-busy.css">
 <script src="angular.min.js"></script>
@@ -34,17 +36,19 @@
 			<a class="navbar-brand header_text" href="#!"><strong>
 			 NOVIA '19 :: QUIZ event</strong></a>
 		</nav>
+		<div ng-init="getQuizInfo()">
+		</div>
 		<div class="row mt-5 mr-1 ml-1 justify-content-center quiz_window"
 			ng-show="showStartQuiz">
-			<button ng-click="startQuiz()" class="btn btn-primary btn-lg mt-5">Start
+			<button ng-click="startQuiz()" style="background:#592b4f;border:1px solid #592b4f;" class="btn btn-primary btn-lg mt-5">Start
 				the quiz</button>
 		</div>
 		<div class="row mt-4 mr-1 ml-1 justify-content-center quiz_window"
 			ng-show="showQuestion">
-			<div class="col-12 question_heading">
+			<div class="col-10 question_heading">
 				<strong>Question #{{currentQuestionData.questionID}}</strong>
 			</div>
-			<div class="col-12 question_text mt-3"
+			<div class="col-10 question_text mt-3"
 				ng-bind-html="currentQuestionData.questionText"></div>
 			<div class="col-10 option_text mt-3 p-1 pl-2">{{currentQuestionData.optionA}}</div>
 			<div class="col-10 option_text mt-3 p-1 pl-2">{{currentQuestionData.optionB}}</div>
@@ -53,7 +57,7 @@
 		</div>
 		<div class="row mt-5 mr-1 ml-1 justify-content-center quiz_window"
 			ng-show="showResultButton">
-			<button ng-click="showResult()" class="btn btn-danger btn-lg mt-5">Show
+			<button ng-click="showResult()" style="background:#592b4f;border:1px solid #592b4f;" class="btn btn-danger btn-lg mt-5">Show
 				Result</button>
 		</div>
 		<div
@@ -65,10 +69,10 @@
 			<br/>
 			<div class="row">
 			<div ng-repeat="winner in resultData.otherWinners">
-			  <div class="column">
+			  <div class="column photos">
 			    <img src="data:image/jpg;base64,{{winner.photo}}">
 			    <p>
-					{{winner.name}}({{winner.emailID}})
+					({{winner.shortName}}-{{winner.employeeID}})
 			    </p>
 			  </div>
 			</div>
@@ -87,8 +91,10 @@
 			</div>
 			<div class="col-10  mt-3 p-1 pl-2" ng-show="resultData.winner==null">
 				No one gave the correct answer!</div>
-			<button ng-click="startQuiz()" class="btn btn-primary btn-lg mt-5">Next
+			<div class="col-10  mt-3 p-1 pl-2">
+			<button ng-click="startQuiz()" style="background:#592b4f;border:1px solid #592b4f;" class="btn btn-primary btn-lg mt-5">Next
 				Question</button>
+			</div>
 		</div>
 		<div class="col-10  mt-3 p-1 pl-2" ng-show="quizEnd">
 			<h1 style="text-align: center">!! THE END !!</h1>

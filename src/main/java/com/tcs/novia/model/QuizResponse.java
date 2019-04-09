@@ -1,12 +1,14 @@
 package com.tcs.novia.model;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
+
+import org.apache.commons.lang3.BooleanUtils;
 
 import com.tcs.novia.model.key.QuizResponseKey;
 
@@ -24,14 +26,16 @@ public class QuizResponse {
 	@Column(name = "OPTION_SELECTED", nullable = false)
 	private String option;
 	@Column(name = "TIME_STAMP", nullable = false)
-	private Timestamp timeStamp;
+	private LocalDateTime timeStamp;
+
+	private Boolean alreadyAnswered;
 
 	public QuizResponse() {
 
 	}
 
 	public QuizResponse(final String questionID, final long employeeID, final String option,
-			final Timestamp timeStamp) {
+			final LocalDateTime timeStamp) {
 		super();
 		this.questionID = questionID;
 		this.employeeID = employeeID;
@@ -63,11 +67,11 @@ public class QuizResponse {
 		this.option = option;
 	}
 
-	public Timestamp getTimeStamp() {
+	public LocalDateTime getTimeStamp() {
 		return timeStamp;
 	}
 
-	public void setTimeStamp(final Timestamp timeStamp) {
+	public void setTimeStamp(final LocalDateTime timeStamp) {
 		this.timeStamp = timeStamp;
 	}
 
@@ -75,6 +79,14 @@ public class QuizResponse {
 	public String toString() {
 		return "QuizResponse [questionID=" + questionID + ", employeeID=" + employeeID + ", option=" + option
 				+ ", timeStamp=" + timeStamp + "]";
+	}
+
+	public boolean isAlreadyAnswered() {
+		return BooleanUtils.toBoolean(alreadyAnswered);
+	}
+
+	public void setAlreadyAnswered(final Boolean alreadyAnswered) {
+		this.alreadyAnswered = alreadyAnswered;
 	}
 
 }

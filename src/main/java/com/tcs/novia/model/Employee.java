@@ -102,11 +102,12 @@ public class Employee {
 	private Boolean giftAmendmentEmailSent;
 	@Column(name = "CHECK_IN_TIME", nullable = true)
 	private LocalDateTime checkInTime;
-
-	// start Isometrix
 	@Column(name = "LOGIN_RETRIES_COUNT", nullable = true)
 	private Long countOfInvalidLoginAttempt;
-	// end
+	@Column(name = "TRAVEL_CONFIRMATION_DATE_TIME", nullable = true)
+	private LocalDateTime travelConfirmationDateTime;
+	@Column(name = "COLOR_BAND", nullable = true)
+	private String colorBand;
 	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<FlightInfo> flightInfos;
 	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -350,7 +351,7 @@ public class Employee {
 		return giftAmendmentEmailSent;
 	}
 
-	public void setGiftAmendmentEmailSent(Boolean giftAmendmentEmailSent) {
+	public void setGiftAmendmentEmailSent(final Boolean giftAmendmentEmailSent) {
 		this.giftAmendmentEmailSent = giftAmendmentEmailSent;
 	}
 
@@ -414,10 +415,26 @@ public class Employee {
 		this.countOfInvalidLoginAttempt = countOfInvalidLoginAttempt;
 	}
 
+	public LocalDateTime getTravelConfirmationDateTime() {
+		return travelConfirmationDateTime;
+	}
+
+	public void setTravelConfirmationDateTime(final LocalDateTime travelConfirmationDateTime) {
+		this.travelConfirmationDateTime = travelConfirmationDateTime;
+	}
+
 	@Override
 	public String toString() {
 		return "Employee [employeeID=" + employeeID + ", emailID=" + emailID + ", firstName=" + firstName
 				+ ", lastName=" + lastName + "]";
+	}
+
+	public String getColorBand() {
+		return colorBand;
+	}
+
+	public void setColorBand(final String colorBand) {
+		this.colorBand = colorBand;
 	}
 
 }

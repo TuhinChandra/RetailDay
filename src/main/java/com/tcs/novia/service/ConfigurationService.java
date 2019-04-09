@@ -44,6 +44,16 @@ public class ConfigurationService {
 		return null != config ? Integer.parseInt(config.getConfigValue()) : 0;
 	}
 
+	public int getNoOfDisplayableQuizWinners() {
+		final Configuration config = getConfiguration(Constants.CONFIG_QUIZ_NO_OF_WINNERS_TO_SHOW);
+		return null != config ? Integer.parseInt(config.getConfigValue()) : 10;
+	}
+
+	public int getNoOfQuizQuestions() {
+		final Configuration config = getConfiguration(Constants.CONFIG_QUIZ_NO_OF_QUESTIONS);
+		return null != config ? Integer.parseInt(config.getConfigValue()) : 0;
+	}
+
 	public boolean shouldSendReminderEmailFor(final String emailContext) {
 		final Configuration config = getConfiguration(emailContext);
 		return null != config ? BooleanUtils.toBoolean(config.getConfigValue()) : false;

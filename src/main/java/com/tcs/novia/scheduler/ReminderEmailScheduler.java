@@ -36,7 +36,8 @@ public class ReminderEmailScheduler {
 		if (configurationService
 				.shouldSendReminderEmailFor(Constants.CONFIG_SEND_SECOND_CONFIRM_PARTICIPATION_REMINDER_EMAIL)) {
 			LOGGER.info("Schedular::sendSecondReminderToConfirmParticipation");
-			emailService.sendSubsequentReminderEmails(null, Constants.TEMPLATE_CONFIRM_PARTICIPATION_REMINDER_EMAIL,
+			emailService.sendSubsequentParticipationReminderEmails(null,
+					Constants.TEMPLATE_CONFIRM_PARTICIPATION_REMINDER_EMAIL,
 					Constants.TEMPLATE_SECOND_CONFIRM_PARTICIPATION_REMINDER_EMAIL, 1, false);
 		} else {
 			schedularNotEnabled();
@@ -48,7 +49,8 @@ public class ReminderEmailScheduler {
 		if (configurationService
 				.shouldSendReminderEmailFor(Constants.CONFIG_SEND_ESCALATE_CONFIRM_PARTICIPATION_REMINDER_EMAIL)) {
 			LOGGER.info("Schedular::sendEscalateReminderToConfirmParticipation");
-			emailService.sendSubsequentReminderEmails(null, Constants.TEMPLATE_CONFIRM_PARTICIPATION_REMINDER_EMAIL,
+			emailService.sendSubsequentParticipationReminderEmails(null,
+					Constants.TEMPLATE_CONFIRM_PARTICIPATION_REMINDER_EMAIL,
 					Constants.TEMPLATE_ESCALATION_CONFIRM_PARTICIPATION_REMINDER_EMAIL, 2, true);
 		} else {
 			schedularNotEnabled();
@@ -73,7 +75,7 @@ public class ReminderEmailScheduler {
 	public void sendSecondCompleteRegistrationReminder() {
 		if (configurationService.shouldSendReminderEmailFor(Constants.CONFIG_SEND_SECOND_REGISTRATION_REMINDER_EMAIL)) {
 			LOGGER.info("Schedular::sendSecondCompleteRegistrationReminder");
-			emailService.sendSubsequentReminderEmails(null, Constants.TEMPLATE_REGISTRATION_REMINDER_EMAIL,
+			emailService.sendSubsequentRegistrationReminderEmails(null, Constants.TEMPLATE_REGISTRATION_REMINDER_EMAIL,
 					Constants.TEMPLATE_SECOND_REGISTRATION_REMINDER_EMAIL, 1, false);
 		} else {
 			schedularNotEnabled();
@@ -85,7 +87,7 @@ public class ReminderEmailScheduler {
 		if (configurationService
 				.shouldSendReminderEmailFor(Constants.CONFIG_SEND_ESCALATE_REGISTRATION_REMINDER_EMAIL)) {
 			LOGGER.info("Schedular::sendEscalationForCompleteRegistrationReminder");
-			emailService.sendSubsequentReminderEmails(null, Constants.TEMPLATE_REGISTRATION_REMINDER_EMAIL,
+			emailService.sendSubsequentRegistrationReminderEmails(null, Constants.TEMPLATE_REGISTRATION_REMINDER_EMAIL,
 					Constants.TEMPLATE_ESCALATION_REGISTRATION_REMINDER_EMAIL, 2, true);
 		} else {
 			schedularNotEnabled();
@@ -107,7 +109,7 @@ public class ReminderEmailScheduler {
 		if (configurationService
 				.shouldSendReminderEmailFor(Constants.CONFIG_SEND_SECOND_FLIGHT_UPDATE_REMINDER_EMAIL)) {
 			LOGGER.info("Schedular::sendSecondFlightUpdateReminder");
-			emailService.sendSubsequentReminderEmails(null, Constants.TEMPLATE_FLIGHT_UPDATE_REMINDER_EMAIL,
+			emailService.sendSubsequentTravelReminderEmails(null, Constants.TEMPLATE_FLIGHT_UPDATE_REMINDER_EMAIL,
 					Constants.TEMPLATE_SECOND_FLIGHT_UPDATE_REMINDER_EMAIL, 1, false);
 		} else {
 			schedularNotEnabled();
@@ -119,8 +121,18 @@ public class ReminderEmailScheduler {
 		if (configurationService
 				.shouldSendReminderEmailFor(Constants.CONFIG_SEND_ESCALATE_FLIGHT_UPDATE_REMINDER_EMAIL)) {
 			LOGGER.info("Schedular::sendEscalationForFlightUpdateReminder");
-			emailService.sendSubsequentReminderEmails(null, Constants.TEMPLATE_FLIGHT_UPDATE_REMINDER_EMAIL,
+			emailService.sendSubsequentTravelReminderEmails(null, Constants.TEMPLATE_FLIGHT_UPDATE_REMINDER_EMAIL,
 					Constants.TEMPLATE_ESCALATION_FLIGHT_UPDATE_REMINDER_EMAIL, 2, true);
+		} else {
+			schedularNotEnabled();
+		}
+	}
+
+	@Scheduled(cron = "${schedule.remider.email}")
+	public void sendTravelConfirmationEmail() {
+		if (configurationService.shouldSendReminderEmailFor(Constants.CONFIG_SEND_TRAVEL_CONFIRMATION_EMAIL)) {
+			LOGGER.info("Schedular::sendTravelConfirmationEmail");
+			emailService.sendTravelConfirmationEmail(null);
 		} else {
 			schedularNotEnabled();
 		}

@@ -45,18 +45,18 @@ public class AdminUserController {
 		return employeeService.register(employeeID, firstName, lastName, shortName, gender, emailID,
 				defaultEmployeePassword, role);
 	}
-	
+
 	@RequestMapping(value = "/createEmployeeFromJSON", method = RequestMethod.POST, produces = "application/json")
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
-	public Employee createEmployeeFromJSON(@RequestBody Employee employee) throws Exception {
+	public Employee createEmployeeFromJSON(@RequestBody final Employee employee) throws Exception {
 		return employeeService.saveEmployeeData(employee);
 	}
-	
+
 	@RequestMapping(value = "/createEmployeesFromJSON", method = RequestMethod.POST, produces = "application/json")
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
-	public List<Employee> createEmployeesFromJSON(@RequestBody List<Employee> employees) throws Exception {
+	public List<Employee> createEmployeesFromJSON(@RequestBody final List<Employee> employees) throws Exception {
 		return employeeService.saveBulkEmployees(employees);
 	}
 
@@ -70,12 +70,6 @@ public class AdminUserController {
 	@ResponseBody
 	public void deleteEmployee(@PathVariable("employeeID") final long employeeID) throws Exception {
 		employeeService.deleteEmployee(employeeID);
-	}
-
-	@RequestMapping(value = "/deleteAllEmployees", method = RequestMethod.POST, produces = "application/json")
-	@ResponseBody
-	public void deleteAllEmployees() throws Exception {
-		employeeService.deleteAllEmployees();
 	}
 
 	@RequestMapping(value = "/upload", method = RequestMethod.POST, produces = "application/json", consumes = "multipart/form-data")
@@ -117,6 +111,14 @@ public class AdminUserController {
 	@ResponseBody
 	public List<Employee> updateUploadUserDate() {
 		return employeeService.updateUploadUserDate();
+	}
+
+	@RequestMapping(value = "/updateColorBand", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public List<Employee> updateColorBand(
+			@RequestParam(value = "employeeIDs", required = true) final String employeeIDs,
+			@RequestParam(value = "color", required = true) final String color) {
+		return employeeService.updateColorBand(employeeIDs.split(","), color);
 	}
 
 	@RequestMapping(value = "/getCountOfExpectedDelegates", method = RequestMethod.GET)

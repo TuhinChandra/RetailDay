@@ -133,6 +133,21 @@ public class EmployeeService {
 		employeeRepository.save(employee);
 	}
 
+	public List<Employee> updateColorBand(final String[] employeeIDs, final String color) {
+		List<Employee> employeesWithUpdatedColorBand = null;
+		if (null != employeeIDs && employeeIDs.length > 0 && StringUtils.isNotBlank(color)) {
+			employeesWithUpdatedColorBand = new ArrayList<>();
+			for (final String empId : employeeIDs) {
+				final Employee emp = findByEmployeeID(Long.parseLong(empId));
+				if (null != emp) {
+					emp.setColorBand(color.toUpperCase());
+					employeesWithUpdatedColorBand.add(saveEmployeeData(emp));
+				}
+			}
+		}
+		return employeesWithUpdatedColorBand;
+	}
+
 	public Employee update(final Employee employee, final String firstName, final String lastName, final String emailID,
 			final String foodPreference, final String password, final String mobile, final String cityTour,
 			final String photo, final String gender, final String shirtSize, final String gift,
@@ -270,17 +285,57 @@ public class EmployeeService {
 		return emp;
 	}
 
-	public List<Employee> findEmployeesEligibleForSubsequentReminders(final Long employeeIDToMatch,
+	public List<Employee> findEmployeesEligibleForSubsequentParticipationReminders(final Long employeeIDToMatch,
 			final String emailContext, final int reminderCount) {
 
 		LOGGER.info(
-				"findEmployeesEligibleForSubsequentReminders:: method parameters:: employeeIDToMatch::{}, emailContext::{}, reminderCount::{}",
+				"findEmployeesEligibleForSubsequentParticipationReminders:: method parameters:: employeeIDToMatch::{}, emailContext::{}, reminderCount::{}",
 				employeeIDToMatch, emailContext, reminderCount);
 
 		final List<BigInteger> employeeIDs = employeeRepository
-				.findEmployeesEligibleForSubsequentReminders(emailContext, reminderCount);
-		LOGGER.info("findEmployeesEligibleForSubsequentReminders:: result:: employeeIDs::{}", employeeIDs);
+				.findEmployeesEligibleForSubsequentParticipationReminders(emailContext, reminderCount);
+		LOGGER.info("findEmployeesEligibleForSubsequentParticipationReminders:: result:: employeeIDs::{}", employeeIDs);
 		return getEmployeesByID(employeeIDs, employeeIDToMatch);
+	}
+
+	public List<Employee> findEmployeesEligibleForSubsequentRegistrationReminders(final Long employeeIDToMatch,
+			final String emailContext, final int reminderCount) {
+
+		LOGGER.info(
+				"findEmployeesEligibleForSubsequentRegistrationReminders:: method parameters:: employeeIDToMatch::{}, emailContext::{}, reminderCount::{}",
+				employeeIDToMatch, emailContext, reminderCount);
+
+		final List<BigInteger> employeeIDs = employeeRepository
+				.findEmployeesEligibleForSubsequentRegistrationReminders(emailContext, reminderCount);
+		LOGGER.info("findEmployeesEligibleForSubsequentRegistrationReminders:: result:: employeeIDs::{}", employeeIDs);
+		return getEmployeesByID(employeeIDs, employeeIDToMatch);
+	}
+
+	public List<Employee> findEmployeesEligibleForSubsequentTravelReminders(final Long employeeIDToMatch,
+			final String emailContext, final int reminderCount) {
+
+		LOGGER.info(
+				"findEmployeesEligibleForSubsequentTravelReminders:: method parameters:: employeeIDToMatch::{}, emailContext::{}, reminderCount::{}",
+				employeeIDToMatch, emailContext, reminderCount);
+
+		final List<BigInteger> employeeIDs = employeeRepository
+				.findEmployeesEligibleForSubsequentTravelReminder(emailContext, reminderCount);
+
+		final List<BigInteger> employeeIDsPartiallyFilledTravel = employeeRepository
+				.findEmployeesFilledPartialTravelDetails();
+
+		final List<BigInteger> eligibleEmployeeIDs = new ArrayList<>();
+
+		if (null != employeeIDs && !employeeIDs.isEmpty()) {
+			eligibleEmployeeIDs.addAll(employeeIDs);
+		}
+		if (null != employeeIDsPartiallyFilledTravel && !employeeIDsPartiallyFilledTravel.isEmpty()) {
+			eligibleEmployeeIDs.addAll(employeeIDsPartiallyFilledTravel);
+		}
+
+		LOGGER.info("findEmployeesEligibleForSubsequentTravelReminders:: result:: employeeIDs::{}",
+				eligibleEmployeeIDs);
+		return getEmployeesByID(eligibleEmployeeIDs, employeeIDToMatch);
 	}
 
 	public List<Employee> fetchNotConfirmedParticipants(final Long employeeID) {
@@ -302,6 +357,12 @@ public class EmployeeService {
 		final List<BigInteger> employeeIDs = employeeRepository.findEmployeesYetToFillFlightInfo(
 				configurationService.getInterval(Constants.CONFIG_INTERVAL_DAY_FLIGHT_REMINDER));
 		LOGGER.info("findEmployeesNotProvidedFlightDetails:: result:: employeeIDs::{}", employeeIDs);
+		return getEmployeesByID(employeeIDs, employeeID);
+	}
+
+	public List<Employee> findEmployeesWhoProvidedCompleteFlightDetails(final Long employeeID) {
+		final List<BigInteger> employeeIDs = employeeRepository.findEmployeesEligibleForTravelConfirmation();
+		LOGGER.info("findEmployeesWhoProvidedCompleteFlightDetails:: result:: employeeIDs::{}", employeeIDs);
 		return getEmployeesByID(employeeIDs, employeeID);
 	}
 

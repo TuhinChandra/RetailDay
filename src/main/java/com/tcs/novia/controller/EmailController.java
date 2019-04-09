@@ -52,13 +52,23 @@ public class EmailController {
 
 	@RequestMapping(value = "/sendLogisticEmail", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public List<Employee> sendLogisticEmail(@RequestParam(value = "employeeID", required = false) final Long employeeID) {
+	public List<Employee> sendLogisticEmail(
+			@RequestParam(value = "employeeID", required = false) final Long employeeID) {
 		return emailService.sendLogisticEmail(employeeID);
 	}
+
 	@RequestMapping(value = "/sendGiftAmendmentEmail", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public List<Employee> sendGiftAmendmentEmail(@RequestParam(value = "employeeID", required = false) final Long employeeID) {
+	public List<Employee> sendGiftAmendmentEmail(
+			@RequestParam(value = "employeeID", required = false) final Long employeeID) {
 		return emailService.sendGiftAmendmentEmail(employeeID);
+	}
+
+	@RequestMapping(value = "/sendTravelConfirmationEmail", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public List<Employee> sendTravelConfirmationEmail(
+			@RequestParam(value = "employeeID", required = false) final Long employeeID) {
+		return emailService.sendTravelConfirmationEmail(employeeID);
 	}
 
 	@RequestMapping(value = "/createTemplate", method = RequestMethod.POST, produces = "application/json")
@@ -76,18 +86,18 @@ public class EmailController {
 		return emailTemplateRepository.save(new EmailTemplate(templateName, emailFrom, emailTo, emailCC, emailFromAlias,
 				subject, bodyContent, BooleanUtils.toBooleanObject(disabled)));
 	}
-	
+
 	@RequestMapping(value = "/createTemplateFromJSON", method = RequestMethod.POST, produces = "application/json")
-    @ResponseStatus(HttpStatus.CREATED)
+	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
-	public EmailTemplate createTemplateFromJSON(@RequestBody EmailTemplate emailTemplate) {
+	public EmailTemplate createTemplateFromJSON(@RequestBody final EmailTemplate emailTemplate) {
 		return emailTemplateRepository.save(emailTemplate);
 	}
-	
+
 	@RequestMapping(value = "/createEmailTemplatesFromJSON", method = RequestMethod.POST, produces = "application/json")
-    @ResponseStatus(HttpStatus.CREATED)
+	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
-	public List<EmailTemplate> createEmailTemplatesFromJSON(@RequestBody List<EmailTemplate> emailTemplates) {
+	public List<EmailTemplate> createEmailTemplatesFromJSON(@RequestBody final List<EmailTemplate> emailTemplates) {
 		return emailTemplateRepository.saveAll(emailTemplates);
 	}
 
@@ -96,9 +106,11 @@ public class EmailController {
 	public List<EmailTemplate> getAllEmailTemplates() {
 		return emailTemplateRepository.findAll();
 	}
-	
-	/******************************************		Confirm Participation START	******************************/
-	
+
+	/******************************************
+	 * Confirm Participation START
+	 ******************************/
+
 	@RequestMapping(value = "/sendConfirmationForParticipationEmail", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public Employee sendConfirmationForParticipationEmail(
@@ -120,56 +132,64 @@ public class EmailController {
 		}
 		return emp;
 	}
-	
+
 	///////////////////////////////////// Reminder
-	
+
 	@RequestMapping(value = "/findEmployeesEligibleForFirstParticipationReminder", method = RequestMethod.GET)
 	@ResponseBody
 	public List<BigInteger> findEmployeesEligibleForFirstParticipationReminder() {
 		return employeeRepository.findEmployeesYetToConfirmParticipation(
 				configurationService.getInterval(Constants.CONFIG_INTERVAL_DAY_CONFIRM_PARTICIPATION_REMINDER));
 	}
-	
-	@RequestMapping(value = "/sendReminderToConfirmParticipation", method = RequestMethod.GET, produces = "application/json")
+
+	@RequestMapping(value = "/sendFirstReminderToConfirmParticipation", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public List<Employee> sendReminderToConfirmParticipation(@RequestParam(value = "employeeID", required = false) final Long employeeID) {
+	public List<Employee> sendFirstReminderToConfirmParticipation(
+			@RequestParam(value = "employeeID", required = false) final Long employeeID) {
 		return emailService.sendReminderToConfirmParticipation(employeeID);
 	}
 
 	@RequestMapping(value = "/findEmployeesEligibleForSecondConfirmParticipationReminder", method = RequestMethod.GET)
 	@ResponseBody
 	public List<BigInteger> findEmployeesEligibleForSecondConfirmParticipationReminder() {
-		return employeeRepository.findEmployeesEligibleForSubsequentReminders(
+		return employeeRepository.findEmployeesEligibleForSubsequentParticipationReminders(
 				Constants.TEMPLATE_CONFIRM_PARTICIPATION_REMINDER_EMAIL, 1);
 	}
-	
+
 	@RequestMapping(value = "/findEmployeesEligibleForConfirmParticipationEscalation", method = RequestMethod.GET)
 	@ResponseBody
 	public List<BigInteger> findEmployeesEligibleForConfirmParticipationEscalation() {
-		return employeeRepository.findEmployeesEligibleForSubsequentReminders(
+		return employeeRepository.findEmployeesEligibleForSubsequentParticipationReminders(
 				Constants.TEMPLATE_CONFIRM_PARTICIPATION_REMINDER_EMAIL, 2);
 	}
 
-	@RequestMapping(value = "/sendSecondConfirmParticipationReminder", method = RequestMethod.GET,  produces = "application/json")
+	@RequestMapping(value = "/sendSecondConfirmParticipationReminder", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public List<Employee> sendSecondConfirmParticipationReminder(@RequestParam(value = "employeeID", required = false) final Long employeeID) {
-		
-		return emailService.sendSubsequentReminderEmails(employeeID, Constants.TEMPLATE_CONFIRM_PARTICIPATION_REMINDER_EMAIL, 
+	public List<Employee> sendSecondConfirmParticipationReminder(
+			@RequestParam(value = "employeeID", required = false) final Long employeeID) {
+
+		return emailService.sendSubsequentParticipationReminderEmails(employeeID,
+				Constants.TEMPLATE_CONFIRM_PARTICIPATION_REMINDER_EMAIL,
 				Constants.TEMPLATE_SECOND_CONFIRM_PARTICIPATION_REMINDER_EMAIL, 1, false);
 	}
-	
-	@RequestMapping(value = "/sendEscalationForConfirmParticipationReminder", method = RequestMethod.GET,  produces = "application/json")
+
+	@RequestMapping(value = "/sendEscalationForConfirmParticipationReminder", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public List<Employee> sendEscalationForConfirmParticipationReminder(@RequestParam(value = "employeeID", required = false) final Long employeeID) {
-		
-		return emailService.sendSubsequentReminderEmails(employeeID, Constants.TEMPLATE_CONFIRM_PARTICIPATION_REMINDER_EMAIL, 
+	public List<Employee> sendEscalationForConfirmParticipationReminder(
+			@RequestParam(value = "employeeID", required = false) final Long employeeID) {
+
+		return emailService.sendSubsequentParticipationReminderEmails(employeeID,
+				Constants.TEMPLATE_CONFIRM_PARTICIPATION_REMINDER_EMAIL,
 				Constants.TEMPLATE_ESCALATION_CONFIRM_PARTICIPATION_REMINDER_EMAIL, 2, true);
 	}
 
-	/******************************************		Confirm Participation END	******************************/
+	/******************************************
+	 * Confirm Participation END
+	 ******************************/
 
-	
-	/******************************************		Complete Registration START	******************************/
+	/******************************************
+	 * Complete Registration START
+	 ******************************/
 
 	@RequestMapping(value = "/findEmployeesEligibleForFirstRegistrationReminder", method = RequestMethod.GET)
 	@ResponseBody
@@ -178,43 +198,52 @@ public class EmailController {
 				configurationService.getInterval(Constants.CONFIG_INTERVAL_DAY_COMPLETE_REGISTRATION_REMINDER));
 	}
 
-	@RequestMapping(value = "/sendReminderToCompleteRegistration", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/sendFirstReminderToCompleteRegistration", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public List<Employee> sendReminderToCompleteRegistration(@RequestParam(value = "employeeID", required = false) final Long employeeID) {
+	public List<Employee> sendFirstReminderToCompleteRegistration(
+			@RequestParam(value = "employeeID", required = false) final Long employeeID) {
 		return emailService.sendReminderToCompleteRegistration(employeeID);
 	}
 
 	@RequestMapping(value = "/findEmployeesEligibleForSecondRegistrationReminder", method = RequestMethod.GET)
 	@ResponseBody
 	public List<BigInteger> findEmployeesEligibleForSecondRegistrationReminder() {
-		return employeeRepository
-				.findEmployeesEligibleForSubsequentReminders(Constants.TEMPLATE_REGISTRATION_REMINDER_EMAIL, 1);
+		return employeeRepository.findEmployeesEligibleForSubsequentRegistrationReminders(
+				Constants.TEMPLATE_REGISTRATION_REMINDER_EMAIL, 1);
 	}
 
 	@RequestMapping(value = "/findEmployeesEligibleForRegistrationReminderEscalation", method = RequestMethod.GET)
 	@ResponseBody
 	public List<BigInteger> findEmployeesEligibleForRegistrationReminderEscalation() {
-		return employeeRepository
-				.findEmployeesEligibleForSubsequentReminders(Constants.TEMPLATE_REGISTRATION_REMINDER_EMAIL, 2);
+		return employeeRepository.findEmployeesEligibleForSubsequentRegistrationReminders(
+				Constants.TEMPLATE_REGISTRATION_REMINDER_EMAIL, 2);
 	}
-	
+
 	@RequestMapping(value = "/sendSecondCompleteRegistrationReminder", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Employee> sendSecondCompleteRegistrationReminder(@RequestParam(value = "employeeID", required = false) final Long employeeID) {
-		return emailService.sendSubsequentReminderEmails(employeeID, Constants.TEMPLATE_REGISTRATION_REMINDER_EMAIL, 
-				Constants.TEMPLATE_SECOND_REGISTRATION_REMINDER_EMAIL, 1, false);
+	public List<Employee> sendSecondCompleteRegistrationReminder(
+			@RequestParam(value = "employeeID", required = false) final Long employeeID) {
+		return emailService.sendSubsequentRegistrationReminderEmails(employeeID,
+				Constants.TEMPLATE_REGISTRATION_REMINDER_EMAIL, Constants.TEMPLATE_SECOND_REGISTRATION_REMINDER_EMAIL,
+				1, false);
 	}
 
 	@RequestMapping(value = "/sendEscalationForCompleteRegistrationReminder", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Employee> sendEscalationForCompleteRegistrationReminder(@RequestParam(value = "employeeID", required = false) final Long employeeID) {
-		return emailService.sendSubsequentReminderEmails(employeeID, Constants.TEMPLATE_REGISTRATION_REMINDER_EMAIL, 
+	public List<Employee> sendEscalationForCompleteRegistrationReminder(
+			@RequestParam(value = "employeeID", required = false) final Long employeeID) {
+		return emailService.sendSubsequentRegistrationReminderEmails(employeeID,
+				Constants.TEMPLATE_REGISTRATION_REMINDER_EMAIL,
 				Constants.TEMPLATE_ESCALATION_REGISTRATION_REMINDER_EMAIL, 2, true);
 	}
 
-	/******************************************		Complete Registration END	******************************/
+	/******************************************
+	 * Complete Registration END
+	 ******************************/
 
-	/******************************************		Complete Flight Details START	******************************/
+	/******************************************
+	 * Complete Flight Details START
+	 ******************************/
 
 	@RequestMapping(value = "/findEmployeesEligibleForFirstTravelReminder", method = RequestMethod.GET)
 	@ResponseBody
@@ -223,43 +252,54 @@ public class EmailController {
 				configurationService.getInterval(Constants.CONFIG_INTERVAL_DAY_FLIGHT_REMINDER));
 	}
 
-	@RequestMapping(value = "/sendReminderToCompleteFlightDetails", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/sendFirstReminderToCompleteTravelDetails", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public List<Employee> sendReminderToCompleteFlightDetails(@RequestParam(value = "employeeID", required = false) final Long employeeID) {
+	public List<Employee> sendFirstReminderToCompleteFlightDetails(
+			@RequestParam(value = "employeeID", required = false) final Long employeeID) {
 		return emailService.sendReminderToCompleteFlightDetails(employeeID);
 	}
-	
-	
+
 	@RequestMapping(value = "/findEmployeesEligibleForSecondTravelReminder", method = RequestMethod.GET)
 	@ResponseBody
 	public List<BigInteger> findEmployeesEligibleForSecondTravelReminder() {
 		return employeeRepository
-				.findEmployeesEligibleForSubsequentReminders(Constants.TEMPLATE_FLIGHT_UPDATE_REMINDER_EMAIL, 1);
+				.findEmployeesEligibleForSubsequentTravelReminder(Constants.TEMPLATE_FLIGHT_UPDATE_REMINDER_EMAIL, 1);
 	}
 
 	@RequestMapping(value = "/findEmployeesEligibleForTravelReminderEscalation", method = RequestMethod.GET)
 	@ResponseBody
 	public List<BigInteger> findEmployeesEligibleForTravelReminderEscalation() {
 		return employeeRepository
-				.findEmployeesEligibleForSubsequentReminders(Constants.TEMPLATE_FLIGHT_UPDATE_REMINDER_EMAIL, 2);
+				.findEmployeesEligibleForSubsequentTravelReminder(Constants.TEMPLATE_FLIGHT_UPDATE_REMINDER_EMAIL, 2);
 	}
 
-	
-	@RequestMapping(value = "/sendSecondFlightUpdateReminder", method = RequestMethod.GET)
+	@RequestMapping(value = "/findEmployeesFilledPartialTravelDetails", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Employee> sendSecondFlightUpdateReminder(@RequestParam(value = "employeeID", required = false) final Long employeeID) {
-		return emailService.sendSubsequentReminderEmails(employeeID, Constants.TEMPLATE_FLIGHT_UPDATE_REMINDER_EMAIL, 
-				Constants.TEMPLATE_SECOND_FLIGHT_UPDATE_REMINDER_EMAIL, 1, false);
+	public List<BigInteger> findEmployeesFilledPartialTravelDetails() {
+		return employeeRepository.findEmployeesFilledPartialTravelDetails();
 	}
 
-	@RequestMapping(value = "/sendEscalationForFlightUpdateReminder", method = RequestMethod.GET)
+	@RequestMapping(value = "/sendSecondTravelUpdateReminder", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Employee> sendEscalationForFlightUpdateReminder(@RequestParam(value = "employeeID", required = false) final Long employeeID) {
-		return emailService.sendSubsequentReminderEmails(employeeID, Constants.TEMPLATE_FLIGHT_UPDATE_REMINDER_EMAIL, 
+	public List<Employee> sendSecondFlightUpdateReminder(
+			@RequestParam(value = "employeeID", required = false) final Long employeeID) {
+		return emailService.sendSubsequentTravelReminderEmails(employeeID,
+				Constants.TEMPLATE_FLIGHT_UPDATE_REMINDER_EMAIL, Constants.TEMPLATE_SECOND_FLIGHT_UPDATE_REMINDER_EMAIL,
+				1, false);
+	}
+
+	@RequestMapping(value = "/sendEscalationForTravelUpdateReminder", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Employee> sendEscalationForFlightUpdateReminder(
+			@RequestParam(value = "employeeID", required = false) final Long employeeID) {
+		return emailService.sendSubsequentTravelReminderEmails(employeeID,
+				Constants.TEMPLATE_FLIGHT_UPDATE_REMINDER_EMAIL,
 				Constants.TEMPLATE_ESCALATION_FLIGHT_UPDATE_REMINDER_EMAIL, 2, true);
 	}
 
-	/******************************************		Complete Flight Details END	******************************/
+	/******************************************
+	 * Complete Flight Details END
+	 ******************************/
 
 	@RequestMapping(value = "/deleteEmailTemplate", method = RequestMethod.POST)
 	@ResponseBody
@@ -287,16 +327,16 @@ public class EmailController {
 				emailTemplate.setEmailFrom(emailFrom);
 			}
 			if (StringUtils.isNotBlank(emailTo)) {
-				if(Constants.INPUT_BLANK_VALUE.equalsIgnoreCase(emailTo)) {
+				if (Constants.INPUT_BLANK_VALUE.equalsIgnoreCase(emailTo)) {
 					emailTemplate.setEmailTo(null);
-				}else {
+				} else {
 					emailTemplate.setEmailTo(emailTo);
 				}
 			}
 			if (StringUtils.isNotBlank(emailCC)) {
-				if(Constants.INPUT_BLANK_VALUE.equalsIgnoreCase(emailCC)) {
+				if (Constants.INPUT_BLANK_VALUE.equalsIgnoreCase(emailCC)) {
 					emailTemplate.setEmailCC(null);
-				}else {
+				} else {
 					emailTemplate.setEmailCC(emailCC);
 				}
 			}

@@ -2,17 +2,25 @@ package com.tcs.novia.service;
 
 import java.util.List;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tcs.novia.model.Question;
+import com.tcs.novia.model.QuizInfo;
+import com.tcs.novia.model.SurveyQuestion;
 import com.tcs.novia.repository.QuestionRepository;
+import com.tcs.novia.repository.SurveyQuestionRepository;
 
 @Service
 public class QuestionService {
 
 	@Autowired
-	QuestionRepository questionRepository;
+	private QuestionRepository questionRepository;
+	@Autowired
+	private SurveyQuestionRepository surveyQuestionRepository;
+	@Autowired
+	private ConfigurationService configurationService;
 
 	public void setCurrentQuestion(final String questionID) {
 		for (final Question question : questionRepository.findAll()) {
@@ -48,11 +56,40 @@ public class QuestionService {
 		}
 	}
 
-	public Question createQuestion(final String questionID, final String questionText, final String optionA,
+	public Question createQuizQuestion(final String questionID, final String questionText, final String optionA,
 			final String optionB, final String optionC, final String optionD, final String optionCorrect) {
 		final Question question = new Question(questionID, questionText, optionA, optionB, optionC, optionD,
 				optionCorrect, false);
 		return questionRepository.save(question);
+	}
+	public SurveyQuestion createSurveyQuestion(final String questionID, final String questionText, final String optionA,
+			final String optionB, final String optionC, final String optionD) {
+		final SurveyQuestion question = new SurveyQuestion(Integer.parseInt(questionID), questionText, optionA, optionB, optionC, optionD);
+		return surveyQuestionRepository.save(question);
+	}
+
+	public QuizInfo getQuizInfo() {
+
+		final int currentQuestion = null != getCurrentQuestion()
+				? Integer.parseInt(getCurrentQuestion().getQuestionID())
+				: 1;
+
+		return new QuizInfo(configurationService.getNoOfQuizQuestions(), currentQuestion);
+	}
+
+	public void deleteQuestion(String questionID, Boolean isSurveyQuestion) {
+		if(BooleanUtils.toBoolean(isSurveyQuestion)) {
+			surveyQuestionRepository.deleteById(Integer.parseInt(questionID));
+		}else {
+			questionRepository.deleteById(questionID);
+		}
+	}
+
+	public List<Question> getAllQuizQuestions() {
+		return questionRepository.findAll();
+	}
+	public List<SurveyQuestion> getAllSurveyQuestion() {
+		return surveyQuestionRepository.findAll();
 	}
 
 }

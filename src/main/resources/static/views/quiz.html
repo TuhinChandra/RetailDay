@@ -25,6 +25,23 @@
 .question-statement{color:#592b4f;font-family:'Allerta Stencil', sans-serif;}
 .answer_quiz,
 .hidden{visibility:hidden;}
+
+.quiz .btn {
+color: rgba(0,0,0,0.54);
+background: rgba(255,255,255,0.7);
+border-radius: 5px;
+-webkit-transition: background 0.3s;
+transition: background 0.3s;
+font-family: 'Allerta Stencil', sans-serif;
+margin: 5px 0;
+box-shadow: none;
+color: #6b456a ;
+border: 1px solid #6b456a ;
+background: #f7e1f2 ;
+}
+.common.quiz{
+background: #fff ;
+}
 </style>
 </head>
 
@@ -36,7 +53,7 @@
   		<script id="ui-template-quiz" type="x-tmpl-mustache" >
     <div>
       
-      <h4 class="question-statement"><span id="questionID" class="hidden">{{questionID}}</span>{{{questionText}}} </h4>
+      <h4 class="question-statement"><span id="questionID">{{questionID}}. </span>{{{questionText}}} </h4>
     </div>
     <div class="modal-body quiz_block">
       <div class="quiz" id="quiz" data-toggle="buttons">
@@ -46,8 +63,13 @@
         <label class="element-animation1 btn btn-lg btn-info btn-block btn-quiz"><input class="answer_quiz" type="radio" name="q_answer" value="{{optionD}}"/> {{optionD}}</label>
       </div>
     </div>
+    <div class="col-lg-12" style="text-align: center;" style="margin-bottom: 5px;">											
+		<div data-autohide="true" data-delay="5000" style="max-width: 100%;border: none;box-shadow: none;color: #6b456a; font-weight: bold;">
+			<span class="quizResponseMessage"></span>
+		</div>
+	</div>
     <div>
-      <button type="button" class="btn submit_quiz js-submit-answer" style="background: #f4623a;color:#fff;" disabled="true">Lock your answer</button>
+      <button type="button" class="btn submit_quiz js-submit-answer" style="background: #592b4f;color:#fff;" disabled="true">Lock your answer</button>
     </div>
   		</script>
 

@@ -14,9 +14,16 @@ import com.tcs.novia.model.QuizResponse;
 public interface QuizResponseRepository extends JpaRepository<QuizResponse, String> {
 
 	@Query("select q from QuizResponse q where q.questionID=:questionID and strpos(:optionCorrect,q.option)>0 order by q.timeStamp asc")
-	List<QuizResponse> findTopByQuestionIDAndOptionOrderByTimeStamp(@Param("questionID") String questionID, @Param("optionCorrect") String optionCorrect, Pageable pageable);
+	List<QuizResponse> findTopByQuestionIDAndOptionOrderByTimeStamp(@Param("questionID") String questionID,
+			@Param("optionCorrect") String optionCorrect, Pageable pageable);
 
 	long countByOptionAndQuestionID(String string, String questionID);
 
 	long countByQuestionID(String questionID);
+
+	QuizResponse findByQuestionIDAndEmployeeID(String questionId, long employeeID);
+	
+	List<QuizResponse> findByQuestionID(String questionId);
+	
+	List<QuizResponse> findByEmployeeID(long employeeID);
 }

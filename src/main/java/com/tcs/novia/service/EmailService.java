@@ -28,6 +28,8 @@ import com.tcs.novia.model.Email;
 import com.tcs.novia.model.EmailTemplate;
 import com.tcs.novia.model.EmailTracker;
 import com.tcs.novia.model.Employee;
+import com.tcs.novia.model.FlightInfo;
+import com.tcs.novia.model.enums.FlightType;
 import com.tcs.novia.repository.EmailTemplateRepository;
 import com.tcs.novia.repository.EmployeeRepository;
 
@@ -87,12 +89,46 @@ public class EmailService {
 		return employees;
 	}
 
-	public List<Employee> sendSubsequentReminderEmails(final Long employeeID, final String emailContext,
+	public List<Employee> sendSubsequentParticipationReminderEmails(final Long employeeID, final String emailContext,
 			final String emailTemplate, final int reminderCount, final boolean shouldEscalate) {
-		LOGGER.trace("Entered into sendSubsequentReminderEmails with parameter::{}", employeeID);
+		LOGGER.trace("Entered into sendSubsequentParticipationReminderEmails with parameter::{}", employeeID);
 		List<Employee> employees = null;
 		if (configurationService.shouldSendEmail()) {
-			employees = employeeService.findEmployeesEligibleForSubsequentReminders(employeeID, emailContext,
+			employees = employeeService.findEmployeesEligibleForSubsequentParticipationReminders(employeeID,
+					emailContext, reminderCount);
+			if (null != employees && !employees.isEmpty()) {
+				for (final Employee emp : employees) {
+					sendReminderEmail(emp, emailTemplate, emailContext, shouldEscalate);
+				}
+			}
+		}
+		LOGGER.trace("Exit from sendSubsequentParticipationReminderEmails with parameter::{}", employees);
+		return employees;
+	}
+
+	public List<Employee> sendSubsequentRegistrationReminderEmails(final Long employeeID, final String emailContext,
+			final String emailTemplate, final int reminderCount, final boolean shouldEscalate) {
+		LOGGER.trace("Entered into sendSubsequentRegistrationReminderEmails with parameter::{}", employeeID);
+		List<Employee> employees = null;
+		if (configurationService.shouldSendEmail()) {
+			employees = employeeService.findEmployeesEligibleForSubsequentRegistrationReminders(employeeID,
+					emailContext, reminderCount);
+			if (null != employees && !employees.isEmpty()) {
+				for (final Employee emp : employees) {
+					sendReminderEmail(emp, emailTemplate, emailContext, shouldEscalate);
+				}
+			}
+		}
+		LOGGER.trace("Exit from sendSubsequentRegistrationReminderEmails with parameter::{}", employees);
+		return employees;
+	}
+
+	public List<Employee> sendSubsequentTravelReminderEmails(final Long employeeID, final String emailContext,
+			final String emailTemplate, final int reminderCount, final boolean shouldEscalate) {
+		LOGGER.trace("Entered into sendSubsequentTravelReminderEmails with parameter::{}", employeeID);
+		List<Employee> employees = null;
+		if (configurationService.shouldSendEmail()) {
+			employees = employeeService.findEmployeesEligibleForSubsequentTravelReminders(employeeID, emailContext,
 					reminderCount);
 			if (null != employees && !employees.isEmpty()) {
 				for (final Employee emp : employees) {
@@ -100,7 +136,7 @@ public class EmailService {
 				}
 			}
 		}
-		LOGGER.trace("Exit from sendSubsequentReminderEmails with parameter::{}", employees);
+		LOGGER.trace("Exit from sendSubsequentTravelReminderEmails with parameter::{}", employees);
 		return employees;
 	}
 
@@ -149,7 +185,8 @@ public class EmailService {
 			sendEmailWithTemplate(emp, Constants.TEMPLATE_CONFIRMED_PARTICIPATION_EMAIL,
 					Constants.TEMPLATE_CONFIRMED_PARTICIPATION_EMAIL, false);
 		} catch (UnsupportedEncodingException | MessagingException e) {
-			handleExceptionScenario(emp, e, Constants.TEMPLATE_CONFIRMED_PARTICIPATION_EMAIL, Constants.TEMPLATE_CONFIRMED_PARTICIPATION_EMAIL);
+			handleExceptionScenario(emp, e, Constants.TEMPLATE_CONFIRMED_PARTICIPATION_EMAIL,
+					Constants.TEMPLATE_CONFIRMED_PARTICIPATION_EMAIL);
 		} catch (final CustomException e) {
 			LOGGER.error("Could not send email due to an error:: {}", e.getMessage());
 		}
@@ -171,7 +208,8 @@ public class EmailService {
 			try {
 				sendEmailWithBody(emp, emailTemplate, email, Constants.TEMPLATE_FORGOT_PASSWORD_EMAIL);
 			} catch (UnsupportedEncodingException | MessagingException e) {
-				handleExceptionScenario(emp, e, Constants.TEMPLATE_FORGOT_PASSWORD_EMAIL, Constants.TEMPLATE_FORGOT_PASSWORD_EMAIL);
+				handleExceptionScenario(emp, e, Constants.TEMPLATE_FORGOT_PASSWORD_EMAIL,
+						Constants.TEMPLATE_FORGOT_PASSWORD_EMAIL);
 			} catch (final CustomException e) {
 				LOGGER.error("Could not send email due to an error:: {}", e.getMessage());
 			}
@@ -190,7 +228,8 @@ public class EmailService {
 			sendEmailWithTemplate(emp, Constants.TEMPLATE_REJECTED_PARTICIPATION_EMAIL,
 					Constants.TEMPLATE_REJECTED_PARTICIPATION_EMAIL, true);
 		} catch (UnsupportedEncodingException | MessagingException e) {
-			handleExceptionScenario(emp, e, Constants.TEMPLATE_REJECTED_PARTICIPATION_EMAIL, Constants.TEMPLATE_REJECTED_PARTICIPATION_EMAIL);
+			handleExceptionScenario(emp, e, Constants.TEMPLATE_REJECTED_PARTICIPATION_EMAIL,
+					Constants.TEMPLATE_REJECTED_PARTICIPATION_EMAIL);
 		} catch (final CustomException e) {
 			LOGGER.error("Could not send email due to an error:: {}", e.getMessage());
 		}
@@ -201,14 +240,15 @@ public class EmailService {
 		try {
 			sendEmailWithTemplate(emp, Constants.TEMPLATE_REGISTRATION_EMAIL, Constants.TEMPLATE_REGISTRATION_EMAIL);
 		} catch (UnsupportedEncodingException | MessagingException e) {
-			handleExceptionScenario(emp, e, Constants.TEMPLATE_REGISTRATION_EMAIL, Constants.TEMPLATE_REGISTRATION_EMAIL);
+			handleExceptionScenario(emp, e, Constants.TEMPLATE_REGISTRATION_EMAIL,
+					Constants.TEMPLATE_REGISTRATION_EMAIL);
 		} catch (final CustomException e) {
 			LOGGER.error("Could not send email due to an error:: {}", e.getMessage());
 		}
 	}
 
 	private void handleExceptionScenario(final Employee emp, final Exception e, final String emailContext,
-			String templateName) {
+			final String templateName) {
 		LOGGER.error("Could not send {} with templateName {} to : {} due to an error:: {}", emailContext, templateName,
 				emp.getEmployeeID(), e.getMessage());
 		logEmailTracker(emp, emailContext, false, e.getMessage(), templateName);
@@ -238,7 +278,8 @@ public class EmailService {
 			sendEmailWithTemplate(emp, Constants.TEMPLATE_REGISTRATION_REMINDER_EMAIL,
 					Constants.TEMPLATE_REGISTRATION_REMINDER_EMAIL);
 		} catch (UnsupportedEncodingException | MessagingException e) {
-			handleExceptionScenario(emp, e, Constants.TEMPLATE_REGISTRATION_REMINDER_EMAIL, Constants.TEMPLATE_REGISTRATION_REMINDER_EMAIL);
+			handleExceptionScenario(emp, e, Constants.TEMPLATE_REGISTRATION_REMINDER_EMAIL,
+					Constants.TEMPLATE_REGISTRATION_REMINDER_EMAIL);
 		} catch (final CustomException e) {
 			LOGGER.error("Could not send email due to an error:: {}", e.getMessage());
 		}
@@ -249,7 +290,8 @@ public class EmailService {
 			sendEmailWithTemplate(emp, Constants.TEMPLATE_FLIGHT_UPDATE_REMINDER_EMAIL,
 					Constants.TEMPLATE_FLIGHT_UPDATE_REMINDER_EMAIL);
 		} catch (UnsupportedEncodingException | MessagingException e) {
-			handleExceptionScenario(emp, e, Constants.TEMPLATE_FLIGHT_UPDATE_REMINDER_EMAIL, Constants.TEMPLATE_FLIGHT_UPDATE_REMINDER_EMAIL);
+			handleExceptionScenario(emp, e, Constants.TEMPLATE_FLIGHT_UPDATE_REMINDER_EMAIL,
+					Constants.TEMPLATE_FLIGHT_UPDATE_REMINDER_EMAIL);
 		} catch (final CustomException e) {
 			LOGGER.error("Could not send email due to an error:: {}", e.getMessage());
 		}
@@ -274,7 +316,7 @@ public class EmailService {
 	}
 
 	public List<Employee> sendGiftAmendmentEmail(final Long employeeID) {
-		LOGGER.debug("Entered into sendLogisticEmail with parameter::{}", employeeID);
+		LOGGER.debug("Entered into sendGiftAmendmentEmail with parameter::{}", employeeID);
 		List<Employee> employees = null;
 		if (configurationService.shouldSendEmail()) {
 			employees = employeeRepository.findByRegistrationNoGreaterThanAndGiftAmendmentEmailSentIsNull(0);
@@ -286,8 +328,60 @@ public class EmailService {
 				}
 			}
 		}
-		LOGGER.trace("Exit from sendLogisticEmail with parameter::{}", employees);
+		LOGGER.trace("Exit from sendGiftAmendmentEmail with parameter::{}", employees);
 		return employees;
+	}
+
+	public List<Employee> sendTravelConfirmationEmail(final Long employeeID) {
+		LOGGER.debug("Entered into sendTravelConfirmationEmail with parameter::{}", employeeID);
+		List<Employee> employees = null;
+		if (configurationService.shouldSendEmail()) {
+			employees = employeeService.findEmployeesWhoProvidedCompleteFlightDetails(employeeID);
+			if (null != employees && !employees.isEmpty()) {
+				for (final Employee emp : employees) {
+					sendTravelConfirmationEmail(emp);
+				}
+			}
+		}
+		LOGGER.trace("Exit from sendTravelConfirmationEmail with parameter::{}", employees);
+		return employees;
+	}
+
+	private void sendTravelConfirmationEmail(final Employee emp) {
+
+		final EmailTemplate emailTemplate = getEmailTemplateByName(Constants.TEMPLATE_TRAVEL_CONFIRMATION_EMAIL);
+		if (null != emailTemplate) {
+
+			final FlightInfo inboundFlightInfo = emp.getFlightInfos().stream()
+					.filter(flightInfo -> flightInfo.getFlightType() == FlightType.INBOUND).findFirst().get();
+			final FlightInfo outboundFlightInfo = emp.getFlightInfos().stream()
+					.filter(flightInfo -> flightInfo.getFlightType() == FlightType.OUTBOUND).findFirst().get();
+
+			final String name = StringUtils.isNotBlank(emp.getShortName()) ? emp.getShortName() : emp.getFirstName();
+
+			final String bodyContent = MessageFormat.format(emailTemplate.getBodyContent(), name,
+					inboundFlightInfo.getFlightDate(), inboundFlightInfo.getAirlineName(),
+					inboundFlightInfo.getFlightNumber(), inboundFlightInfo.getFlightTime(),
+					outboundFlightInfo.getFlightDate(), outboundFlightInfo.getAirlineName(),
+					outboundFlightInfo.getFlightNumber(), outboundFlightInfo.getFlightTime());
+
+			final Email email = fetchEmailInfo(emp, emailTemplate, bodyContent);
+
+			try {
+				sendEmailWithBody(emp, emailTemplate, email, Constants.TEMPLATE_TRAVEL_CONFIRMATION_EMAIL);
+			} catch (UnsupportedEncodingException | MessagingException e) {
+				handleExceptionScenario(emp, e, Constants.TEMPLATE_TRAVEL_CONFIRMATION_EMAIL,
+						Constants.TEMPLATE_TRAVEL_CONFIRMATION_EMAIL);
+			} catch (final CustomException e) {
+				LOGGER.error("Could not send email due to an error:: {}", e.getMessage());
+			}
+
+		} else {
+			LOGGER.warn("No Email Template found. Unable to send email for ::{}",
+					Constants.TEMPLATE_TRAVEL_CONFIRMATION_EMAIL);
+			logEmailTracker(emp, "NO_EMAIL_TEMPLATE", false,
+					"No Email Template found for " + Constants.TEMPLATE_TRAVEL_CONFIRMATION_EMAIL, "NO_EMAIL_TEMPLATE");
+		}
 	}
 
 	private void sendLogisticEmail(final Employee emp) {
@@ -314,7 +408,8 @@ public class EmailService {
 			employeeRepository.save(emp);
 
 		} catch (UnsupportedEncodingException | MessagingException e) {
-			handleExceptionScenario(emp, e, Constants.TEMPLATE_GIFT_AMENDMENT_EMAIL, Constants.TEMPLATE_GIFT_AMENDMENT_EMAIL);
+			handleExceptionScenario(emp, e, Constants.TEMPLATE_GIFT_AMENDMENT_EMAIL,
+					Constants.TEMPLATE_GIFT_AMENDMENT_EMAIL);
 		} catch (final CustomException e) {
 			LOGGER.error("Could not send email due to an error:: {}", e.getMessage());
 		}
@@ -344,7 +439,8 @@ public class EmailService {
 		} else {
 			LOGGER.warn("No Email Template found. Unable to send email for ::{}", templateName);
 			logEmailTracker(emp, "NO_EMAIL_TEMPLATE", false,
-					"No Email Template found for templateName::" + templateName + " and emailContext::" + emailContext, templateName);
+					"No Email Template found for templateName::" + templateName + " and emailContext::" + emailContext,
+					templateName);
 			throw new CustomException("No Email Template found. Unable to send email for ::" + templateName);
 		}
 
@@ -374,7 +470,8 @@ public class EmailService {
 			final String failureReason = "Could not send email to : " + emailTemplate.getEmailTo() + " because he is::"
 					+ emp.getRole();
 			LOGGER.error("failureReason::{}", failureReason);
-			logEmailTracker(emp, emailTemplate.getTemplateName(), false, failureReason, emailTemplate.getTemplateName());
+			logEmailTracker(emp, emailTemplate.getTemplateName(), false, failureReason,
+					emailTemplate.getTemplateName());
 
 			throw new CustomException("App does not send email for role::" + emp.getRole());
 		} else {
@@ -434,9 +531,9 @@ public class EmailService {
 	}
 
 	private void logEmailTracker(final Employee emp, final String emailContext, final boolean success,
-			final String failureReason, String emailTemplateName) {
-		final EmailTracker emailTracker = new EmailTracker(emailContext, emailTemplateName, success, failureReason, LocalDateTime.now(),
-				emp);
+			final String failureReason, final String emailTemplateName) {
+		final EmailTracker emailTracker = new EmailTracker(emailContext, emailTemplateName, success, failureReason,
+				LocalDateTime.now(), emp);
 		final Set<EmailTracker> emailTrackers = emp.getEmailTrackers();
 		if (null == emailTrackers) {
 			emp.setEmailTrackers(new HashSet<>());
@@ -450,13 +547,15 @@ public class EmailService {
 		employeeRepository.save(emp);
 	}
 
-	private void saveReminderDateTime(final Employee emp, final String templateName) {
-		if (Constants.TEMPLATE_CONFIRM_PARTICIPATION_REMINDER_EMAIL.equalsIgnoreCase(templateName)) {
+	private void saveReminderDateTime(final Employee emp, final String emailContext) {
+		if (Constants.TEMPLATE_CONFIRM_PARTICIPATION_REMINDER_EMAIL.equalsIgnoreCase(emailContext)) {
 			emp.setParticipationReminderLastSentDateTime(LocalDateTime.now());
-		} else if (Constants.TEMPLATE_REGISTRATION_REMINDER_EMAIL.equalsIgnoreCase(templateName)) {
+		} else if (Constants.TEMPLATE_REGISTRATION_REMINDER_EMAIL.equalsIgnoreCase(emailContext)) {
 			emp.setCompleteRegistrationReminderLastSentDateTime(LocalDateTime.now());
-		} else if (Constants.TEMPLATE_FLIGHT_UPDATE_REMINDER_EMAIL.equalsIgnoreCase(templateName)) {
+		} else if (Constants.TEMPLATE_FLIGHT_UPDATE_REMINDER_EMAIL.equalsIgnoreCase(emailContext)) {
 			emp.setFlightReminderLastSentDateTime(LocalDateTime.now());
+		} else if (Constants.TEMPLATE_TRAVEL_CONFIRMATION_EMAIL.equalsIgnoreCase(emailContext)) {
+			emp.setTravelConfirmationDateTime(LocalDateTime.now());
 		}
 
 	}

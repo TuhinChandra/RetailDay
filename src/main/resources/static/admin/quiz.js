@@ -1,5 +1,5 @@
 angular
-		.module('kfApp', ['cgBusy','ngSanitize'])
+		.module('kfApp', [ 'cgBusy', 'ngSanitize' ])
 		.controller(
 				'kfController',
 				function($scope, $http) {
@@ -11,9 +11,16 @@ angular
 					$scope.showResultButton = false;
 					$scope.result = false;
 					$scope.question = 0;
+					$scope.quizInfoData={};
+					$scope.question=0;
 					$scope.startQuiz = function() {
+						var noOfQuestions=$scope.quizInfoData.noOfQuestions;
+						var currentQuestion=$scope.quizInfoData.currentQuestion;
+						if($scope.question < currentQuestion){
+							$scope.question=(currentQuestion-1);
+						}
 						$scope.question++;
-						if ($scope.question > 5) {
+						if ($scope.question > noOfQuestions) {
 							$scope.promise = $http
 									.get(URL + '/clearCurrentQuestion/')
 									.then(
@@ -22,7 +29,7 @@ angular
 												$scope.showStartQuiz = false;
 												$scope.showResultButton = false;
 												$scope.result = false;
-												$scope.quizEnd=true;
+												$scope.quizEnd = true;
 												$scope.$digest();
 											},
 											function myError(response) {
@@ -75,14 +82,30 @@ angular
 
 					$scope.showResult = function() {
 						$scope.promise = $http
-								.get(URL + '/getResult/' + $scope.question)
+						.get(URL + '/getResult/' + $scope.question)
+						.then(
+								function mySuccess(response) {
+									console.log(response.data);
+									$scope.resultData = response.data;
+									$scope.showQuestion = false;
+									$scope.showResultButton = false;
+									$scope.result = true;
+									$scope.$digest();
+								},
+								function myError(response) {
+									window
+									.alert('Oops! Some error has occured!');
+									console.log(response);
+									return;
+								});
+					}
+					$scope.getQuizInfo = function() {
+						$scope.promise = $http
+								.get(URL + '/getQuizInfo/')
 								.then(
 										function mySuccess(response) {
 											console.log(response.data);
-											$scope.resultData = response.data;
-											$scope.showQuestion = false;
-											$scope.showResultButton = false;
-											$scope.result = true;
+											$scope.quizInfoData = response.data;
 											$scope.$digest();
 										},
 										function myError(response) {
